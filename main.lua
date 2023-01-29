@@ -30,12 +30,6 @@ function love.keypressed(key, scancode, isrepeat)
 	if key == "q" then
 		c1.y =  c1.y - 1
 	end
-	if key == "w" then
-		c1.children[1].y =  c1.children[1].y + 1
-	end
-	if key == "e" then
-		c1.children[1].children[1].y =  c1.children[1].children[1].y + 1
-	end
 end
 
 function love.update(dt)

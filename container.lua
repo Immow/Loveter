@@ -22,6 +22,8 @@ function Container.new(settings)
 	instance.children = settings.children
 	instance.padding  = Container.setPadding(settings)
 	instance.stretch  = settings.stretch
+	instance.start_x      = 0
+	instance.start_y      = 0
 
 	createID = createID + 1
 	return instance
@@ -30,17 +32,14 @@ end
 -- LuaFormatter on
 
 function Container:getTotalChildWidth()
-	if not self.children then
-		return self:getWidth()
-	end
 	local w = 0
 	for _, child in ipairs(self.children) do
 		child:setPosition(self.x + self.padding.left, self.y)
-		w = w + child:getWidth()
 		child:load()
+		w = w + child:getWidth()
 	end
 
-	if self.w > 0 then
+	if self.w > w then
 		return self.w + self.padding.left + self.padding.right
 	end
 
@@ -64,11 +63,21 @@ end
 
 function Container:load()
 	self.w = self:getTotalChildWidth() -- + self.padding.left + self.padding.right
+	self.start_x = self.x
+	self.start_y = self.y
 end
 
 function Container:update(dt)
 	for _, child in ipairs(self.children) do
 		child:update()
+	end
+	
+	if self.x ~= self.start_x or self.y ~= self.start_y then
+		self.start_x = self.x
+		self.start_y = self.y
+		for _, child in ipairs(self.children) do
+			child:setPosition(self.x + self.padding.left, self.y)
+		end
 	end
 end
 

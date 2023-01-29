@@ -16,6 +16,8 @@ function Box.new(settings)
 	instance.y      = settings.y or 0
 	instance.w  = settings.w or 100
 	instance.h = settings.h or 50
+	instance.start_x      = 0
+	instance.start_y      = 0
 	-- instance.padding = {left = 0}
 	return instance
 end
@@ -23,6 +25,8 @@ end
 -- LuaFormatter on
 
 function Box:load()
+	self.start_x = self.x
+	self.start_y = self.y
 end
 
 function Box:update(dt)
