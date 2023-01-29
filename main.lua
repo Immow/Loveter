@@ -1,4 +1,4 @@
-require("debug")
+require("globals")
 local c = require("container")
 local b = require("box")
 
@@ -9,12 +9,12 @@ function love.load()
 	b1 = b.new({w = 100, h = 50})
 
 	c1 = c.new({
-		w = 400,
+		-- w = 400,
 		x = 10,
 		y = 200,
 		children = {
 			c.new({
-				-- padding = {left = 50, right = 100},
+				padding = {left = 50, right = 100},
 				-- stretch = {x = 75},
 				children = {
 					b1

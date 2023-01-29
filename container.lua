@@ -20,7 +20,7 @@ function Container.new(settings)
 	instance.h        = settings.h or 50
 	instance.id       = createID
 	instance.children = settings.children
-	instance.padding  = Container:setPadding(settings)
+	instance.padding  = Container.setPadding(settings)
 	instance.stretch  = settings.stretch
 
 	createID = createID + 1
@@ -35,15 +35,16 @@ function Container:getTotalChildWidth()
 	end
 	local w = 0
 	for _, child in ipairs(self.children) do
-		child:setPosition(self.x, self.y)
+		child:setPosition(self.x + self.padding.left, self.y)
 		w = w + child:getWidth()
 		child:load()
 	end
 
 	if self.w > 0 then
-		return self.w
+		return self.w + self.padding.left + self.padding.right
 	end
-	return w
+
+	return w + self.padding.left + self.padding.right
 end
 
 local maxWidth = 0
@@ -75,7 +76,8 @@ function Container:draw()
 	for _, child in ipairs(self.children) do
 		child:draw()
 	end
-	love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+	
+	self:debug()
 end
 
 return Container
