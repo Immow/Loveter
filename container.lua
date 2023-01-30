@@ -38,9 +38,9 @@ end
 
 -- LuaFormatter on
 
-function Container:positionChildren()
+function Container:positionChildren(x, y)
 	if self.mainAlign.vertical then
-		local y = self.y + self.offset.top + self.padding.top
+		-- local y = self.y + self.offset.top + self.padding.top
 		for i, child in ipairs(self.children) do
 			if self.spacing.evenly then
 				local spacing = (self.h - self:getChildrenTotalHeight()) / (#self.children + 1)
@@ -57,8 +57,9 @@ function Container:positionChildren()
 			end
 		end
 	elseif self.mainAlign.horizontal then
-		local x = self.x + self.offset.left + self.padding.left
+		-- local x = self.x + self.offset.left + self.padding.left
 		for i, child in ipairs(self.children) do
+
 			if self.spacing.evenly then
 				local spacing  = (self.w - self:getChildrenTotalWidth()) / (#self.children + 1)
 				x = x + spacing
@@ -73,6 +74,10 @@ function Container:positionChildren()
 				child:setPosition(x, self.y + self.offset.top + self.padding.top)
 				x = x + child.offset.right + child.w
 			end
+
+			if child.children then
+				child:positionChildren(x, y)
+			end
 		end
 	end
 end
@@ -80,17 +85,13 @@ end
 function Container:getChildrenTotalWidth()
 	local w = 0
 	for _, child in ipairs(self.children) do
-		-- child:setPosition(self.x + self.padding.left, self.y)
-		-- child:load()
+		if child.children then
+			child:getChildrenTotalWidth()
+		end
 		w = w + child:getWidth()
 	end
-	
-
-	-- if self.w > w then
-	-- 	return self.w + self.padding.left + self.padding.right
-	-- end
-
-	return w + self.padding.left + self.padding.right
+	if self.w > w then return end
+	self.w = w + self.padding.left + self.padding.right
 end
 
 local maxWidth = 0
@@ -114,18 +115,16 @@ function Container:load()
 	self.start_x = self.x
 	self.start_y = self.y
 
-	self:setStretch()
+	-- self:setStretch()
 
-	self:positionChildren()
-
-	if self.w == 0 then
-		self.w = self:getChildrenTotalWidth()
-	end
+	self:positionChildren(self.x + self.offset.left + self.padding.left, self.y + self.offset.top + self.padding.top)
+	self:getChildrenTotalWidth()
 
 
-	for _, child in ipairs(self.children) do
-		child:load()
-	end
+
+	-- for _, child in ipairs(self.children) do
+	-- 	child:load()
+	-- end
 end
 
 function Container:update(dt)
