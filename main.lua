@@ -4,20 +4,26 @@ local b = require("box")
 
 local c1
 local b1
+local b2
 
 function love.load()
-	b1 = b.new({w = 100, h = 50})
+	b1 = b.new({w = 50, h = 50})
+	b2 = b.new({w = 50, h = 50})
 
 	c1 = c.new({
-		-- w = 400,
+		w = 400,
 		x = 10,
 		y = 200,
+		mainAlign = {horizontal = true},
+		-- padding = {left = 50},
 		children = {
 			c.new({
-				padding = {left = 50, right = 100},
-				-- stretch = {x = 75},
+				mainAlign = {horizontal = true},
+				spacing = {evenly = true},
+				stretch = {x = 100},
 				children = {
-					b1
+					b1,
+					b2
 				}
 			})
 		}
@@ -27,8 +33,11 @@ function love.load()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-	if key == "q" then
+	if key == "up" then
 		c1.y =  c1.y - 1
+	end
+	if key == "down" then
+		c1.y =  c1.y + 1
 	end
 end
 

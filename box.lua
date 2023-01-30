@@ -18,7 +18,7 @@ function Box.new(settings)
 	instance.h = settings.h or 50
 	instance.start_x      = 0
 	instance.start_y      = 0
-	-- instance.padding = {left = 0}
+	instance.offset       = Box.setOffset(settings)
 	return instance
 end
 
