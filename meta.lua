@@ -52,6 +52,22 @@ function Meta.setPadding(settings)
 	end
 end
 
+function Meta.setAlign(settings)
+	if not settings.align then
+		return {top = true, bottom = false, left = true, right = false}
+	else
+		local top = settings.align.top or false
+		local bottom = settings.align.bottom or false
+		local left = settings.align.left or false
+		local right = settings.align.right or false
+
+		if not top and not bottom then top = true end
+		if not left and not right then left = true end
+
+		return {top = top, bottom = bottom, left = left, right = right}
+	end
+end
+
 function Meta:debug()
 	if DEBUG then
 		love.graphics.setColor(1,0,0)

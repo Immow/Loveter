@@ -15,22 +15,19 @@ function love.load()
 		x = 10,
 		y = 200,
 		mainAlign = {horizontal = true},
-		padding = {left = 50},
+		-- align = {right = true},
+		-- padding = {right = 50},
 		children = {
 			c.new({
+				-- w = 200,
 				mainAlign = {horizontal = true},
+				-- padding = {left = 50},
 				-- spacing = {evenly = true},
-				-- stretch = {x = 100},
+				align = {right = true},
+				stretch = {x = 50},
 				children = {
-					c.new({
-						mainAlign = {horizontal = true},
-						-- spacing = {evenly = true},
-						-- stretch = {x = 100},
-						children = {
-							b1,
-							b2
-						}
-					})
+					b1,
+					b2
 				}
 			})
 		}
