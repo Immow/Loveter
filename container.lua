@@ -68,6 +68,7 @@ function Container:positionChildren()
 	elseif self.mainAlign.horizontal then
 		local x = 0
 		if self.align.right then
+			print("w: "..self.w.." totalChildWidth: "..self.totalChildWidth.." padding: "..self.padding.right)
 			x = self.x + (self.w - self.totalChildWidth - self.padding.right)
 		else
 			x = self.x + self.padding.left
@@ -113,7 +114,8 @@ end
 function Container:giveChildrenParentDimensions()
 	for _, child in ipairs(self.children) do
 		if child.children then
-			child.parentWidth = self.w
+			child.parentWidth = self.w - self.padding.left - self.padding.right
+			child.parentHeight = self.h - self.padding.top - self.padding.bottom
 		end
 	end
 end
@@ -122,27 +124,26 @@ function Container:setWidth()
 	local w = self:getChildrenTotalWidth()
 	self.totalChildWidth = w
 
-	-- if maxWidth < self.w then
-	-- 	maxWidth = self.w -- self.padding.left  --+ self.padding.left + self.padding.right
-	-- end
-
 	if self.w > w then
-		self.w = self.w + self.padding.left + self.padding.right
+		self.w = self.w --+ self.padding.left + self.padding.right
 	else
 		self.w = w + self.padding.left + self.padding.right
 	end
 end
 
 function Container:setStretch()
+	local w = 0
 	for _, child in ipairs(self.children) do
 		if child.children then
 			child:setStretch()
+			w = w + child.w
 		end
 	end
 
+	self.totalChildWidth = w
+
 	if self.stretch then
 		if self.stretch.x > 0 then
-			-- print(self.w.." "..self.totalChildWidth)
 			if self.parentWidth > self.w then
 				self.w = self.parentWidth / 100 * self.stretch.x
 			end
@@ -159,28 +160,12 @@ function Container:load()
 	self:giveChildrenParentDimensions()
 	self:setStretch()
 	self:positionChildren()
-	-- print(self.totalChildWidth)
-	
-
-
-	-- for _, child in ipairs(self.children) do
-	-- 	child:load()
-	-- end
 end
 
 function Container:update(dt)
 	for _, child in ipairs(self.children) do
 		child:update()
 	end
-	-- self:setStretch()
-	
-	-- if self.x ~= self.start_x or self.y ~= self.start_y then
-	-- 	self.start_x = self.x
-	-- 	self.start_y = self.y
-	-- 	for _, child in ipairs(self.children) do
-	-- 		child:setPosition(self.x + self.padding.left, self.y)
-	-- 	end
-	-- end
 end
 
 function Container:draw()

@@ -11,19 +11,19 @@ function love.load()
 	b2 = b.new({w = 50, h = 50})
 
 	c1 = c.new({
-		w = 400,
+		-- w = 400,
 		x = 10,
 		y = 200,
 		mainAlign = {horizontal = true},
 		-- align = {right = true},
-		-- padding = {right = 50},
+		-- padding = {left = 50},
 		children = {
 			c.new({
 				-- w = 200,
 				mainAlign = {horizontal = true},
 				-- padding = {left = 50},
 				-- spacing = {evenly = true},
-				align = {right = true},
+				-- align = {right = true},
 				stretch = {x = 50},
 				children = {
 					b1,
