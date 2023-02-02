@@ -10,7 +10,7 @@ Container_meta.__index = Container_meta
 setmetatable(Container, Container_meta)
 setmetatable(Container_meta, Meta)
 
-local createID = 0
+Container.createID = 0
 local maxWidth = 0
 
 function Container.new(settings)
@@ -23,7 +23,7 @@ function Container.new(settings)
 	instance.y         = settings.y or 0
 	instance.w         = settings.w or 0
 	instance.h         = settings.h or 50
-	instance.id        = createID
+	instance.id        = Container.createID
 	instance.children  = settings.children
 	instance.padding   = Container.setPadding(settings)
 	instance.offset    = Container.setOffset(settings)
@@ -37,7 +37,7 @@ function Container.new(settings)
 	instance.totalChildHeight = 0
 	instance.parentWidth = 0
 
-	createID = createID + 1
+	Container.createID = Container.createID + 1
 	return instance
 end
 
@@ -68,15 +68,14 @@ function Container:positionChildren()
 	elseif self.mainAlign.horizontal then
 		local x = 0
 		if self.align.right then
-			print("w: "..self.w.." totalChildWidth: "..self.totalChildWidth.." padding: "..self.padding.right)
 			x = self.x + (self.w - self.totalChildWidth - self.padding.right)
-		else
+		elseif self.align.left then
 			x = self.x + self.padding.left
 		end
 
 		for i, child in ipairs(self.children) do
 			if self.spacing.evenly then
-				local spacing  = (self.w - self.padding.left - self:getChildrenTotalWidth()) / (#self.children + 1)
+				local spacing  = (self.w - self.padding.left - self.padding.right - self.totalChildWidth) / (#self.children + 1)
 				x = x + spacing
 				child:setPosition(x, self.y + self.offset.top + self.padding.top)
 				x = x + child.w
@@ -125,7 +124,7 @@ function Container:setWidth()
 	self.totalChildWidth = w
 
 	if self.w > w then
-		self.w = self.w --+ self.padding.left + self.padding.right
+		self.w = self.w
 	else
 		self.w = w + self.padding.left + self.padding.right
 	end
@@ -136,8 +135,8 @@ function Container:setStretch()
 	for _, child in ipairs(self.children) do
 		if child.children then
 			child:setStretch()
-			w = w + child.w
 		end
+		w = w + child.w
 	end
 
 	self.totalChildWidth = w
