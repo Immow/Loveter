@@ -66,11 +66,31 @@ function Container:positionChildren()
 			end
 		end
 	elseif self.mainAlign.horizontal then
+
 		local x = 0
 		if self.align.right then
 			x = self.x + (self.w - self.totalChildWidth - self.padding.right)
 		elseif self.align.left then
 			x = self.x + self.padding.left
+		end
+
+		if self.spacing.evenly then
+			if self.align.right then
+				print("align will be ignored when using spacing")
+			end
+			x = self.x + self.padding.left
+		elseif self.spacing.between then
+			if self.align.right then
+				print("align will be ignored when using spacing")
+			end
+			x = (self.w - (self.totalChildWidth + self.spacing.between * (#self.children - 1))) / 2
+		elseif self.spacing.fixed then
+			if self.align.right then
+				print("align will be ignored when using spacing")
+			end
+			x = self.x + (self.w - self.totalChildWidth) / 2
+			-- print(self.w.." "..self.totalChildWidth)
+			-- print(self.totalChildWidth)
 		end
 
 		for i, child in ipairs(self.children) do
@@ -80,9 +100,11 @@ function Container:positionChildren()
 				child:setPosition(x, self.y + self.offset.top + self.padding.top)
 				x = x + child.w
 			elseif self.spacing.between then
-				local spacing  = (self.w - self.padding.left - self:getChildrenTotalWidth()) / (#self.children - 1) + self.spacing.between
 				child:setPosition(x, self.y + self.offset.top + self.padding.top)
-				x = x + child.w + spacing
+				x = x + child.w + self.spacing.between
+			elseif self.spacing.fixed then
+				child:setPosition(x, self.y + self.offset.top + self.padding.top)
+				x = x + child.w + self.spacing.fixed
 			else
 				if self.align.right then
 					child:setPosition(x, self.y)
@@ -121,13 +143,17 @@ end
 
 function Container:setWidth()
 	local w = self:getChildrenTotalWidth()
-	self.totalChildWidth = w
-
-	if self.w > w then
-		self.w = self.w
-	else
+	if self.spacing.fixed then
+		w = w + self.spacing.fixed * (#self.children -1)
+	end
+	
+	if self.w < w then
 		self.w = w + self.padding.left + self.padding.right
 	end
+	
+	self.totalChildWidth = w
+	-- print(self.totalChildWidth)
+	-- print(self.w)
 end
 
 function Container:setStretch()
@@ -139,7 +165,7 @@ function Container:setStretch()
 		w = w + child.w
 	end
 
-	self.totalChildWidth = w
+	-- self.totalChildWidth = w
 
 	if self.stretch then
 		if self.stretch.x > 0 then

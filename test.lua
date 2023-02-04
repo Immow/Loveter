@@ -6,11 +6,22 @@ local Test = {container = {}, boxes = {}}
 
 local list = {
 	"default",
-	"paddingleft",
 	"wrap",
 	"alignRight",
+	"paddingLeft",
 	"alignRightPaddingRight",
+	"fixedWidthSpaceEvenely",
+	"fixedWidthSpaceEvenelyPaddingLeft",
+	"fixedWidthSpaceEvenelyPaddingLeftRight",
+	"fixedWidthSpaceFixed",
+	"wrapWidthSpaceFixed",
 	"wrapPadding",
+	"wrapPaddingLeftRight",
+	"TwoContainersFixedWidth",
+	"TwoContainersFixedWidthPaddingLeft",
+	"TwoContainersFixedWidthPaddingRightAlignRight",
+	"TwoContainersWrap",
+	"TwoContainersWrapDoublePadding",
 }
 
 function Test:default()
@@ -31,7 +42,7 @@ function Test:default()
 	self.container:load()
 end
 
-function Test:paddingleft()
+function Test:paddingLeft()
 	self.boxes.b1 = b.new({w = 50, h = 50})
 	self.boxes.b2 = b.new({w = 50, h = 50})
 
@@ -89,6 +100,103 @@ function Test:alignRightPaddingRight()
 	self.container:load()
 end
 
+function Test:fixedWidthSpaceEvenely()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		spacing = {evenly = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:fixedWidthSpaceEvenelyPaddingLeft()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		padding = {left = 50},
+		mainAlign = {horizontal = true},
+		spacing = {evenly = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2
+		}
+	})
+
+	self.container:load()
+end
+
+
+function Test:fixedWidthSpaceEvenelyPaddingLeftRight()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+	
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		padding = {left = 50, right = 50},
+		mainAlign = {horizontal = true},
+		spacing = {evenly = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2
+		}
+	})
+	
+	self.container:load()
+end
+
+function Test:fixedWidthSpaceFixed()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		spacing = {fixed = 25},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:wrapWidthSpaceFixed()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		spacing = {fixed = 25},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+		}
+	})
+
+	self.container:load()
+end
+
 function Test:wrap()
 	self.boxes.b1 = b.new({w = 50, h = 50})
 	self.boxes.b2 = b.new({w = 50, h = 50})
@@ -118,6 +226,141 @@ function Test:wrapPadding()
 		children = {
 			self.boxes.b1,
 			self.boxes.b2
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:wrapPaddingLeftRight()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		padding = {left = 50, right = 50},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:TwoContainersFixedWidth()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		children = {
+			c.new({
+				mainAlign = {horizontal = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:TwoContainersFixedWidthPaddingLeft()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		padding = {left = 50},
+		mainAlign = {horizontal = true},
+		children = {
+			c.new({
+				mainAlign = {horizontal = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:TwoContainersFixedWidthPaddingRightAlignRight()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		w = 400,
+		x = 10,
+		y = 200,
+		padding = {right = 50},
+		align = {right = true},
+		mainAlign = {horizontal = true},
+		children = {
+			c.new({
+				mainAlign = {horizontal = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:TwoContainersWrap()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		children = {
+			c.new({
+				mainAlign = {horizontal = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Test:TwoContainersWrapDoublePadding()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {horizontal = true},
+		padding = {left = 50, right = 50},
+		children = {
+			c.new({
+				mainAlign = {horizontal = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2
+				}
+			}),
 		}
 	})
 
