@@ -2,7 +2,7 @@ require("globals")
 local Test = require("test")
 
 function love.load()
-	Test:default()
+	Test:load()
 end
 
 function love.keypressed(key, scancode, isrepeat)
