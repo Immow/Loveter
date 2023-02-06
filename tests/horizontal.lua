@@ -27,8 +27,8 @@ local Horizontal = {
 		"TwoContainersSpaceEvenly",
 		"TwoContainersSpaceEvenlyPadding",
 		"TripleContainerStretch",
-		-- "ThreeContainersStretch",
-		-- "ThreeContainersStretchOnlyContainers",
+		"ThreeContainersStretch",
+		"ThreeContainersStretchOnlyContainers",
 	}
 }
 
@@ -593,9 +593,7 @@ function Horizontal:ThreeContainersStretchOnlyContainers()
 					c.new({
 						stretch = {x = 50},
 						mainAlign = {horizontal = true},
-						children = {
-							self.boxes.b1,
-						}
+						children = {}
 					}),
 				}
 			}),
@@ -615,12 +613,12 @@ function Horizontal:keypressed(key, scancode, isrepeat)
 			c.createID = 0
 			selectedTest = selectedTest + 1
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
+			-- print(self.tests[selectedTest])
 		else
 			c.createID = 0
 			selectedTest = 1
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
+			-- print(self.tests[selectedTest])
 		end
 	end
 
@@ -629,12 +627,12 @@ function Horizontal:keypressed(key, scancode, isrepeat)
 			c.createID = 0
 			selectedTest = selectedTest - 1
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
+			-- print(self.tests[selectedTest])
 		else
 			c.createID = 0
 			selectedTest = #self.tests
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
+			-- print(self.tests[selectedTest])
 		end
 	end
 end
@@ -647,6 +645,7 @@ end
 function Horizontal:draw()
 	self.container:draw()
 	love.graphics.print("Horizontal", WINDOW_WIDTH - (FONT:getWidth("Horizontal") + 10))
+	love.graphics.print(self.tests[selectedTest], WINDOW_WIDTH - (FONT:getWidth(self.tests[selectedTest]) + 10), FONT:getHeight() + 2)
 end
 
 return Horizontal

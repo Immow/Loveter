@@ -74,17 +74,12 @@ function Container:positionChildren()
 			x = self.x + self.padding.left
 		end
 
-		if self.spacing then
-			if self.align.right then
-				print("align will be ignored when using spacing")
-			end
-			if self.spacing.evenly then
-				x = self.x + self.padding.left
-			elseif self.spacing.between then
-				x = self.x + self.padding.left
-			elseif self.spacing.fixed then
-				x = self.x + (self.w - self.totalChildWidth) / 2
-			end
+		if self.spacing.evenly then
+			x = self.x + self.padding.left
+		elseif self.spacing.between then
+			x = self.x + self.padding.left
+		elseif self.spacing.fixed then
+			x = self.x + (self.w - self.totalChildWidth) / 2
 		end
 
 		for i, child in ipairs(self.children) do
