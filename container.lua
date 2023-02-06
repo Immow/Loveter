@@ -36,6 +36,7 @@ function Container.new(settings)
 	instance.totalChildWidth = 0
 	instance.totalChildHeight = 0
 	instance.parentWidth = 0
+	instance.totalWidthOfNonContainers = 0
 
 	Container.createID = Container.createID + 1
 	return instance
@@ -66,7 +67,6 @@ function Container:positionChildren()
 			end
 		end
 	elseif self.mainAlign.horizontal then
-
 		local x = 0
 		if self.align.right then
 			x = self.x + (self.w - self.totalChildWidth - self.padding.right)
@@ -121,17 +121,31 @@ function Container:getChildrenTotalWidth()
 	for _, child in ipairs(self.children) do
 		if child.children then
 			child:setWidth()
+		else
+			self.totalWidthOfNonContainers = self.totalWidthOfNonContainers + child.w
 		end
 		w = w + child:getWidth()
 	end
 	return w
 end
 
-function Container:giveChildrenParentDimensions()
-	for _, child in ipairs(self.children) do
+function Container:blaat()
+	for i, child in ipairs(self.children) do
+
+	end
+end
+
+function Container:giveChildrenParentDimensions(w)
+	for i, child in ipairs(self.children) do
 		if child.children then
-			child.parentWidth = self.w - self.padding.left - self.padding.right
+			child.parentWidth = w - self.padding.left - self.padding.right - self.totalWidthOfNonContainers
 			child.parentHeight = self.h - self.padding.top - self.padding.bottom
+			if child.stretch then
+				if child.stretch.x > 0 and child.w < w then
+					child.w = (w / 100 * child.stretch.x) - self.totalWidthOfNonContainers
+				end
+			end
+			child:giveChildrenParentDimensions(child.w)
 		end
 	end
 end
@@ -151,32 +165,31 @@ function Container:setWidth()
 	self.totalChildWidth = w
 end
 
-function Container:setStretch()
-	local w = 0
-	for _, child in ipairs(self.children) do
-		if child.children then
-			child:setStretch()
-		end
-		w = w + child.w
-	end
+-- function Container:setStretch()
+-- 	local w = 0
+-- 	for _, child in ipairs(self.children) do
+-- 		if child.children then
+-- 			child:setStretch()
+-- 		end
+-- 		w = w + child.w
+-- 	end
 
-	if self.stretch then
-		if self.stretch.x > 0 then
-			if self.parentWidth > self.w then
-				self.w = self.parentWidth / 100 * self.stretch.x
-			end
-		end
-	end
-end
+-- 	if self.stretch then
+-- 		if self.stretch.x > 0 then
+-- 			if self.parentWidth > self.w then
+-- 				self.w = self.parentWidth / 100 * self.stretch.x
+-- 			end
+-- 		end
+-- 	end
+-- end
 
 function Container:load()
 	self.start_x = self.x
 	self.start_y = self.y
 
-	
 	self:setWidth()
-	self:giveChildrenParentDimensions()
-	self:setStretch()
+	self:giveChildrenParentDimensions(self.w)
+	-- self:setStretch()
 	self:positionChildren()
 end
 
