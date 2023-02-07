@@ -38,7 +38,7 @@ Horizontal.container = {}
 
 function Horizontal:default()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -58,7 +58,7 @@ end
 
 function Horizontal:paddingLeft()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -79,7 +79,7 @@ end
 
 function Horizontal:alignRight()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -100,7 +100,7 @@ end
 
 function Horizontal:alignRightPaddingRight()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -122,7 +122,7 @@ end
 
 function Horizontal:fixedWidthSpaceEvenely()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -143,7 +143,7 @@ end
 
 function Horizontal:fixedWidthSpaceEvenelyPaddingLeft()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -166,7 +166,7 @@ end
 
 function Horizontal:fixedWidthSpaceEvenelyPaddingLeftRight()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 	
 	self.container = c.new({
@@ -188,7 +188,7 @@ end
 
 function Horizontal:fixedWidthSpaceBetween()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -209,7 +209,7 @@ end
 
 function Horizontal:fixedWidthSpaceBetweenPaddingLeftAndRight()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -231,7 +231,7 @@ end
 
 function Horizontal:fixedWidthSpaceFixed()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -252,7 +252,7 @@ end
 
 function Horizontal:wrapWidthSpaceFixed()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -272,7 +272,7 @@ end
 
 function Horizontal:wrap()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -291,7 +291,7 @@ end
 
 function Horizontal:wrapPadding()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -311,7 +311,7 @@ end
 
 function Horizontal:wrapPaddingLeftRight()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -331,7 +331,7 @@ end
 
 function Horizontal:TwoContainersFixedWidth()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -356,7 +356,7 @@ end
 
 function Horizontal:TwoContainersFixedWidthPaddingLeft()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -382,7 +382,7 @@ end
 
 function Horizontal:TwoContainersFixedWidthPaddingRightAlignRight()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -409,7 +409,7 @@ end
 
 function Horizontal:TwoContainersWrap()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -433,7 +433,7 @@ end
 
 function Horizontal:TwoContainersWrapDoublePadding()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -458,7 +458,7 @@ end
 
 function Horizontal:TwoContainersSpaceEvenly()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -484,7 +484,7 @@ end
 
 function Horizontal:TwoContainersSpaceEvenlyPadding()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -511,7 +511,7 @@ end
 
 function Horizontal:TripleContainerStretch()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -549,7 +549,7 @@ end
 
 function Horizontal:ThreeContainersStretch()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 50, h = 100})
 
 	self.container = c.new({
 		w = 400,

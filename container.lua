@@ -36,7 +36,9 @@ function Container.new(settings)
 	instance.totalChildWidth = 0
 	instance.totalChildHeight = 0
 	instance.parentWidth = 0
+	instance.parentHeight = 0
 	instance.totalWidthOfNonContainers = 0
+	instance.totalHeightOfNonContainers = 0
 
 	Container.createID = Container.createID + 1
 	return instance
@@ -96,11 +98,7 @@ function Container:positionChildren()
 				child:setPosition(x, self.y + self.offset.top + self.padding.top)
 				x = x + child.w + self.spacing.fixed
 			else
-				if self.align.right then
-					child:setPosition(x, self.y)
-				else
-					child:setPosition(x, self.y)
-				end
+				child:setPosition(x, self.y)
 				x = x + child.w
 			end
 
@@ -114,77 +112,116 @@ end
 function Container:getChildrenTotalWidth()
 	local w = 0
 	for _, child in ipairs(self.children) do
-		if child.children then
-			child:setWidth()
-		else
-			self.totalWidthOfNonContainers = self.totalWidthOfNonContainers + child.w
+		if self.mainAlign.horizontal then
+			if child.children then
+				child:setWidth()
+			else
+				self.totalWidthOfNonContainers = self.totalWidthOfNonContainers + child.w
+			end
+			w = w + child:getWidth()
+		elseif self.mainAlign.vertical then
+			if child.children then
+				child:setWidth()
+			end
+			
+			if child.w > w then
+				w = child:getWidth()
+				self.totalWidthOfNonContainers = w
+			end
 		end
-		w = w + child:getWidth()
 	end
 	return w
 end
 
-function Container:blaat()
-	for i, child in ipairs(self.children) do
-
+function Container:getChildrenTotalHeight()
+	local h = 0
+	local childHeight = 0
+	for _, child in ipairs(self.children) do
+		if self.mainAlign.horizontal then
+			if child.children then
+				child:setHeight()
+			end
+			
+			if child.h > h then
+				h = child:getHeight()
+				self.totalHeightOfNonContainers = h
+			end
+		elseif self.mainAlign.vertical then
+			if child.h > childHeight then
+				h = child.h
+			end
+			if child.children then
+				child:setHeight()
+			else
+				self.totalHeightOfNonContainers = self.totalHeightOfNonContainers + child.h
+			end
+			h = h + child:getHeight()
+		end
 	end
+	return h
 end
 
-function Container:giveChildrenParentDimensions(w)
+function Container:giveChildrenParentDimensions(w, h)
 	for i, child in ipairs(self.children) do
 		if child.children then
 			child.parentWidth = w - self.padding.left - self.padding.right - self.totalWidthOfNonContainers
-			child.parentHeight = self.h - self.padding.top - self.padding.bottom
+			child.parentWidth = h - self.padding.top - self.padding.bottom - self.totalHeightOfNonContainers
+			
 			if child.stretch then
 				if child.stretch.x > 0 and child.w < w then
 					child.w = (w / 100 * child.stretch.x) - self.totalWidthOfNonContainers
+				elseif child.stretch.y > 0  and child.h < h then
+					child.h = (h / 100 * child.stretch.y) - self.totalHeightOfNonContainers
 				end
 			end
-			child:giveChildrenParentDimensions(child.w)
+			child:giveChildrenParentDimensions(child.w, child.h)
 		end
 	end
 end
 
 function Container:setWidth()
 	local w = self:getChildrenTotalWidth()
-	if self.spacing.fixed then
-		w = w + self.spacing.fixed * (#self.children -1)
-	elseif self.spacing.between then
-		if self.w < w then error("container <= to childs width in combination with spacing") end
+
+	if self.mainAlign.horizontal then
+		if self.spacing.fixed then
+			w = w + self.spacing.fixed * (#self.children -1)
+		elseif self.spacing.between then
+			if self.w < w then error("container <= to childs width in combination with spacing") end
+		end
 	end
 	
 	if self.w < w then
 		self.w = w + self.padding.left + self.padding.right
 	end
-	
+
 	self.totalChildWidth = w
 end
 
--- function Container:setStretch()
--- 	local w = 0
--- 	for _, child in ipairs(self.children) do
--- 		if child.children then
--- 			child:setStretch()
--- 		end
--- 		w = w + child.w
--- 	end
+function Container:setHeight()
+	local h = self:getChildrenTotalHeight()
 
--- 	if self.stretch then
--- 		if self.stretch.x > 0 then
--- 			if self.parentWidth > self.w then
--- 				self.w = self.parentWidth / 100 * self.stretch.x
--- 			end
--- 		end
--- 	end
--- end
+	if self.mainAlign.vertical then
+		if self.spacing.fixed then
+			h = h + self.spacing.fixed * (#self.children -1)
+		elseif self.spacing.between then
+			if self.h < h then error("container <= to childs width in combination with spacing") end
+		end
+	end
+	
+	if self.h < h then
+		self.h = h + self.padding.top + self.padding.bottom
+	end
+
+	self.totalChildHeight = h
+end
 
 function Container:load()
 	self.start_x = self.x
 	self.start_y = self.y
 
 	self:setWidth()
-	self:giveChildrenParentDimensions(self.w)
-	-- self:setStretch()
+	self:setHeight()
+	self:giveChildrenParentDimensions(self.w, self.h)
 	self:positionChildren()
 end
 

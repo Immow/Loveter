@@ -7,7 +7,7 @@ local Test = {}
 
 local selectedGroup = {vertical, horizontal}
 
-local selectedGroupIndex = 2
+local selectedGroupIndex = 1
 
 function Test:load()
 	selectedGroup[selectedGroupIndex]:load()

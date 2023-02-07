@@ -8,27 +8,7 @@ local selectedTest = 1
 local Vertical = {
 	tests = {
 		"default",
-		"wrap",
-		"alignRight",
-		"paddingLeft",
-		"alignRightPaddingRight",
-		"fixedWidthSpaceEvenely",
-		"fixedWidthSpaceEvenelyPaddingLeft",
-		"fixedWidthSpaceEvenelyPaddingLeftRight",
-		"fixedWidthSpaceFixed",
-		"wrapWidthSpaceFixed",
-		"fixedWidthSpaceBetween",
-		"fixedWidthSpaceBetweenPaddingLeftAndRight",
-		"wrapPadding",
-		"wrapPaddingLeftRight",
-		"TwoContainersFixedWidth",
-		"TwoContainersFixedWidthPaddingLeft",
-		"TwoContainersFixedWidthPaddingRightAlignRight",
-		"TwoContainersWrap",
-		"TwoContainersWrapDoublePadding",
-		"TwoContainersSpaceEvenly",
-		"TwoContainersSpaceEvenlyPadding",
-		"ThreeContainersStretch",
+		"twoContainers",
 	}
 }
 
@@ -37,18 +17,43 @@ Vertical.container = {}
 
 function Vertical:default()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 150, h = 50})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
-		w = 400,
+		h = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
+		mainAlign = {vertical = true},
 		children = {
 			self.boxes.b1,
 			self.boxes.b2,
 			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:twoContainers()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 150, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			self.boxes.b1,
+			c.new({
+				mainAlign = {vertical = true},
+				children = {
+					self.boxes.b2,
+					self.boxes.b3
+				}
+			})
 		}
 	})
 
@@ -97,6 +102,8 @@ end
 function Vertical:draw()
 	self.container:draw()
 	love.graphics.print("Vertical", WINDOW_WIDTH - (FONT:getWidth("Vertical") + 10))
+	love.graphics.print(self.tests[selectedTest], WINDOW_WIDTH - (FONT:getWidth(self.tests[selectedTest]) + 10), FONT:getHeight() + 2)
+
 end
 
 return Vertical
