@@ -67,17 +67,17 @@ function Container:positionChildren()
 			if self.spacing.evenly then
 				local spacing  = (self.h - self.padding.top - self.padding.bottom - self.totalChildHeight) / (#self.children + 1)
 				y = y + spacing
-				child:setPosition(self.x, y)
+				child:setPosition(self.x + self.padding.left, y)
 				y = y + child.h
 			elseif self.spacing.between then
 				local spacing = (self.h - (self.totalChildHeight + self.padding.top + self.padding.bottom)) / (#self.children -1)
-				child:setPosition(self.x, y)
+				child:setPosition(self.x + self.padding.left, y)
 				y = y + child.h + spacing
 			elseif self.spacing.fixed then
-				child:setPosition(self.x, y)
+				child:setPosition(self.x + self.padding.left, y)
 				y = y + child.h + self.spacing.fixed
 			else
-				child:setPosition(self.x, y)
+				child:setPosition(self.x + self.padding.left, y)
 				y = y + child.h
 			end
 
@@ -105,17 +105,17 @@ function Container:positionChildren()
 			if self.spacing.evenly then
 				local spacing  = (self.w - self.padding.left - self.padding.right - self.totalChildWidth) / (#self.children + 1)
 				x = x + spacing
-				child:setPosition(x, self.y)
+				child:setPosition(x, self.y + self.padding.top)
 				x = x + child.w
 			elseif self.spacing.between then
 				local spacing = (self.w - (self.totalChildWidth + self.padding.left + self.padding.right)) / (#self.children -1)
-				child:setPosition(x, self.y)
+				child:setPosition(x, self.y + self.padding.top)
 				x = x + child.w + spacing
 			elseif self.spacing.fixed then
 				child:setPosition(x, self.y)
 				x = x + child.w + self.spacing.fixed
 			else
-				child:setPosition(x, self.y)
+				child:setPosition(x, self.y + self.padding.top)
 				x = x + child.w
 			end
 
