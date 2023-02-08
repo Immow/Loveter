@@ -68,6 +68,16 @@ function Meta.setAlign(settings)
 	end
 end
 
+function Meta.setStretch(settings)
+	if not settings.stretch then
+		return {x = 0, y = 0}
+	else
+		local x = settings.stretch.x or 0
+		local y = settings.stretch.y or 0
+		return {x = x, y = y}
+	end
+end
+
 function Meta:debug()
 	if DEBUG then
 		love.graphics.setColor(1,0,0)

@@ -3,21 +3,42 @@ local b = require("box")
 
 local selectedTest = 1
 
--- TODO add multiple stretch container test
-
 local Vertical = {
 	tests = {
 		"default",
-		"twoContainers",
+		"wrap",
+		"alignBottom",
+		"paddingTop",
+		"alignBottomPaddingBottom",
+		"fixedHeighthSpaceEvenely",
+		"fixedHeighthSpaceEvenelyPaddingTop",
+		"fixedHeighthSpaceEvenelyPaddingTopBottom",
+		"fixedHeighthSpaceFixed",
+		"wrapSpaceFixed",
+		"fixedHeighthSpaceBetween",
+		"fixedHeighthSpaceBetweenPaddingTopBottom",
+		"wrapPadding",
+		"wrapPaddingTopBottom",
+		"TwoContainersFixedHeight",
+		"TwoContainersFixedHeightPaddingTop",
+		"TwoContainersFixedHeightPaddingBottomAlignBottom",
+		"TwoContainersWrap",
+		"TwoContainersWrapDoublePadding",
+		"TwoContainersSpaceEvenly",
+		"TwoContainersSpaceEvenlyPadding",
+		"TripleContainerStretch",
+		"ThreeContainersStretch",
+		"ThreeContainersStretchOnlyContainers",
 	}
 }
 
 Vertical.boxes = {}
 Vertical.container = {}
 
+
 function Vertical:default()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 150, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -35,9 +56,282 @@ function Vertical:default()
 	self.container:load()
 end
 
-function Vertical:twoContainers()
+function Vertical:wrap()
 	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 150, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:paddingTop()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		padding = {top = 50},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:alignBottom()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		align = {bottom = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:alignBottomPaddingBottom()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		align = {bottom = true},
+		padding = {bottom = 50},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:fixedHeighthSpaceEvenely()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		spacing = {evenly = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:fixedHeighthSpaceEvenelyPaddingTop()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		padding = {top = 50},
+		mainAlign = {vertical = true},
+		spacing = {evenly = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+
+	self.container:load()
+end
+
+
+function Vertical:fixedHeighthSpaceEvenelyPaddingTopBottom()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+	
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		padding = {top = 50, bottom = 50},
+		mainAlign = {vertical = true},
+		spacing = {evenly = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+	
+	self.container:load()
+end
+
+function Vertical:fixedHeighthSpaceBetween()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		spacing = {between = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:fixedHeighthSpaceBetweenPaddingTopBottom()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		padding = {top = 50, bottom = 50},
+		mainAlign = {vertical = true},
+		spacing = {between = true},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:fixedHeighthSpaceFixed()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		spacing = {fixed = 25},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:wrapSpaceFixed()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		spacing = {fixed = 25},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3,
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:wrapPadding()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		padding = {top = 50},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:wrapPaddingTopBottom()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		padding = {top = 50, bottom = 50},
+		children = {
+			self.boxes.b1,
+			self.boxes.b2,
+			self.boxes.b3
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersFixedHeight()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
 	self.boxes.b3 = b.new({w = 50, h = 50})
 
 	self.container = c.new({
@@ -46,14 +340,261 @@ function Vertical:twoContainers()
 		y = 200,
 		mainAlign = {vertical = true},
 		children = {
-			self.boxes.b1,
 			c.new({
 				mainAlign = {vertical = true},
 				children = {
+					self.boxes.b1,
+					self.boxes.b2,
+					self.boxes.b3,
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersFixedHeightPaddingTop()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		padding = {top = 50},
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				mainAlign = {vertical = true},
+				children = {
+					self.boxes.b1,
 					self.boxes.b2,
 					self.boxes.b3
 				}
-			})
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersFixedHeightPaddingBottomAlignBottom()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		padding = {bottom = 50},
+		align = {bottom = true},
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				mainAlign = {vertical = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2,
+					self.boxes.b3
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersWrap()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				mainAlign = {vertical = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2,
+					self.boxes.b3,
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersWrapDoublePadding()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		padding = {top = 50, bottom = 50},
+		children = {
+			c.new({
+				mainAlign = {vertical = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2,
+					self.boxes.b3
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersSpaceEvenly()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				h = 400,
+				mainAlign = {vertical = true},
+				spacing = {evenly = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2,
+					self.boxes.b3
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TwoContainersSpaceEvenlyPadding()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		padding = {top = 50, bottom = 50},
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				h = 400,
+				mainAlign = {vertical = true},
+				spacing = {evenly = true},
+				children = {
+					self.boxes.b1,
+					self.boxes.b2,
+					self.boxes.b3
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:TripleContainerStretch()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				mainAlign = {vertical = true},
+				stretch = {y = 33.3},
+				children = {
+					self.boxes.b1
+				}
+			}),
+			c.new({
+				mainAlign = {vertical = true},
+				stretch = {y = 33.3},
+				children = {
+					self.boxes.b2
+				}
+			}),
+			c.new({
+				mainAlign = {vertical = true},
+				stretch = {y = 33.3},
+				children = {
+					self.boxes.b3
+				}
+			}),
+		},
+	})
+
+	self.container:load()
+end
+
+function Vertical:ThreeContainersStretch()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				stretch = {y = 50},
+				mainAlign = {vertical = true},
+				children = {
+					self.boxes.b2,
+					c.new({
+						stretch = {y = 100},
+						mainAlign = {vertical = true},
+						children = {
+							self.boxes.b1,
+						}
+					}),
+				}
+			}),
+		}
+	})
+
+	self.container:load()
+end
+
+function Vertical:ThreeContainersStretchOnlyContainers()
+	self.container = c.new({
+		h = 400,
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				stretch = {y = 50},
+				mainAlign = {vertical = true},
+				children = {
+					c.new({
+						stretch = {y = 50},
+						mainAlign = {vertical = true},
+						children = {}
+					}),
+				}
+			}),
 		}
 	})
 

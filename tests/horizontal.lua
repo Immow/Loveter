@@ -14,7 +14,7 @@ local Horizontal = {
 		"fixedWidthSpaceEvenelyPaddingLeft",
 		"fixedWidthSpaceEvenelyPaddingLeftRight",
 		"fixedWidthSpaceFixed",
-		"wrapWidthSpaceFixed",
+		"wrapSpaceFixed",
 		"fixedWidthSpaceBetween",
 		"fixedWidthSpaceBetweenPaddingLeftAndRight",
 		"wrapPadding",
@@ -250,7 +250,7 @@ function Horizontal:fixedWidthSpaceFixed()
 	self.container:load()
 end
 
-function Horizontal:wrapWidthSpaceFixed()
+function Horizontal:wrapSpaceFixed()
 	self.boxes.b1 = b.new({w = 50, h = 50})
 	self.boxes.b2 = b.new({w = 50, h = 100})
 	self.boxes.b3 = b.new({w = 50, h = 50})
@@ -578,8 +578,6 @@ function Horizontal:ThreeContainersStretch()
 end
 
 function Horizontal:ThreeContainersStretchOnlyContainers()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		w = 400,
 		x = 10,

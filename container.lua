@@ -22,12 +22,12 @@ function Container.new(settings)
 	instance.x         = settings.x or 0
 	instance.y         = settings.y or 0
 	instance.w         = settings.w or 0
-	instance.h         = settings.h or 50
+	instance.h         = settings.h or 0
 	instance.id        = Container.createID
 	instance.children  = settings.children
 	instance.padding   = Container.setPadding(settings)
 	instance.offset    = Container.setOffset(settings)
-	instance.stretch   = settings.stretch
+	instance.stretch   = Container.setStretch(settings)
 	instance.start_x   = 0
 	instance.start_y   = 0
 	instance.mainAlign = settings.mainAlign
@@ -48,19 +48,36 @@ end
 
 function Container:positionChildren()
 	if self.mainAlign.vertical then
-		local y = self.y + self.offset.top + self.padding.top
+		local y = 0
+		if self.align.bottom then
+			y = self.y + (self.h - self.totalChildHeight - self.padding.bottom)
+		elseif self.align.top then
+			y = self.y + self.padding.top
+		end
+
+		if self.spacing.evenly then
+			y = self.y + self.padding.top
+		elseif self.spacing.between then
+			y = self.y + self.padding.top
+		elseif self.spacing.fixed then
+			y = self.y + (self.h - self.totalChildHeight) / 2
+		end
+
 		for i, child in ipairs(self.children) do
 			if self.spacing.evenly then
-				local spacing = (self.h - self:getChildrenTotalHeight()) / (#self.children + 1)
+				local spacing  = (self.h - self.padding.top - self.padding.bottom - self.totalChildHeight) / (#self.children + 1)
 				y = y + spacing
-				child:setPosition(self.x + self.offset.left + self.padding.left, y)
+				child:setPosition(self.x, y)
 				y = y + child.h
 			elseif self.spacing.between then
-				local spacing = (self.h - self:getChildrenTotalHeight()) / (#self.children - 1) + self.spacing.between
-				child:setPosition(self.x + self.offset.left + self.padding.left, y)
+				local spacing = (self.h - (self.totalChildHeight + self.padding.top + self.padding.bottom)) / (#self.children -1)
+				child:setPosition(self.x, y)
 				y = y + child.h + spacing
+			elseif self.spacing.fixed then
+				child:setPosition(self.x, y)
+				y = y + child.h + self.spacing.fixed
 			else
-				child:setPosition(self.x + self.offset.left + self.padding.left, y)
+				child:setPosition(self.x, y)
 				y = y + child.h
 			end
 
@@ -88,14 +105,14 @@ function Container:positionChildren()
 			if self.spacing.evenly then
 				local spacing  = (self.w - self.padding.left - self.padding.right - self.totalChildWidth) / (#self.children + 1)
 				x = x + spacing
-				child:setPosition(x, self.y + self.offset.top + self.padding.top)
+				child:setPosition(x, self.y)
 				x = x + child.w
 			elseif self.spacing.between then
 				local spacing = (self.w - (self.totalChildWidth + self.padding.left + self.padding.right)) / (#self.children -1)
-				child:setPosition(x, self.y + self.offset.top + self.padding.top)
+				child:setPosition(x, self.y)
 				x = x + child.w + spacing
 			elseif self.spacing.fixed then
-				child:setPosition(x, self.y + self.offset.top + self.padding.top)
+				child:setPosition(x, self.y)
 				x = x + child.w + self.spacing.fixed
 			else
 				child:setPosition(x, self.y)
@@ -135,7 +152,6 @@ end
 
 function Container:getChildrenTotalHeight()
 	local h = 0
-	local childHeight = 0
 	for _, child in ipairs(self.children) do
 		if self.mainAlign.horizontal then
 			if child.children then
@@ -146,10 +162,8 @@ function Container:getChildrenTotalHeight()
 				h = child:getHeight()
 				self.totalHeightOfNonContainers = h
 			end
+			
 		elseif self.mainAlign.vertical then
-			if child.h > childHeight then
-				h = child.h
-			end
 			if child.children then
 				child:setHeight()
 			else
@@ -165,7 +179,7 @@ function Container:giveChildrenParentDimensions(w, h)
 	for i, child in ipairs(self.children) do
 		if child.children then
 			child.parentWidth = w - self.padding.left - self.padding.right - self.totalWidthOfNonContainers
-			child.parentWidth = h - self.padding.top - self.padding.bottom - self.totalHeightOfNonContainers
+			child.parentHeight = h - self.padding.top - self.padding.bottom - self.totalHeightOfNonContainers
 			
 			if child.stretch then
 				if child.stretch.x > 0 and child.w < w then
@@ -227,7 +241,7 @@ end
 
 function Container:update(dt)
 	for _, child in ipairs(self.children) do
-		child:update()
+		child:update(dt)
 	end
 end
 
