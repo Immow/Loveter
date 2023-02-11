@@ -2,10 +2,11 @@ require("globals")
 local c = require("container")
 local horizontal = require("tests.horizontal")
 local vertical = require("tests.vertical")
+local mixed = require("tests.mixed")
 
 local Test = {}
 
-local selectedGroup = {vertical, horizontal}
+local selectedGroup = {vertical, horizontal, mixed}
 
 local selectedGroupIndex = 2
 

@@ -744,12 +744,10 @@ function Vertical:keypressed(key, scancode, isrepeat)
 			selectedTest = selectedTest + 1
 			c.createID = 0
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
 		else
 			c.createID = 0
 			selectedTest = 1
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
 		end
 	end
 
@@ -758,12 +756,10 @@ function Vertical:keypressed(key, scancode, isrepeat)
 			selectedTest = selectedTest - 1
 			c.createID = 0
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
 		else
 			c.createID = 0
 			selectedTest = #self.tests
 			self[self.tests[selectedTest]](self)
-			print(self.tests[selectedTest])
 		end
 	end
 end

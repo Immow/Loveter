@@ -37,8 +37,8 @@ function Container.new(settings)
 	instance.totalChildHeight = 0
 	instance.parentWidth = 0
 	instance.parentHeight = 0
-	instance.totalWidthOfNonContainers = 0
-	instance.totalHeightOfNonContainers = 0
+	instance.totalUnstretchedWidth = 0
+	instance.totalUnstretchedHeight = 0
 
 	Container.createID = Container.createID + 1
 	return instance
@@ -129,23 +129,21 @@ end
 function Container:getChildrenTotalWidth()
 	local w = 0
 	for _, child in ipairs(self.children) do
+		if child.children then
+			child:setWidth()
+		end
+
 		if self.mainAlign.horizontal then
-			if child.children then
-				child:setWidth()
-			else
-				self.totalWidthOfNonContainers = self.totalWidthOfNonContainers + child.w
-			end
 			w = w + child:getWidth()
-		elseif self.mainAlign.vertical then
-			if child.children then
-				child:setWidth()
+			if not child.children or child.stretch.x == 0 then
+				self.totalUnstretchedWidth = self.totalUnstretchedWidth + child.w
 			end
-			
+		elseif self.mainAlign.vertical then
 			if child.w > w then
 				w = child:getWidth()
-				self.totalWidthOfNonContainers = w
 			end
 		end
+
 	end
 	return w
 end
@@ -153,39 +151,34 @@ end
 function Container:getChildrenTotalHeight()
 	local h = 0
 	for _, child in ipairs(self.children) do
+		if child.children then
+			child:setHeight()
+		end
 		if self.mainAlign.horizontal then
-			if child.children then
-				child:setHeight()
-			end
-			
 			if child.h > h then
 				h = child:getHeight()
-				self.totalHeightOfNonContainers = h
 			end
-			
 		elseif self.mainAlign.vertical then
-			if child.children then
-				child:setHeight()
-			else
-				self.totalHeightOfNonContainers = self.totalHeightOfNonContainers + child.h
-			end
 			h = h + child:getHeight()
+			if not child.children or child.stretch.y == 0 then
+				self.totalUnstretchedHeight = self.totalUnstretchedHeight + child.h
+			end
 		end
+
 	end
+
 	return h
 end
 
 function Container:giveChildrenParentDimensions(w, h)
 	for i, child in ipairs(self.children) do
 		if child.children then
-			child.parentWidth = w - self.padding.left - self.padding.right - self.totalWidthOfNonContainers
-			child.parentHeight = h - self.padding.top - self.padding.bottom - self.totalHeightOfNonContainers
-			
 			if child.stretch then
 				if child.stretch.x > 0 and child.w < w then
-					child.w = (w / 100 * child.stretch.x) - self.totalWidthOfNonContainers
-				elseif child.stretch.y > 0  and child.h < h then
-					child.h = (h / 100 * child.stretch.y) - self.totalHeightOfNonContainers
+					child.w = (w - self.totalUnstretchedWidth) / 100 * child.stretch.x
+				end
+				if child.stretch.y > 0 and child.h < h then
+					child.h = (h - self.totalUnstretchedHeight) / 100 * child.stretch.y
 				end
 			end
 			child:giveChildrenParentDimensions(child.w, child.h)
@@ -222,7 +215,7 @@ function Container:setHeight()
 		end
 	end
 	
-	if self.h < h then
+	if self.h <= h then
 		self.h = h + self.padding.top + self.padding.bottom
 	end
 
@@ -232,6 +225,8 @@ end
 function Container:load()
 	self.start_x = self.x
 	self.start_y = self.y
+	self.parentHeight = self.h
+	self.parentWidth = self.w
 
 	self:setWidth()
 	self:setHeight()
