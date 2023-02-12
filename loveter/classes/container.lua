@@ -39,6 +39,7 @@ function Container.new(settings)
 	instance.parentHeight = 0
 	instance.totalUnstretchedWidth = 0
 	instance.totalUnstretchedHeight = 0
+	instance.background = settings.background or {0,0,0,0}
 
 	Container.createID = Container.createID + 1
 	return instance
@@ -223,6 +224,7 @@ function Container:setHeight()
 end
 
 function Container:load()
+	love.keyboard.setKeyRepeat(true)
 	self.start_x = self.x
 	self.start_y = self.y
 	self.parentHeight = self.h
@@ -234,14 +236,42 @@ function Container:load()
 	self:positionChildren()
 end
 
+function Container:mousepressed(x, y, button, istouch, presses)
+	for _, child in pairs(self.children) do
+		child:mousepressed(x, y, button, istouch, presses)
+	end
+end
+
+function Container:mousereleased(x, y, button, istouch, presses)
+	for _, child in pairs(self.children) do
+		child:mousereleased(x, y, button, istouch, presses)
+	end
+end
+
+function Container:keypressed(key, scancode, isrepeat)
+	for _, child in pairs(self.children) do
+		child:keypressed(key, scancode, isrepeat)
+	end
+end
+
+function Container:textinput(t)
+	for _, child in pairs(self.children) do
+		child:textinput(t)
+	end
+end
+
+
 function Container:update(dt)
-	for _, child in ipairs(self.children) do
+	for _, child in pairs(self.children) do
 		child:update(dt)
 	end
 end
 
 function Container:draw()
-	for _, child in ipairs(self.children) do
+	love.graphics.setColor(self.background)
+	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+	-- love.graphics.setColor(1,1,1)
+	for _, child in pairs(self.children) do
 		child:draw()
 	end
 	

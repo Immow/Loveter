@@ -1,17 +1,24 @@
 local c = require("loveter.classes.container")
 local b = require("loveter.classes.box")
+local newButton = require("loveter.classes.button")
+local newForm = require("loveter.classes.form")
+local newText = require("loveter.classes.text")
 
 local selectedTest = 1
 
 local Mixed = {
 	tests = {
 		"default",
-		"test",
+		-- "test",
+		"login",
 	}
 }
 
 Mixed.boxes = {}
 Mixed.container = {}
+Mixed.buttons = {}
+Mixed.forms = {}
+Mixed.texts = {}
 
 
 function Mixed:default()
@@ -92,11 +99,59 @@ function Mixed:test()
 	self.container:load()
 end
 
+local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 50)
+local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
+
+function Mixed:login()
+	self.buttons.b1 = newButton.new({
+									w = 300,
+									h = 50,
+									text = "SIGN IN",
+									func = function() return print("test") end,
+									buttonBackgroundColor = {0.6, 0.1, 0.1},
+									font = buttonFont,
+									clickEffect = true
+								})
+	self.forms.f1 = newForm.new({w = 300, h = 50, previewText = "username"})
+	self.forms.f2 = newForm.new({w = 300, h = 50, previewText = "password"})
+	self.texts.t1 = newText.new({text = "SIGN IN", font = textFont})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		padding = {top = 20, bottom = 20 , left = 20, right = 20},
+		spacing = {fixed = 10},
+		background = {0.1, 0.1, 0.1},
+		children = {
+			self.texts.t1,
+			self.forms.f1,
+			self.forms.f2,
+			self.buttons.b1,
+			c.new({
+				mainAlign = {horizontal = true},
+				spacing = {fixed = 10},
+				children = {
+					newButton.new({text = "Forgot password?", func = function() return print("Forgot password?") end,}),
+					newButton.new({
+						text = "Create an account", 
+						func = function() return print("Create an account") end,
+						fontColor = {0.6, 0.1, 0.1},
+					})
+				}
+			})
+		}
+	})
+
+	self.container:load()
+end
+
 function Mixed:load()
 	self:default()
 end
 
 function Mixed:keypressed(key, scancode, isrepeat)
+	self.container:keypressed(key, scancode, isrepeat)
 	if key == "down" then
 		if selectedTest < #self.tests then
 			selectedTest = selectedTest + 1
@@ -120,6 +175,18 @@ function Mixed:keypressed(key, scancode, isrepeat)
 			self[self.tests[selectedTest]](self)
 		end
 	end
+end
+
+function Mixed:textinput(t)
+	self.container:textinput(t)
+end
+
+function Mixed:mousepressed(x, y, b, istouch, presses)
+	self.container:mousepressed(x, y, b, istouch, presses)
+end
+
+function Mixed:mousereleased(x, y, b, istouch, presses)
+	self.container:mousereleased(x, y, b, istouch, presses)
 end
 
 function Mixed:update(dt)

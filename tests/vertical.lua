@@ -764,6 +764,10 @@ function Vertical:keypressed(key, scancode, isrepeat)
 	end
 end
 
+function Vertical:textinput(t)
+
+end
+
 function Vertical:update(dt)
 	self.container:update(dt)
 end

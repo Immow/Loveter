@@ -11,42 +11,34 @@ setmetatable(Button, Button_meta)
 setmetatable(Button_meta, Meta)
 
 ---@class Button
----@param settings {x: integer, y: integer, w: integer, h: integer, func: function, argument: string, font: userdata, fontSize: integer, text: string, id: string, position: string, target_id: string, offset: {top: integer, bottom: integer, left: integer, right: integer}, buttonColor: table, buttonBorderColor: table, buttonFillet: integer, fontColor: table}
+---@param settings {x: integer, y: integer, w: integer, h: integer, func: function, argument: string, font: love.Font, text: string, id: string, position: string, buttonBackgroundColor: table, buttonBorderColor: table, buttonFillet: integer, fontColor: table, clickEffect: boolean}
 function Button.new(settings)
 	local instance = setmetatable({}, Button)
-	instance.x            = settings.x or 0
-	instance.y            = settings.y or 0
-	instance.w            = settings.w or 200
-	instance.h            = settings.h or 80
-	instance.position     = settings.position
-	instance.id           = settings.id
-	instance.target_id    = settings.target_id
-	instance.font         = settings.font or love.graphics.getFont()
-	instance.func         = settings.func
-	instance.argument     = settings.argument
-	instance.circleX      = 0
-	instance.circleY      = 0
-	instance.circleRadius = 0
-	instance.offset       = Button.getOffset(settings)
-	instance.run          = false
-	instance.speed        = 500
-	instance.offsetCircle = 10
-	instance.buttonFillet = settings or 5
-	instance.fontSize     = settings.fontSize or 12
-	instance.fontColor    = settings or {0,0,0}
-	instance.text         = settings.text or ""
-	instance.buttonColor = settings or {1,1,1}
-	instance.buttonBorderColor = settings or {1,0,0}
+	instance.font                  = settings.font or love.graphics.getFont()
+	instance.x                     = settings.x or 0
+	instance.y                     = settings.y or 0
+	instance.w                     = settings.w or instance.font:getWidth(settings.text)
+	instance.h                     = settings.h or instance.font:getHeight()
+	instance.position              = settings.position
+	instance.id                    = settings.id
+	instance.func                  = settings.func
+	instance.argument              = settings.argument
+	instance.circleX               = 0
+	instance.circleY               = 0
+	instance.circleRadius          = 0
+	instance.run                   = false
+	instance.speed                 = 1000
+	instance.offsetCircle          = 10
+	instance.buttonFillet          = settings.buttonFillet or 0
+	instance.fontColor             = settings.fontColor or {1,1,1}
+	instance.text                  = settings.text or ""
+	instance.buttonBackgroundColor = settings.buttonBackgroundColor or {0,0,0,0}
+	instance.buttonBorderColor     = settings.buttonBorderColor or {0,0,0,0}
+	instance.start_x               = 0
+	instance.start_y               = 0
+	instance.clickEffect           = settings.clickEffect or false
 
 	return instance
-end
-
-function Button:getWidth()
-	return self.w
-end
-
-function Button:getHeight()
-	return self.h
 end
 
 function Button:containsPoint(x, y)
@@ -60,7 +52,8 @@ function Button:runFunction()
 end
 
 function Button:load()
-
+	self.start_x = self.x
+	self.start_y = self.y
 end
 
 function Button:mousepressed(x,y,button,istouch,presses)
@@ -81,11 +74,11 @@ function Button:mousereleased(x,y,button,istouch,presses)
 end
 
 function Button:update(dt)
-	if self.run and self.circleRadius < self.w + self.offsetCircle then
+	if self.clickEffect and self.run and self.circleRadius < self.w + self.offsetCircle then
 		self.circleRadius = self.circleRadius + self.speed * dt
 	end
 
-	if self.circleRadius >= self.w + self.offsetCircle then
+	if self.clickEffect and self.run and self.circleRadius >= self.w + self.offsetCircle then
 		self.run = false
 		self.circleRadius = 0
 	end
@@ -101,20 +94,19 @@ end
 
 function Button:draw()
 	local rec = function() love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.buttonFillet, self.buttonFillet) end
+	love.graphics.setColor(self.buttonBackgroundColor)
 	rec()
-	love.graphics.setColor(self.buttonColor)
-	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.buttonFillet, self.buttonFillet)
 	if self.run then
 		love.graphics.stencil(rec, "replace", 1)
 		love.graphics.setStencilTest("greater", 0)
-		love.graphics.setColor(1,1,1)
+		love.graphics.setColor(1,1,1,1)
 		love.graphics.circle("fill", self.circleX, self.circleY, self.circleRadius)
 		love.graphics.setStencilTest()
 	end
 	love.graphics.setColor(self.fontColor)
 	love.graphics.setFont(self.font)
 	love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
-	love.graphics.reset()
+	love.graphics.setColor(1,1,1,1)
 end
 
 return Button

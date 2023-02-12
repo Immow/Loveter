@@ -8,7 +8,7 @@ local Test = {}
 
 local selectedGroup = {vertical, horizontal, mixed}
 
-local selectedGroupIndex = 2
+local selectedGroupIndex = 3
 
 function Test:load()
 	selectedGroup[selectedGroupIndex]:load()
@@ -40,6 +40,18 @@ function Test:keypressed(key, scancode, isrepeat)
 			selectedGroup[selectedGroupIndex]:load()
 		end
 	end
+end
+
+function Test:textinput(t)
+	selectedGroup[selectedGroupIndex]:textinput(t)
+end
+
+function Test:mousepressed(x, y, button, istouch, presses)
+	selectedGroup[selectedGroupIndex]:mousepressed(x, y, button, istouch, presses)
+end
+
+function Test:mousereleased(x, y, button, istouch, presses)
+	selectedGroup[selectedGroupIndex]:mousereleased(x, y, button, istouch, presses)
 end
 
 function Test:update(dt)

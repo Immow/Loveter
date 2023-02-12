@@ -768,6 +768,10 @@ function Horizontal:keypressed(key, scancode, isrepeat)
 	end
 end
 
+function Horizontal:textinput(t)
+
+end
+
 function Horizontal:update(dt)
 	self.container:update(dt)
 end
