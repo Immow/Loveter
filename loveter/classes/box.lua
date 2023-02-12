@@ -1,4 +1,4 @@
-local Meta = require("meta")
+local Meta = require("loveter.classes.meta")
 
 local Box = {}
 local Box_meta = {}

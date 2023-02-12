@@ -1,5 +1,5 @@
-local c = require("container")
-local b = require("box")
+local c = require("loveter.classes.container")
+local b = require("loveter.classes.box")
 
 local selectedTest = 1
 
@@ -21,6 +21,7 @@ function Mixed:default()
 	self.boxes.b4 = b.new({w = 50, h = 50})
 	self.boxes.b5 = b.new({w = 50, h = 50})
 	self.boxes.b6 = b.new({w = 50, h = 50})
+	self.boxes.b7 = b.new({w = 75, h = 75})
 
 	self.container = c.new({
 		h = 600,
@@ -40,18 +41,25 @@ function Mixed:default()
 				}
 			}),
 			c.new({
-				mainAlign = {horizontal = true},
+				mainAlign = {vertical = true},
 				-- stretch = {x = 100},
 				stretch = {x = 50, y = 100},
 				children = {
-					self.boxes.b3,
-					self.boxes.b4
+					c.new({
+						mainAlign = {horizontal = true},
+						stretch = {y = 100, x = 100},
+						children = {
+							self.boxes.b3,
+							self.boxes.b7
+						}
+					}),
+					self.boxes.b4,
 				}
 			}),
 			c.new({
 				mainAlign = {horizontal = true},
 				-- stretch = {x = 100},
-				-- stretch = {y = 100},
+				stretch = {y = 100},
 				children = {
 					self.boxes.b5,
 					self.boxes.b6,

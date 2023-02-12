@@ -1,5 +1,5 @@
 require("globals")
-local c = require("container")
+local c = require("loveter.classes.container")
 local horizontal = require("tests.horizontal")
 local vertical = require("tests.vertical")
 local mixed = require("tests.mixed")

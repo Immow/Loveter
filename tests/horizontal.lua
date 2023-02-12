@@ -1,5 +1,5 @@
-local c = require("container")
-local b = require("box")
+local c = require("loveter.classes.container")
+local b = require("loveter.classes.box")
 
 local selectedTest = 1
 
