@@ -12,9 +12,16 @@ setmetatable(Form, Form_meta)
 setmetatable(Form_meta, Meta)
 
 ---@class Form
----@param settings {x: integer, y: integer, w: integer, h: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formColor: table, formBorderColor: table, fontColor: table}
+---@param settings {x: integer, y: integer, w: integer, h: integer, icon: string, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formColor: table, formBorderColor: table, fontColor: table}
 function Form.new(settings)
 	local instance = setmetatable({}, Form)
+
+	if settings.icon then
+		instance.icon = love.graphics.newImage(settings.icon)
+	else
+		instance.icon = nil
+	end
+
 	instance.x                 = settings.x or 0
 	instance.y                 = settings.y or 0
 	instance.w                 = settings.w or 200
@@ -35,6 +42,8 @@ function Form.new(settings)
 	instance.cursorbyteoffset  = utf8.offset(instance.text, 1)
 	instance.cursorTimer       = 0
 	instance.cursorBlinkSpeed  = 1.5
+	instance.iconColor         = settings.iconColor or {1,1,1,1}
+	instance.iconScale         = settings.iconScale or 1
 
 	return instance
 end
@@ -112,15 +121,35 @@ function Form:drawPreviewText()
 	end
 end
 
-function Form:draw()
-	love.graphics.setFont(self.font)
+function Form:drawBackground()
 	love.graphics.setColor(self.formColor)
 	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-	
-	self:drawPreviewText()
+end
+
+
+function Form:drawText()
 	love.graphics.setColor(self.fontColor)
 	love.graphics.print(self.text, self.x + 10, self.y + self:centerTextY())
+end
 
+function Form:drawIcon()
+	love.graphics.setColor(self.iconColor)
+	if self.icon then
+		local iconW = self.icon:getWidth() * self.iconScale
+		local iconH = self.icon:getHeight() * self.iconScale
+		local x = self.x + self.w - iconW
+		local y = self.y + self.h / 2 - iconH / 2
+
+		love.graphics.draw(self.icon, x, y, 0, self.iconScale, self.iconScale)
+	end
+end
+
+function Form:draw()
+	love.graphics.setFont(self.font)
+	self:drawBackground()
+	self:drawIcon()
+	self:drawPreviewText()
+	self:drawText()
 	self:drawCursor()
 end
 

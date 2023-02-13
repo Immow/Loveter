@@ -112,7 +112,7 @@ function Mixed:login()
 									font = buttonFont,
 									clickEffect = true
 								})
-	self.forms.f1 = newForm.new({w = 300, h = 50, previewText = "username"})
+	self.forms.f1 = newForm.new({w = 300, h = 50, previewText = "username", icon = "loveter/assets/icon/user.png", iconColor = {0.5,0.5,0.5}, iconScale = 0.75})
 	self.forms.f2 = newForm.new({w = 300, h = 50, previewText = "password"})
 	self.texts.t1 = newText.new({text = "SIGN IN", font = textFont})
 
