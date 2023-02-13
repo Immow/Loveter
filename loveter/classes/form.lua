@@ -12,7 +12,7 @@ setmetatable(Form, Form_meta)
 setmetatable(Form_meta, Meta)
 
 ---@class Form
----@param settings {x: integer, y: integer, w: integer, h: integer, icon: string, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formColor: table, formBorderColor: table, fontColor: table}
+---@param settings {x: integer, y: integer, w: integer, h: integer, offset: integer, icon: string, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formColor: table, formBorderColor: table, fontColor: table}
 function Form.new(settings)
 	local instance = setmetatable({}, Form)
 
@@ -44,6 +44,7 @@ function Form.new(settings)
 	instance.cursorBlinkSpeed  = 1.5
 	instance.iconColor         = settings.iconColor or {1,1,1,1}
 	instance.iconScale         = settings.iconScale or 1
+	instance.offset            = settings.offset or 10
 
 	return instance
 end
@@ -69,9 +70,6 @@ function Form:mousepressed(x,y,button,istouch,presses)
 end
 
 function Form:mousereleased(x,y,button,istouch,presses)
-	if self:containsPoint(x, y) then
-
-	end
 end
 
 function Form:keypressed(key, scancode, isrepeat)
@@ -80,7 +78,6 @@ function Form:keypressed(key, scancode, isrepeat)
 			if string.len(self.text) >= 1 then
 				self.byteoffset = utf8.offset(self.text, -1)
 				self.text = string.sub(self.text, 1, self.byteoffset - 1)
-				-- self.byteoffset = utf8.offset(self.text, 0)
 			end
 		end
 	end
@@ -88,7 +85,9 @@ end
 
 function Form:textinput(t)
 	if self.clickedInForm then
-		self.text = self.text .. t
+		if self.font:getWidth(self.text) + self.offset + self.offset < self.w then
+			self.text = self.text .. t
+		end
 	end
 end
 
@@ -110,14 +109,16 @@ end
 
 function Form:drawCursor()
 	if dir == 1 and self.clickedInForm then
-		love.graphics.print("|", self.x + 10 + self.font:getWidth(self.text), self.y + self:centerTextY())
+		local x = self.x + self.offset + self.font:getWidth(self.text)
+		local y = self.y + self:centerTextY()
+		love.graphics.print("|", x, y)
 	end
 end
 
 function Form:drawPreviewText()
 	if not self.clickedInForm then
 		love.graphics.setColor(self.fontPreviewColor)
-		love.graphics.print(self.previewText, self.x + 10, self.y + self:centerTextY())
+		love.graphics.print(self.previewText, self.x + self.offset, self.y + self:centerTextY())
 	end
 end
 
@@ -129,7 +130,7 @@ end
 
 function Form:drawText()
 	love.graphics.setColor(self.fontColor)
-	love.graphics.print(self.text, self.x + 10, self.y + self:centerTextY())
+	love.graphics.print(self.text, self.x + self.offset, self.y + self:centerTextY())
 end
 
 function Form:drawIcon()
@@ -137,7 +138,7 @@ function Form:drawIcon()
 	if self.icon then
 		local iconW = self.icon:getWidth() * self.iconScale
 		local iconH = self.icon:getHeight() * self.iconScale
-		local x = self.x + self.w - iconW
+		local x = self.x + self.w - iconW - self.offset
 		local y = self.y + self.h / 2 - iconH / 2
 
 		love.graphics.draw(self.icon, x, y, 0, self.iconScale, self.iconScale)

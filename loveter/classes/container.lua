@@ -113,7 +113,7 @@ function Container:positionChildren()
 				child:setPosition(x, self.y + self.padding.top)
 				x = x + child.w + spacing
 			elseif self.spacing.fixed then
-				child:setPosition(x, self.y)
+				child:setPosition(x, self.y + self.padding.top)
 				x = x + child.w + self.spacing.fixed
 			else
 				child:setPosition(x, self.y + self.padding.top)
