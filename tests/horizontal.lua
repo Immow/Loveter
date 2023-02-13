@@ -51,7 +51,7 @@ function Horizontal:default()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
+		
 		children = {
 			self.boxes.b1,
 			self.boxes.b2,
@@ -71,7 +71,7 @@ function Horizontal:paddingLeft()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
+		
 		padding = {left = 50},
 		children = {
 			self.boxes.b1,
@@ -92,7 +92,6 @@ function Horizontal:alignRight()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		align = {right = true},
 		children = {
 			self.boxes.b1,
@@ -113,7 +112,6 @@ function Horizontal:alignRightPaddingRight()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		align = {right = true},
 		padding = {right = 50},
 		children = {
@@ -135,7 +133,6 @@ function Horizontal:fixedWidthSpaceEvenely()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		spacing = {evenly = true},
 		children = {
 			self.boxes.b1,
@@ -157,7 +154,6 @@ function Horizontal:fixedWidthSpaceEvenelyPaddingLeft()
 		x = 10,
 		y = 200,
 		padding = {left = 50},
-		mainAlign = {horizontal = true},
 		spacing = {evenly = true},
 		children = {
 			self.boxes.b1,
@@ -180,7 +176,6 @@ function Horizontal:fixedWidthSpaceEvenelyPaddingLeftRight()
 		x = 10,
 		y = 200,
 		padding = {left = 50, right = 50},
-		mainAlign = {horizontal = true},
 		spacing = {evenly = true},
 		children = {
 			self.boxes.b1,
@@ -201,7 +196,6 @@ function Horizontal:fixedWidthSpaceBetween()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		spacing = {between = true},
 		children = {
 			self.boxes.b1,
@@ -223,7 +217,6 @@ function Horizontal:fixedWidthSpaceBetweenPaddingLeftAndRight()
 		x = 10,
 		y = 200,
 		padding = {left = 50, right = 50},
-		mainAlign = {horizontal = true},
 		spacing = {between = true},
 		children = {
 			self.boxes.b1,
@@ -244,7 +237,6 @@ function Horizontal:fixedWidthSpaceFixed()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		spacing = {fixed = 25},
 		children = {
 			self.boxes.b1,
@@ -264,7 +256,6 @@ function Horizontal:wrapSpaceFixed()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		spacing = {fixed = 25},
 		children = {
 			self.boxes.b1,
@@ -284,7 +275,6 @@ function Horizontal:wrap()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			self.boxes.b1,
 			self.boxes.b2,
@@ -303,7 +293,6 @@ function Horizontal:wrapPaddingLeft()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {left = 50},
 		children = {
 			self.boxes.b1,
@@ -323,7 +312,6 @@ function Horizontal:wrapPaddingLeftRight()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {left = 50, right = 50},
 		children = {
 			self.boxes.b1,
@@ -344,10 +332,8 @@ function Horizontal:TwoContainersFixedWidth()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b1,
 					self.boxes.b2,
@@ -370,10 +356,8 @@ function Horizontal:TwoContainersFixedWidthPaddingLeft()
 		x = 10,
 		y = 200,
 		padding = {left = 50},
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b1,
 					self.boxes.b2,
@@ -397,10 +381,8 @@ function Horizontal:TwoContainersFixedWidthPaddingRightAlignRight()
 		y = 200,
 		padding = {right = 50},
 		align = {right = true},
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b1,
 					self.boxes.b2,
@@ -421,10 +403,8 @@ function Horizontal:TwoContainersWrap()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b1,
 					self.boxes.b2,
@@ -445,11 +425,9 @@ function Horizontal:TwoContainersWrapDoublePadding()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {left = 50, right = 50},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b1,
 					self.boxes.b2,
@@ -470,11 +448,9 @@ function Horizontal:TwoContainersSpaceEvenly()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
 				w = 400,
-				mainAlign = {horizontal = true},
 				spacing = {evenly = true},
 				children = {
 					self.boxes.b1,
@@ -497,11 +473,9 @@ function Horizontal:TwoContainersSpaceEvenlyPadding()
 		x = 10,
 		y = 200,
 		padding = {left = 50, right = 50},
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
 				w = 400,
-				mainAlign = {horizontal = true},
 				spacing = {evenly = true},
 				children = {
 					self.boxes.b1,
@@ -524,24 +498,20 @@ function Horizontal:TripleContainerStretch()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				stretch = {x = 33.3},
 				children = {
 					self.boxes.b1
 				}
 			}),
 			c.new({
-				mainAlign = {horizontal = true},
 				stretch = {x = 33.3},
 				children = {
 					self.boxes.b2
 				}
 			}),
 			c.new({
-				mainAlign = {horizontal = true},
 				stretch = {x = 33.3},
 				children = {
 					self.boxes.b3
@@ -561,16 +531,13 @@ function Horizontal:ThreeContainersStretch()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
 				stretch = {x = 50},
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b2,
 					-- c.new({
 					-- 	-- stretch = {x = 100},
-					-- 	mainAlign = {horizontal = true},
 					-- 	children = {
 					-- 		self.boxes.b1,
 					-- 	}
@@ -589,15 +556,12 @@ function Horizontal:ThreeContainersStretchOnlyContainers()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
 				stretch = {x = 50},
-				mainAlign = {horizontal = true},
 				children = {
 					c.new({
 						stretch = {x = 50},
-						mainAlign = {horizontal = true},
 						children = {
 							self.boxes.b1
 						}
@@ -616,7 +580,6 @@ function Horizontal:fixedWidthpaddingTopBottom()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {top = 50, bottom = 50},
 		children = {
 			self.boxes.b1
@@ -632,7 +595,6 @@ function Horizontal:fixedWidthpaddingTopBottomLeftRight()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {top = 50, bottom = 50, left = 50, right = 50},
 		children = {
 			self.boxes.b1
@@ -649,7 +611,6 @@ function Horizontal:wrapPaddingTopBottomLeftRight()
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {top = 50, bottom = 50, left = 50, right = 50},
 		children = {
 			self.boxes.b1,
@@ -670,7 +631,6 @@ function Horizontal:fixedWidthSpaceEvenelyPaddingTopBottomLeftRight()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {top = 50, bottom = 50, left = 50, right = 50},
 		spacing = {evenly = true},
 		children = {
@@ -692,7 +652,6 @@ function Horizontal:fixedWidthSpaceEvenelyPaddingTopBottomRight()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {top = 50, bottom = 50, right = 50},
 		spacing = {evenly = true},
 		children = {
@@ -715,13 +674,11 @@ function Horizontal:fixedWidthSpaceEvenelyPaddingTopBottomTwoContainers()
 		w = 400,
 		x = 10,
 		y = 200,
-		mainAlign = {horizontal = true},
 		padding = {top = 50, bottom = 50},
 		spacing = {evenly = true},
 		children = {
 			self.boxes.b1,
 			c.new({
-				mainAlign = {horizontal = true},
 				children = {
 					self.boxes.b2,
 					self.boxes.b3

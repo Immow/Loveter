@@ -15,9 +15,6 @@ local maxWidth = 0
 
 function Container.new(settings)
 	local instance = setmetatable({}, Container)
-	if not settings.mainAlign or (not settings.mainAlign.vertical and not settings.mainAlign.horizontal) then
-		error("Did not specify an mainAlign, ea: mainAlign = {horizontal = true}")
-	end
 
 	instance.x         = settings.x or 0
 	instance.y         = settings.y or 0
@@ -30,7 +27,7 @@ function Container.new(settings)
 	instance.stretch   = Container.setStretch(settings)
 	instance.start_x   = 0
 	instance.start_y   = 0
-	instance.mainAlign = settings.mainAlign
+	instance.mainAlign = settings.mainAlign or {horizontal = true}
 	instance.align     = Container.setAlign(settings)
 	instance.spacing   = settings.spacing or {}
 	instance.totalChildWidth = 0

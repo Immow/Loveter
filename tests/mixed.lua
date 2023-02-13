@@ -35,10 +35,8 @@ function Mixed:default()
 		w = 600,
 		x = 10,
 		y = 100,
-		mainAlign = {horizontal = true},
 		children = {
 			c.new({
-				mainAlign = {horizontal = true},
 				-- stretch = {x = 100},
 				stretch = {x = 50, y = 100},
 				children = {
@@ -53,7 +51,6 @@ function Mixed:default()
 				stretch = {x = 50, y = 100},
 				children = {
 					c.new({
-						mainAlign = {horizontal = true},
 						stretch = {y = 100, x = 100},
 						children = {
 							self.boxes.b3,
@@ -64,7 +61,6 @@ function Mixed:default()
 				}
 			}),
 			c.new({
-				mainAlign = {horizontal = true},
 				-- stretch = {x = 100},
 				stretch = {y = 100},
 				children = {
@@ -129,7 +125,6 @@ function Mixed:login()
 			self.forms.f2,
 			self.buttons.b1,
 			c.new({
-				mainAlign = {horizontal = true},
 				spacing = {fixed = 10},
 				children = {
 					newButton.new({text = "Forgot password?", func = function() return print("Forgot password?") end,}),
