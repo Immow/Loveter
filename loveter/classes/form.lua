@@ -32,6 +32,9 @@ function Form.new(settings)
 	instance.start_y           = 0
 	instance.clickedInForm     = false
 	instance.byteoffset        = utf8.offset(instance.text, 0)
+	instance.cursorbyteoffset  = utf8.offset(instance.text, 1)
+	instance.cursorTimer       = 0
+	instance.cursorBlinkSpeed  = 1.5
 
 	return instance
 end
@@ -48,6 +51,7 @@ end
 function Form:mousepressed(x,y,button,istouch,presses)
 	if button == 1 then
 		if self:containsPoint(x, y) then
+			self.previewText = ""
 			self.clickedInForm = true
 		else
 			self.clickedInForm = false
@@ -67,7 +71,7 @@ function Form:keypressed(key, scancode, isrepeat)
 			if string.len(self.text) >= 1 then
 				self.byteoffset = utf8.offset(self.text, -1)
 				self.text = string.sub(self.text, 1, self.byteoffset - 1)
-				self.byteoffset = utf8.offset(self.text, 0)
+				-- self.byteoffset = utf8.offset(self.text, 0)
 			end
 		end
 	end
@@ -79,16 +83,26 @@ function Form:textinput(t)
 	end
 end
 
+local dir = 1
 function Form:update(dt)
-
+	if self.cursorTimer < 0 then
+		self.cursorTimer = 0
+		dir = dir * -1
+	elseif self.cursorTimer > 1 then
+		self.cursorTimer = 1
+		dir = dir * -1
+	end
+	self.cursorTimer = self.cursorTimer + (dt * self.cursorBlinkSpeed) * dir
 end
 
 function Form:centerTextY()
 	return self.h / 2 - self.font:getHeight() / 2
 end
 
-function Form:cursor()
-	love.graphics.print(" |", self.x + 10, self.y + self:centerTextY())
+function Form:drawCursor()
+	if dir == 1 and self.clickedInForm then
+		love.graphics.print("|", self.x + 10 + self.font:getWidth(self.text), self.y + self:centerTextY())
+	end
 end
 
 function Form:drawPreviewText()
@@ -106,6 +120,8 @@ function Form:draw()
 	self:drawPreviewText()
 	love.graphics.setColor(self.fontColor)
 	love.graphics.print(self.text, self.x + 10, self.y + self:centerTextY())
+
+	self:drawCursor()
 end
 
 return Form
