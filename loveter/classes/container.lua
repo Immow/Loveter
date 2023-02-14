@@ -11,7 +11,7 @@ setmetatable(Container, Container_meta)
 setmetatable(Container_meta, Meta)
 
 Container.createID = 0
-local maxWidth = 0
+local defaultFont = love.graphics.getFont()
 
 function Container.new(settings)
 	local instance = setmetatable({}, Container)
@@ -39,6 +39,7 @@ function Container.new(settings)
 	instance.backgroundColor = settings.backgroundColor or {0,0,0,0}
 	instance.backgroundImage = settings.backgroundImage or nil
 	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
+	instance.quad = nil
 
 	Container.createID = Container.createID + 1
 	return instance
@@ -229,8 +230,13 @@ function Container:load()
 	self.parentHeight = self.h
 	self.parentWidth = self.w
 
+	for _, child in pairs(self.children) do
+		child:load()
+	end
+
 	self:setWidth()
 	self:setHeight()
+	self:setQuad()
 	self:giveChildrenParentDimensions(self.w, self.h)
 	self:positionChildren()
 end
@@ -273,6 +279,8 @@ function Container:draw()
 		child:draw()
 	end
 	
+	love.graphics.setFont(defaultFont)
+	love.graphics.setColor(1,1,1,1)
 	self:debug()
 end
 

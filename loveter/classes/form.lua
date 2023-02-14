@@ -42,6 +42,7 @@ function Form.new(settings)
 	instance.offset               = settings.offset or 10
 	instance.icon                 = settings.icon or nil
 	instance.fillet               = settings.fillet or 0
+	instance.quad                 = nil
 	return instance
 end
 
@@ -52,6 +53,7 @@ end
 function Form:load()
 	self.start_x = self.x
 	self.start_y = self.y
+	self:setQuad()
 end
 
 function Form:mousepressed(x,y,button,istouch,presses)

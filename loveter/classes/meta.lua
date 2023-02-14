@@ -97,6 +97,12 @@ function Meta:drawBackgroundColor()
 	end
 end
 
+function Meta:setQuad()
+	if self.backgroundImage then
+		self.quad = love.graphics.newQuad(0, 0, self.w, self.h, self.backgroundImage)
+	end
+end
+
 function Meta:drawBackgroundImage()
 	if self.backgroundImage then
 		local imgW = self.backgroundImage:getWidth()
@@ -106,6 +112,9 @@ function Meta:drawBackgroundImage()
 			love.graphics.draw(self.backgroundImage, self.x, self.y)
 		elseif self.backgroundImageStyle.fill then
 			love.graphics.draw(self.backgroundImage, self.x, self.y, 0, self.w / imgW, self.h / imgH)
+		elseif self.backgroundImageStyle.texture then
+			self.backgroundImage:setWrap("repeat")
+			love.graphics.draw(self.backgroundImage, self.quad, self.x, self.y)
 		end
 	end
 end

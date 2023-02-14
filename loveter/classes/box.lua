@@ -23,6 +23,7 @@ function Box.new(settings)
 	instance.backgroundColor      = settings.backgroundColor or {0.3,0.3,0.3,1}
 	instance.backgroundImage      = settings.backgroundImage or nil
 	instance.backgroundImageStyle = settings.backgroundImageStyle or {default  = true}
+	instance.quad                 = nil
 	return instance
 end
 
@@ -31,6 +32,7 @@ end
 function Box:load()
 	self.start_x = self.x
 	self.start_y = self.y
+	self:setQuad()
 end
 
 function Box:update(dt)

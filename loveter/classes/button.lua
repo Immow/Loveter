@@ -11,7 +11,7 @@ setmetatable(Button, Button_meta)
 setmetatable(Button_meta, Meta)
 
 ---@class Button
----@param settings {x: integer, y: integer, w: integer, h: integer, func: function, argument: string, font: love.Font, text: string, id: string, position: string, backgroundColor: table, backgroundImage: love.Image ,borderColor: table, fillet: integer, fontColor: table, clickEffect: boolean}
+---@param settings {x: integer, y: integer, w: integer, h: integer, backgroundImageStyle: table, func: function, argument: string, font: love.Font, text: string, id: string, position: string, backgroundColor: table, backgroundImage: love.Image ,borderColor: table, fillet: integer, fontColor: table, clickEffect: boolean}
 function Button.new(settings)
 	local instance = setmetatable({}, Button)
 	instance.font            = settings.font or love.graphics.getFont()
@@ -34,10 +34,12 @@ function Button.new(settings)
 	instance.text            = settings.text or ""
 	instance.backgroundColor = settings.backgroundColor or {0.3,0.3,0.3,1}
 	instance.backgroundImage = settings.backgroundImage or nil
+	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
 	instance.borderColor     = settings.borderColor or {0,0,0,0}
 	instance.start_x         = 0
 	instance.start_y         = 0
 	instance.clickEffect     = settings.clickEffect or false
+	instance.quad            = nil
 
 	return instance
 end
@@ -55,6 +57,7 @@ end
 function Button:load()
 	self.start_x = self.x
 	self.start_y = self.y
+	self:setQuad()
 end
 
 function Button:mousepressed(x,y,button,istouch,presses)

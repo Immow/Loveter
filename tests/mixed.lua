@@ -20,94 +20,46 @@ Mixed.buttons = {}
 Mixed.forms = {}
 Mixed.texts = {}
 
-
-function Mixed:default()
-	self.boxes.b1 = b.new({w = 50, h = 100})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-	self.boxes.b4 = b.new({w = 50, h = 50})
-	self.boxes.b5 = b.new({w = 50, h = 50})
-	self.boxes.b6 = b.new({w = 50, h = 50})
-	self.boxes.b7 = b.new({w = 75, h = 75})
-
-	self.container = c.new({
-		h = 600,
-		w = 600,
-		x = 10,
-		y = 100,
-		children = {
-			c.new({
-				-- stretch = {x = 100},
-				stretch = {x = 50, y = 100},
-				children = {
-					self.boxes.b1,
-					self.boxes.b2,
-					-- self.boxes.b3
-				}
-			}),
-			c.new({
-				mainAlign = {vertical = true},
-				-- stretch = {x = 100},
-				stretch = {x = 50, y = 100},
-				children = {
-					c.new({
-						stretch = {y = 100, x = 100},
-						children = {
-							self.boxes.b3,
-							self.boxes.b7
-						}
-					}),
-					self.boxes.b4,
-				}
-			}),
-			c.new({
-				-- stretch = {x = 100},
-				stretch = {y = 100},
-				children = {
-					self.boxes.b5,
-					self.boxes.b6,
-					-- self.boxes.b6
-				}
-			}),
-		}
-	})
-
-	self.container:load()
-end
-
-function Mixed:test()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
-	self.container = c.new({
-		h = 400,
-		x = 10,
-		y = 200,
-		mainAlign = {vertical = true},
-		children = {
-			self.boxes.b1,
-			self.boxes.b2,
-			self.boxes.b3
-		}
-	})
-
-	self.container:load()
-end
-
 local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 50)
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
+
+function Mixed:default()
+	local background = love.graphics.newImage("loveter/assets/image/b2.png")
+	self.forms.f2 = newForm.new({
+		w = 300,
+		h = 50,
+		previewText = "password",
+		backgroundImage = background,
+		backgroundImageStyle = {texture = true},
+	})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		-- backgroundImage = background,
+		-- backgroundImageStyle = {texture = true},
+		children = {
+			self.forms.f2,
+		}
+	})
+
+	self.container:load()
+end
+
+
 
 function Mixed:login()
 	local user = love.graphics.newImage("loveter/assets/icon/user.png")
 	local password = love.graphics.newImage("loveter/assets/icon/password.png")
-	local background = love.graphics.newImage("loveter/assets/image/background.jpg")
+	local background = love.graphics.newImage("loveter/assets/image/b2.png")
 	self.buttons.b1 = newButton.new({
 									w = 300,
 									h = 50,
 									text = "SIGN IN",
 									func = function() return print("test") end,
-									backgroundColor = {0.6, 0.1, 0.1},
+									-- backgroundColor = {0.6, 0.1, 0.1},
+									backgroundImage = background,
+									backgroundImageStyle = {texture = true},
 									font = buttonFont,
 									clickEffect = true
 								})
@@ -135,9 +87,9 @@ function Mixed:login()
 		mainAlign = {vertical = true},
 		padding = {top = 20, bottom = 20 , left = 20, right = 20},
 		spacing = {fixed = 10},
-		-- backgroundColor = {0.1, 0.1, 0.1},
-		backgroundImage = background,
-		backgroundImageStyle = {fill = true},
+		backgroundColor = {0.1, 0.1, 0.1},
+		-- backgroundImage = background,
+		-- backgroundImageStyle = {texture = true},
 		children = {
 			self.texts.t1,
 			self.forms.f1,
@@ -149,7 +101,7 @@ function Mixed:login()
 					newButton.new({
 					text = "Forgot password?",
 					func = function() return print("Forgot password?") end,
-					backgroundColor = {0,0,0,0}
+					-- backgroundColor = {0,0,0,0}
 				}),
 					newButton.new({
 					text = "Create an account",
