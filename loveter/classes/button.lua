@@ -13,33 +13,24 @@ setmetatable(Button_meta, Meta)
 ---@class Button
 ---@param settings {x: integer, y: integer, w: integer, h: integer, backgroundImageStyle: table, func: function, argument: string, font: love.Font, text: string, id: string, position: string, backgroundColor: table, backgroundImage: love.Image ,borderColor: table, fillet: integer, fontColor: table, clickEffect: boolean}
 function Button.new(settings)
-	local instance = setmetatable({}, Button)
-	instance.font            = settings.font or love.graphics.getFont()
-	instance.x               = settings.x or 0
-	instance.y               = settings.y or 0
-	instance.w               = settings.w or instance.font:getWidth(settings.text)
-	instance.h               = settings.h or instance.font:getHeight()
-	instance.position        = settings.position
-	instance.id              = settings.id
-	instance.func            = settings.func
-	instance.argument        = settings.argument
-	instance.circleX         = 0
-	instance.circleY         = 0
-	instance.circleRadius    = 0
-	instance.run             = false
-	instance.speed           = 1000
-	instance.offsetCircle    = 10
-	instance.fillet          = settings.fillet or 0
-	instance.fontColor       = settings.fontColor or {1,1,1}
-	instance.text            = settings.text or ""
-	instance.backgroundColor = settings.backgroundColor or {0.3,0.3,0.3,1}
-	instance.backgroundImage = settings.backgroundImage or nil
-	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
-	instance.borderColor     = settings.borderColor or {0,0,0,0}
-	instance.start_x         = 0
-	instance.start_y         = 0
-	instance.clickEffect     = settings.clickEffect or false
-	instance.quad            = nil
+	local instance = setmetatable(Meta.new(settings), Button)
+	instance.font                 = settings.font or love.graphics.getFont()
+	instance.w                    = settings.w or instance.font:getWidth(settings.text)
+	instance.h                    = settings.h or instance.font:getHeight()
+	instance.func                 = settings.func
+	instance.argument             = settings.argument
+	instance.circleX              = 0
+	instance.circleY              = 0
+	instance.circleRadius         = 0
+	instance.run                  = false
+	instance.speed                = 1000
+	instance.offsetCircle         = 10
+	instance.fillet               = settings.fillet or 0
+	instance.fontColor            = settings.fontColor or {0,0,0}
+	instance.text                 = settings.text or ""
+	instance.start_x              = 0
+	instance.start_y              = 0
+	instance.clickEffect          = settings.clickEffect or false
 
 	return instance
 end

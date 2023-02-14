@@ -12,26 +12,14 @@ setmetatable(Form, Form_meta)
 setmetatable(Form_meta, Meta)
 
 ---@class Form
----@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formBorderColor: table, fontColor: table}
+---@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, borderColor: table, fontColor: table}
 function Form.new(settings)
-	local instance = setmetatable({}, Form)
-	instance.x                    = settings.x or 0
-	instance.y                    = settings.y or 0
-	instance.w                    = settings.w or 200
-	instance.h                    = settings.h or 80
-	instance.position             = settings.position
-	instance.id                   = settings.id
+	local instance = setmetatable(Meta.new(settings), Form)
 	instance.font                 = settings.font or love.graphics.getFont()
 	instance.fontColor            = settings.fontColor or {1,1,1}
 	instance.fontPreviewColor     = settings.fontPreviewColor or {1,1,1}
 	instance.text                 = ""
-	instance.backgroundColor      = settings.backgroundColor or {0.3,0.3,0.3,1}
-	instance.backgroundImage      = settings.backgroundImage or nil
-	instance.backgroundImageStyle = settings.backgroundImageStyle or {default  = true}
-	instance.formBorderColor      = settings.formBorderColor or {0,0,0,0}
 	instance.previewText          = settings.previewText or ""
-	instance.start_x              = 0
-	instance.start_y              = 0
 	instance.clickedInForm        = false
 	instance.byteoffset           = utf8.offset(instance.text, 0)
 	instance.cursorbyteoffset     = utf8.offset(instance.text, 1)
@@ -41,8 +29,6 @@ function Form.new(settings)
 	instance.iconScale            = settings.iconScale or 1
 	instance.offset               = settings.offset or 10
 	instance.icon                 = settings.icon or nil
-	instance.fillet               = settings.fillet or 0
-	instance.quad                 = nil
 	return instance
 end
 

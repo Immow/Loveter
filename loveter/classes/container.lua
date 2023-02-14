@@ -14,10 +14,7 @@ Container.createID = 0
 local defaultFont = love.graphics.getFont()
 
 function Container.new(settings)
-	local instance = setmetatable({}, Container)
-
-	instance.x         = settings.x or 0
-	instance.y         = settings.y or 0
+	local instance = setmetatable(Meta.new(settings), Container)
 	instance.w         = settings.w or 0
 	instance.h         = settings.h or 0
 	instance.id        = Container.createID
@@ -25,22 +22,16 @@ function Container.new(settings)
 	instance.padding   = Container.setPadding(settings)
 	instance.offset    = Container.setOffset(settings)
 	instance.stretch   = Container.setStretch(settings)
-	instance.start_x   = 0
-	instance.start_y   = 0
 	instance.mainAlign = settings.mainAlign or {horizontal = true}
 	instance.align     = Container.setAlign(settings)
 	instance.spacing   = settings.spacing or {}
+	instance.backgroundColor = settings.backgroundColor or {0,0,0,0}
 	instance.totalChildWidth = 0
 	instance.totalChildHeight = 0
 	instance.parentWidth = 0
 	instance.parentHeight = 0
 	instance.totalUnstretchedWidth = 0
 	instance.totalUnstretchedHeight = 0
-	instance.backgroundColor = settings.backgroundColor or {0,0,0,0}
-	instance.backgroundImage = settings.backgroundImage or nil
-	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
-	instance.quad = nil
-
 	Container.createID = Container.createID + 1
 	return instance
 end
@@ -193,7 +184,7 @@ function Container:setWidth()
 	if self.mainAlign.horizontal then
 		if self.spacing.fixed then
 			w = w + self.spacing.fixed * (#self.children -1)
-		elseif self.spacing.between then
+		elseif self.spacing.between or self.spacing.evenly then
 			if self.w < w then error("container <= to childs width in combination with spacing") end
 		end
 	end
@@ -211,7 +202,7 @@ function Container:setHeight()
 	if self.mainAlign.vertical then
 		if self.spacing.fixed then
 			h = h + self.spacing.fixed * (#self.children -1)
-		elseif self.spacing.between then
+		elseif self.spacing.between or self.spacing.evenly then
 			if self.h < h then error("container <= to childs width in combination with spacing") end
 		end
 	end

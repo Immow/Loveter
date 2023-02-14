@@ -1,6 +1,25 @@
 local Meta = {}
 Meta.__index = Meta
 
+function Meta.new(settings)
+	local instance = setmetatable({}, Meta)
+	instance.x                    = settings.x or 0
+	instance.y                    = settings.y or 0
+	instance.w                    = settings.w or 100
+	instance.h                    = settings.h or 50
+	instance.backgroundColor      = settings.backgroundColor or {1,1,1,1}
+	instance.backgroundImage      = settings.backgroundImage or nil
+	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
+	instance.borderColor          = settings.borderColor or {0,0,0}
+	instance.quad                 = nil
+	instance.start_x              = 0
+	instance.start_y              = 0
+	instance.fillet               = settings.fillet or 0
+	instance.position             = settings.position
+	instance.id                   = settings.id
+	return instance
+end
+
 function Meta:getValue(arg)
 	return self[arg]
 end
@@ -107,7 +126,7 @@ function Meta:drawBackgroundImage()
 	if self.backgroundImage then
 		local imgW = self.backgroundImage:getWidth()
 		local imgH = self.backgroundImage:getHeight()
-		love.graphics.setColor(1,1,1,1)
+		love.graphics.setColor(self.backgroundColor)
 		if self.backgroundImageStyle.default then
 			love.graphics.draw(self.backgroundImage, self.x, self.y)
 		elseif self.backgroundImageStyle.fill then

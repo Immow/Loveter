@@ -24,13 +24,17 @@ local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf",
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
 
 function Mixed:default()
-	local background = love.graphics.newImage("loveter/assets/image/b2.png")
-	self.forms.f2 = newForm.new({
+	local background = love.graphics.newImage("loveter/assets/image/b3.png")
+	self.buttons.b1 = newButton.new({
 		w = 300,
 		h = 50,
-		previewText = "password",
-		backgroundImage = background,
-		backgroundImageStyle = {texture = true},
+		text = "SIGN IN",
+		func = function() return print("test") end,
+		-- backgroundColor = {0.6, 0.1, 0.1},
+		-- backgroundImage = background,
+		-- backgroundImageStyle = {texture = true},
+		font = buttonFont,
+		clickEffect = true
 	})
 
 	self.container = c.new({
@@ -39,7 +43,7 @@ function Mixed:default()
 		-- backgroundImage = background,
 		-- backgroundImageStyle = {texture = true},
 		children = {
-			self.forms.f2,
+			self.buttons.b1,
 		}
 	})
 
@@ -69,7 +73,8 @@ function Mixed:login()
 								previewText = "username",
 								icon = user,
 								iconColor = {0.5, 0.5, 0.5},
-								iconScale = 0.75
+								iconScale = 0.75,
+								backgroundColor = {0.2,0.2,0.2}
 							})
 	self.forms.f2 = newForm.new({
 								w = 300,
@@ -77,7 +82,8 @@ function Mixed:login()
 								previewText = "password",
 								icon = password,
 								iconColor = {0.5, 0.5, 0.5},
-								iconScale = 0.75
+								iconScale = 0.75,
+								backgroundColor = {0.2,0.2,0.2}
 							})
 	self.texts.t1 = newText.new({text = "SIGN IN", font = textFont})
 
@@ -99,15 +105,15 @@ function Mixed:login()
 				spacing = {fixed = 10},
 				children = {
 					newButton.new({
-					text = "Forgot password?",
-					func = function() return print("Forgot password?") end,
-					-- backgroundColor = {0,0,0,0}
-				}),
+						text = "Forgot password?",
+						func = function() return print("Forgot password?") end,
+						backgroundColor = {0,0,0,0}
+					}),
 					newButton.new({
-					text = "Create an account",
-					func = function() return print("Create an account") end,
-					fontColor = {0.6, 0.1, 0.1},
-					backgroundColor = {0,0,0,0},
+						text = "Create an account",
+						func = function() return print("Create an account") end,
+						fontColor = {0.6, 0.1, 0.1},
+						backgroundColor = {0,0,0,0},
 					})
 				}
 			})
