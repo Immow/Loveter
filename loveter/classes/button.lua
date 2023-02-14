@@ -11,32 +11,33 @@ setmetatable(Button, Button_meta)
 setmetatable(Button_meta, Meta)
 
 ---@class Button
----@param settings {x: integer, y: integer, w: integer, h: integer, func: function, argument: string, font: love.Font, text: string, id: string, position: string, buttonBackgroundColor: table, buttonBorderColor: table, buttonFillet: integer, fontColor: table, clickEffect: boolean}
+---@param settings {x: integer, y: integer, w: integer, h: integer, func: function, argument: string, font: love.Font, text: string, id: string, position: string, backgroundColor: table, backgroundImage: love.Image ,borderColor: table, fillet: integer, fontColor: table, clickEffect: boolean}
 function Button.new(settings)
 	local instance = setmetatable({}, Button)
-	instance.font                  = settings.font or love.graphics.getFont()
-	instance.x                     = settings.x or 0
-	instance.y                     = settings.y or 0
-	instance.w                     = settings.w or instance.font:getWidth(settings.text)
-	instance.h                     = settings.h or instance.font:getHeight()
-	instance.position              = settings.position
-	instance.id                    = settings.id
-	instance.func                  = settings.func
-	instance.argument              = settings.argument
-	instance.circleX               = 0
-	instance.circleY               = 0
-	instance.circleRadius          = 0
-	instance.run                   = false
-	instance.speed                 = 1000
-	instance.offsetCircle          = 10
-	instance.buttonFillet          = settings.buttonFillet or 0
-	instance.fontColor             = settings.fontColor or {1,1,1}
-	instance.text                  = settings.text or ""
-	instance.buttonBackgroundColor = settings.buttonBackgroundColor or {0,0,0,0}
-	instance.buttonBorderColor     = settings.buttonBorderColor or {0,0,0,0}
-	instance.start_x               = 0
-	instance.start_y               = 0
-	instance.clickEffect           = settings.clickEffect or false
+	instance.font            = settings.font or love.graphics.getFont()
+	instance.x               = settings.x or 0
+	instance.y               = settings.y or 0
+	instance.w               = settings.w or instance.font:getWidth(settings.text)
+	instance.h               = settings.h or instance.font:getHeight()
+	instance.position        = settings.position
+	instance.id              = settings.id
+	instance.func            = settings.func
+	instance.argument        = settings.argument
+	instance.circleX         = 0
+	instance.circleY         = 0
+	instance.circleRadius    = 0
+	instance.run             = false
+	instance.speed           = 1000
+	instance.offsetCircle    = 10
+	instance.fillet          = settings.fillet or 0
+	instance.fontColor       = settings.fontColor or {1,1,1}
+	instance.text            = settings.text or ""
+	instance.backgroundColor = settings.backgroundColor or {0.3,0.3,0.3,1}
+	instance.backgroundImage = settings.backgroundImage or nil
+	instance.borderColor     = settings.borderColor or {0,0,0,0}
+	instance.start_x         = 0
+	instance.start_y         = 0
+	instance.clickEffect     = settings.clickEffect or false
 
 	return instance
 end
@@ -92,21 +93,28 @@ function Button:centerTextY()
 	return self.h / 2 - self.font:getHeight() / 2
 end
 
-function Button:draw()
-	local rec = function() love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.buttonFillet, self.buttonFillet) end
-	love.graphics.setColor(self.buttonBackgroundColor)
-	rec()
+function Button:drawText()
+	love.graphics.setColor(self.fontColor)
+	love.graphics.setFont(self.font)
+	love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
+end
+
+function Button:drawClickAnimation()
 	if self.run then
+		local rec = function() love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.fillet, self.fillet) end
 		love.graphics.stencil(rec, "replace", 1)
 		love.graphics.setStencilTest("greater", 0)
 		love.graphics.setColor(1,1,1,1)
 		love.graphics.circle("fill", self.circleX, self.circleY, self.circleRadius)
 		love.graphics.setStencilTest()
 	end
-	love.graphics.setColor(self.fontColor)
-	love.graphics.setFont(self.font)
-	love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
-	love.graphics.setColor(1,1,1,1)
+end
+
+function Button:draw()
+	self:drawBackgroundColor()
+	self:drawBackgroundImage()
+	self:drawClickAnimation()
+	self:drawText()
 end
 
 return Button

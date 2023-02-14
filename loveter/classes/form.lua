@@ -12,40 +12,36 @@ setmetatable(Form, Form_meta)
 setmetatable(Form_meta, Meta)
 
 ---@class Form
----@param settings {x: integer, y: integer, w: integer, h: integer, offset: integer, icon: string, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formColor: table, formBorderColor: table, fontColor: table}
+---@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, formBorderColor: table, fontColor: table}
 function Form.new(settings)
 	local instance = setmetatable({}, Form)
-
-	if settings.icon then
-		instance.icon = love.graphics.newImage(settings.icon)
-	else
-		instance.icon = nil
-	end
-
-	instance.x                 = settings.x or 0
-	instance.y                 = settings.y or 0
-	instance.w                 = settings.w or 200
-	instance.h                 = settings.h or 80
-	instance.position          = settings.position
-	instance.id                = settings.id
-	instance.font              = settings.font or love.graphics.getFont()
-	instance.fontColor         = settings.fontColor or {1,1,1}
-	instance.fontPreviewColor  = settings.fontPreviewColor or {1,1,1}
-	instance.text              = ""
-	instance.formColor         = settings.formColor or {0.3,0.3,0.3,1}
-	instance.formBorderColor   = settings.formBorderColor or {0,0,0,0}
-	instance.previewText       = settings.previewText or ""
-	instance.start_x           = 0
-	instance.start_y           = 0
-	instance.clickedInForm     = false
-	instance.byteoffset        = utf8.offset(instance.text, 0)
-	instance.cursorbyteoffset  = utf8.offset(instance.text, 1)
-	instance.cursorTimer       = 0
-	instance.cursorBlinkSpeed  = 1.5
-	instance.iconColor         = settings.iconColor or {1,1,1,1}
-	instance.iconScale         = settings.iconScale or 1
-	instance.offset            = settings.offset or 10
-
+	instance.x                    = settings.x or 0
+	instance.y                    = settings.y or 0
+	instance.w                    = settings.w or 200
+	instance.h                    = settings.h or 80
+	instance.position             = settings.position
+	instance.id                   = settings.id
+	instance.font                 = settings.font or love.graphics.getFont()
+	instance.fontColor            = settings.fontColor or {1,1,1}
+	instance.fontPreviewColor     = settings.fontPreviewColor or {1,1,1}
+	instance.text                 = ""
+	instance.backgroundColor      = settings.backgroundColor or {0.3,0.3,0.3,1}
+	instance.backgroundImage      = settings.backgroundImage or nil
+	instance.backgroundImageStyle = settings.backgroundImageStyle or {default  = true}
+	instance.formBorderColor      = settings.formBorderColor or {0,0,0,0}
+	instance.previewText          = settings.previewText or ""
+	instance.start_x              = 0
+	instance.start_y              = 0
+	instance.clickedInForm        = false
+	instance.byteoffset           = utf8.offset(instance.text, 0)
+	instance.cursorbyteoffset     = utf8.offset(instance.text, 1)
+	instance.cursorTimer          = 0
+	instance.cursorBlinkSpeed     = 1.5
+	instance.iconColor            = settings.iconColor or {1,1,1,1}
+	instance.iconScale            = settings.iconScale or 1
+	instance.offset               = settings.offset or 10
+	instance.icon                 = settings.icon or nil
+	instance.fillet               = settings.fillet or 0
 	return instance
 end
 
@@ -122,12 +118,6 @@ function Form:drawPreviewText()
 	end
 end
 
-function Form:drawBackground()
-	love.graphics.setColor(self.formColor)
-	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-end
-
-
 function Form:drawText()
 	love.graphics.setColor(self.fontColor)
 	love.graphics.print(self.text, self.x + self.offset, self.y + self:centerTextY())
@@ -147,7 +137,8 @@ end
 
 function Form:draw()
 	love.graphics.setFont(self.font)
-	self:drawBackground()
+	self:drawBackgroundColor()
+	self:drawBackgroundImage()
 	self:drawIcon()
 	self:drawPreviewText()
 	self:drawText()

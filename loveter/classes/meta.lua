@@ -90,6 +90,26 @@ function Meta.setStretch(settings)
 	end
 end
 
+function Meta:drawBackgroundColor()
+	if self.backgroundColor then
+		love.graphics.setColor(self.backgroundColor)
+		love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.fillet, self.fillet)
+	end
+end
+
+function Meta:drawBackgroundImage()
+	if self.backgroundImage then
+		local imgW = self.backgroundImage:getWidth()
+		local imgH = self.backgroundImage:getHeight()
+		love.graphics.setColor(1,1,1,1)
+		if self.backgroundImageStyle.default then
+			love.graphics.draw(self.backgroundImage, self.x, self.y)
+		elseif self.backgroundImageStyle.fill then
+			love.graphics.draw(self.backgroundImage, self.x, self.y, 0, self.w / imgW, self.h / imgH)
+		end
+	end
+end
+
 function Meta:debug()
 	if DEBUG then
 		love.graphics.setFont(FONT)

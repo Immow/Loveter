@@ -99,17 +99,34 @@ local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf",
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
 
 function Mixed:login()
+	local user = love.graphics.newImage("loveter/assets/icon/user.png")
+	local password = love.graphics.newImage("loveter/assets/icon/password.png")
+	local background = love.graphics.newImage("loveter/assets/image/background.jpg")
 	self.buttons.b1 = newButton.new({
 									w = 300,
 									h = 50,
 									text = "SIGN IN",
 									func = function() return print("test") end,
-									buttonBackgroundColor = {0.6, 0.1, 0.1},
+									backgroundColor = {0.6, 0.1, 0.1},
 									font = buttonFont,
 									clickEffect = true
 								})
-	self.forms.f1 = newForm.new({w = 300, h = 50, previewText = "username", icon = "loveter/assets/icon/user.png", iconColor = {0.5,0.5,0.5}, iconScale = 0.75})
-	self.forms.f2 = newForm.new({w = 300, h = 50, previewText = "password", icon = "loveter/assets/icon/password.png", iconColor = {0.5,0.5,0.5}, iconScale = 0.75})
+	self.forms.f1 = newForm.new({
+								w = 300,
+								h = 50,
+								previewText = "username",
+								icon = user,
+								iconColor = {0.5, 0.5, 0.5},
+								iconScale = 0.75
+							})
+	self.forms.f2 = newForm.new({
+								w = 300,
+								h = 50,
+								previewText = "password",
+								icon = password,
+								iconColor = {0.5, 0.5, 0.5},
+								iconScale = 0.75
+							})
 	self.texts.t1 = newText.new({text = "SIGN IN", font = textFont})
 
 	self.container = c.new({
@@ -118,7 +135,9 @@ function Mixed:login()
 		mainAlign = {vertical = true},
 		padding = {top = 20, bottom = 20 , left = 20, right = 20},
 		spacing = {fixed = 10},
-		background = {0.1, 0.1, 0.1},
+		-- backgroundColor = {0.1, 0.1, 0.1},
+		backgroundImage = background,
+		backgroundImageStyle = {fill = true},
 		children = {
 			self.texts.t1,
 			self.forms.f1,
@@ -127,11 +146,16 @@ function Mixed:login()
 			c.new({
 				spacing = {fixed = 10},
 				children = {
-					newButton.new({text = "Forgot password?", func = function() return print("Forgot password?") end,}),
 					newButton.new({
-						text = "Create an account", 
-						func = function() return print("Create an account") end,
-						fontColor = {0.6, 0.1, 0.1},
+					text = "Forgot password?",
+					func = function() return print("Forgot password?") end,
+					backgroundColor = {0,0,0,0}
+				}),
+					newButton.new({
+					text = "Create an account",
+					func = function() return print("Create an account") end,
+					fontColor = {0.6, 0.1, 0.1},
+					backgroundColor = {0,0,0,0},
 					})
 				}
 			})

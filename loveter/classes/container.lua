@@ -36,7 +36,9 @@ function Container.new(settings)
 	instance.parentHeight = 0
 	instance.totalUnstretchedWidth = 0
 	instance.totalUnstretchedHeight = 0
-	instance.background = settings.background or {0,0,0,0}
+	instance.backgroundColor = settings.backgroundColor or {0,0,0,0}
+	instance.backgroundImage = settings.backgroundImage or nil
+	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
 
 	Container.createID = Container.createID + 1
 	return instance
@@ -257,7 +259,6 @@ function Container:textinput(t)
 	end
 end
 
-
 function Container:update(dt)
 	for _, child in pairs(self.children) do
 		child:update(dt)
@@ -265,9 +266,9 @@ function Container:update(dt)
 end
 
 function Container:draw()
-	love.graphics.setColor(self.background)
-	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-	-- love.graphics.setColor(1,1,1)
+	self:drawBackgroundColor()
+	self:drawBackgroundImage()
+
 	for _, child in pairs(self.children) do
 		child:draw()
 	end
