@@ -1,19 +1,21 @@
 local Meta = require("loveter.classes.meta")
-
-local Button = {}
-local Button_meta = {}
+local Background = require("loveter.classes.background")
+local Class = require("loveter.classes.class")
 
 -- LuaFormatter off
 
+local Button = {}
 Button.__index = Button
-Button_meta.__index = Button_meta
-setmetatable(Button, Button_meta)
-setmetatable(Button_meta, Meta)
+Button.parents = Class.registerParents({Meta, Background})
+setmetatable(Button, Button.parents)
 
 ---@class Button
 ---@param settings {x: integer, y: integer, w: integer, h: integer, backgroundImageStyle: table, func: function, argument: string, font: love.Font, text: string, id: string, position: string, backgroundColor: table, backgroundImage: love.Image ,borderColor: table, fillet: integer, fontColor: table, clickEffect: boolean}
 function Button.new(settings)
-	local instance = setmetatable(Meta.new(settings), Button)
+	local b = Background.new(settings)
+	local m = Meta.new(settings)
+	local instance = setmetatable(Class.inject({b, m}), Button)
+
 	instance.font                 = settings.font or love.graphics.getFont()
 	instance.w                    = settings.w or instance.font:getWidth(settings.text)
 	instance.h                    = settings.h or instance.font:getHeight()
@@ -28,8 +30,6 @@ function Button.new(settings)
 	instance.fillet               = settings.fillet or 0
 	instance.fontColor            = settings.fontColor or {0,0,0}
 	instance.text                 = settings.text or ""
-	instance.start_x              = 0
-	instance.start_y              = 0
 	instance.clickEffect          = settings.clickEffect or false
 
 	return instance
@@ -77,14 +77,6 @@ function Button:update(dt)
 		self.run = false
 		self.circleRadius = 0
 	end
-end
-
-function Button:centerTextX()
-	return self.w / 2 - self.font:getWidth(self.text) / 2
-end
-
-function Button:centerTextY()
-	return self.h / 2 - self.font:getHeight() / 2
 end
 
 function Button:drawText()

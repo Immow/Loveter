@@ -1,19 +1,19 @@
 local Meta = require("loveter.classes.meta")
+local Class = require("loveter.classes.class")
+
+-- LuaFormatter off
 
 local Text = {}
-local Text_meta = {}
-
--- LuaTextatter off
-
 Text.__index = Text
-Text_meta.__index = Text_meta
-setmetatable(Text, Text_meta)
-setmetatable(Text_meta, Meta)
+Text.parents = Class.registerParents({Meta})
+setmetatable(Text, Text.parents)
 
 ---@class Text
 ---@param settings {x: integer, y: integer, font: love.Font, text: string, id: string, position: string, fontColor: table}
 function Text.new(settings)
-	local instance = setmetatable(Meta.new(settings), Text)
+	local m = Meta.new(settings)
+	local instance = setmetatable(Class.inject({m}), Text)
+
 	instance.font              = settings.font or love.graphics.getFont()
 	instance.w                 = instance.font:getWidth(settings.text)
 	instance.h                 = instance.font:getHeight()
@@ -29,10 +29,6 @@ end
 
 function Text:update(dt)
 
-end
-
-function Text:centerTextY()
-	return self.h / 2 - self.font:getHeight() / 2
 end
 
 function Text:draw()

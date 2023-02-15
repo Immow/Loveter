@@ -1,20 +1,23 @@
 local Meta = require("loveter.classes.meta")
+local Background = require("loveter.classes.background")
+local Class = require("loveter.classes.class")
 
 local Container = {}
-local Container_meta = {}
 
 -- LuaFormatter off
 
 Container.__index = Container
-Container_meta.__index = Container_meta
-setmetatable(Container, Container_meta)
-setmetatable(Container_meta, Meta)
+Container.parents = Class.registerParents({Background, Meta})
+setmetatable(Container, Container.parents)
 
 Container.createID = 0
 local defaultFont = love.graphics.getFont()
 
 function Container.new(settings)
-	local instance = setmetatable(Meta.new(settings), Container)
+	local m = Meta.new(settings)
+	local b = Background.new(settings)
+	local instance = setmetatable(Class.inject({m, b}), Container)
+
 	instance.w         = settings.w or 0
 	instance.h         = settings.h or 0
 	instance.id        = Container.createID

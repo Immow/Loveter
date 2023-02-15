@@ -7,31 +7,24 @@ function Meta.new(settings)
 	instance.y                    = settings.y or 0
 	instance.w                    = settings.w or 100
 	instance.h                    = settings.h or 50
-	instance.backgroundColor      = settings.backgroundColor or {1,1,1,1}
-	instance.backgroundImage      = settings.backgroundImage or nil
-	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
-	instance.borderColor          = settings.borderColor or {0,0,0}
-	instance.quad                 = nil
 	instance.start_x              = 0
 	instance.start_y              = 0
-	instance.fillet               = settings.fillet or 0
 	instance.position             = settings.position
 	instance.id                   = settings.id
 	return instance
 end
 
-function Meta:getValue(arg)
-	return self[arg]
+function Meta:centerTextX()
+	return self.w / 2 - self.font:getWidth(self.text) / 2
+end
+
+function Meta:centerTextY()
+	return self.h / 2 - self.font:getHeight() / 2
 end
 
 function Meta:setPosition(x, y)
 	self.x = x
 	self.y = y
-end
-
-function Meta:setArea(w, h)
-	self.areaWidth = w
-	self.areaHeight = h
 end
 
 function Meta:getPosition()
@@ -106,35 +99,6 @@ function Meta.setStretch(settings)
 		local x = settings.stretch.x or 0
 		local y = settings.stretch.y or 0
 		return {x = x, y = y}
-	end
-end
-
-function Meta:drawBackgroundColor()
-	if self.backgroundColor then
-		love.graphics.setColor(self.backgroundColor)
-		love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.fillet, self.fillet)
-	end
-end
-
-function Meta:setQuad()
-	if self.backgroundImage then
-		self.quad = love.graphics.newQuad(0, 0, self.w, self.h, self.backgroundImage)
-	end
-end
-
-function Meta:drawBackgroundImage()
-	if self.backgroundImage then
-		local imgW = self.backgroundImage:getWidth()
-		local imgH = self.backgroundImage:getHeight()
-		love.graphics.setColor(self.backgroundColor)
-		if self.backgroundImageStyle.default then
-			love.graphics.draw(self.backgroundImage, self.x, self.y)
-		elseif self.backgroundImageStyle.fill then
-			love.graphics.draw(self.backgroundImage, self.x, self.y, 0, self.w / imgW, self.h / imgH)
-		elseif self.backgroundImageStyle.texture then
-			self.backgroundImage:setWrap("repeat")
-			love.graphics.draw(self.backgroundImage, self.quad, self.x, self.y)
-		end
 	end
 end
 

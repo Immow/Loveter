@@ -1,17 +1,18 @@
 local Meta = require("loveter.classes.meta")
-
-local Box = {}
-local Box_meta = {}
+local Background = require("loveter.classes.background")
+local Class = require("loveter.classes.class")
 
 -- LuaFormatter off
 
+local Box = {}
 Box.__index = Box
-Box_meta.__index = Box_meta
-setmetatable(Box, Box_meta)
-setmetatable(Box_meta, Meta)
+Box.parents = Class.registerParents({Meta, Background})
+setmetatable(Box, Box.parents)
 
 function Box.new(settings)
-	local instance = setmetatable(Meta.new(settings), Box)
+	local b = Background.new(settings)
+	local m = Meta.new(settings)
+	local instance = setmetatable(Class.inject({b, m}), Box)
 	return instance
 end
 

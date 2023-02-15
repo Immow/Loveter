@@ -1,20 +1,21 @@
-local Meta = require("loveter.classes.meta")
 local utf8 = require("utf8")
-
-local Form = {}
-local Form_meta = {}
+local Meta = require("loveter.classes.meta")
+local Background = require("loveter.classes.background")
+local Class = require("loveter.classes.class")
 
 -- LuaFormatter off
 
+local Form = {}
 Form.__index = Form
-Form_meta.__index = Form_meta
-setmetatable(Form, Form_meta)
-setmetatable(Form_meta, Meta)
+Form.parents = Class.registerParents({Meta, Background})
+setmetatable(Form, Form.parents)
 
 ---@class Form
 ---@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, borderColor: table, fontColor: table}
 function Form.new(settings)
-	local instance = setmetatable(Meta.new(settings), Form)
+	local b = Background.new(settings)
+	local m = Meta.new(settings)
+	local instance = setmetatable(Class.inject({b, m}), Form)
 	instance.font                 = settings.font or love.graphics.getFont()
 	instance.fontColor            = settings.fontColor or {1,1,1}
 	instance.fontPreviewColor     = settings.fontPreviewColor or {1,1,1}
@@ -53,9 +54,6 @@ function Form:mousepressed(x,y,button,istouch,presses)
 	end
 end
 
-function Form:mousereleased(x,y,button,istouch,presses)
-end
-
 function Form:keypressed(key, scancode, isrepeat)
 	if self.clickedInForm then
 		if key == "backspace" then
@@ -85,10 +83,6 @@ function Form:update(dt)
 		dir = dir * -1
 	end
 	self.cursorTimer = self.cursorTimer + (dt * self.cursorBlinkSpeed) * dir
-end
-
-function Form:centerTextY()
-	return self.h / 2 - self.font:getHeight() / 2
 end
 
 function Form:drawCursor()
