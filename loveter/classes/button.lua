@@ -1,12 +1,13 @@
 local Meta = require("loveter.classes.meta")
 local Background = require("loveter.classes.background")
+local Text = require("loveter.classes.text")
 local Class = require("loveter.classes.class")
 
 -- LuaFormatter off
 
 local Button = {}
 Button.__index = Button
-Button.parents = Class.registerParents({Meta, Background})
+Button.parents = Class.registerParents({Meta, Background, Text})
 setmetatable(Button, Button.parents)
 
 ---@class Button
@@ -14,9 +15,8 @@ setmetatable(Button, Button.parents)
 function Button.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
-	local instance = setmetatable(Class.inject({b, m}), Button)
-
-	instance.font                 = settings.font or love.graphics.getFont()
+	local t = Text.new(settings)
+	local instance = setmetatable(Class.inject({b, m, t}), Button)
 	instance.w                    = settings.w or instance.font:getWidth(settings.text)
 	instance.h                    = settings.h or instance.font:getHeight()
 	instance.func                 = settings.func
@@ -28,8 +28,6 @@ function Button.new(settings)
 	instance.speed                = 1000
 	instance.offsetCircle         = 10
 	instance.fillet               = settings.fillet or 0
-	instance.fontColor            = settings.fontColor or {0,0,0}
-	instance.text                 = settings.text or ""
 	instance.clickEffect          = settings.clickEffect or false
 
 	return instance

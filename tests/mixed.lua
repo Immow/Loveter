@@ -34,6 +34,7 @@ function Mixed:default()
 		-- backgroundImage = background,
 		-- backgroundImageStyle = {texture = true},
 		font = buttonFont,
+		fontColor = {0,0,0},
 		clickEffect = true
 	})
 
@@ -61,9 +62,9 @@ function Mixed:login()
 									h = 50,
 									text = "SIGN IN",
 									func = function() return print("test") end,
-									-- backgroundColor = {0.6, 0.1, 0.1},
-									backgroundImage = background,
-									backgroundImageStyle = {texture = true},
+									backgroundColor = {0.6, 0.1, 0.1},
+									-- backgroundImage = background,
+									-- backgroundImageStyle = {texture = true},
 									font = buttonFont,
 									clickEffect = true
 								})
@@ -96,8 +97,15 @@ function Mixed:login()
 		backgroundColor = {0.1, 0.1, 0.1},
 		-- backgroundImage = background,
 		-- backgroundImageStyle = {texture = true},
+		-- align = {bottom = true, right = true},
 		children = {
-			self.texts.t1,
+			c.new({
+				align = {right = true},
+				stretch = {x = 100},
+				children = {
+					self.texts.t1,
+				}
+			}),
 			self.forms.f1,
 			self.forms.f2,
 			self.buttons.b1,

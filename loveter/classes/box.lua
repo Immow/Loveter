@@ -13,6 +13,7 @@ function Box.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({b, m}), Box)
+	instance.id = "box"
 	return instance
 end
 

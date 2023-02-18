@@ -47,11 +47,15 @@ function Test:textinput(t)
 end
 
 function Test:mousepressed(x, y, button, istouch, presses)
-	selectedGroup[selectedGroupIndex]:mousepressed(x, y, button, istouch, presses)
+	if selectedGroup[selectedGroupIndex].mousepressed then
+		selectedGroup[selectedGroupIndex]:mousepressed(x, y, button, istouch, presses)
+	end
 end
 
 function Test:mousereleased(x, y, button, istouch, presses)
-	selectedGroup[selectedGroupIndex]:mousereleased(x, y, button, istouch, presses)
+	if selectedGroup[selectedGroupIndex].mousereleased then
+		selectedGroup[selectedGroupIndex]:mousereleased(x, y, button, istouch, presses)
+	end
 end
 
 function Test:update(dt)

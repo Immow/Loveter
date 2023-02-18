@@ -14,14 +14,6 @@ function Meta.new(settings)
 	return instance
 end
 
-function Meta:centerTextX()
-	return self.w / 2 - self.font:getWidth(self.text) / 2
-end
-
-function Meta:centerTextY()
-	return self.h / 2 - self.font:getHeight() / 2
-end
-
 function Meta:setPosition(x, y)
 	self.x = x
 	self.y = y
@@ -84,6 +76,8 @@ function Meta.setAlign(settings)
 		local bottom = settings.align.bottom or false
 		local left = settings.align.left or false
 		local right = settings.align.right or false
+		-- local center_x = settings.align.center.x or false
+		-- local center_y = settings.align.center.y or false
 
 		if not top and not bottom then top = true end
 		if not left and not right then left = true end
@@ -107,7 +101,7 @@ function Meta:debug()
 		love.graphics.setFont(FONT)
 		love.graphics.setColor(1,0,0)
 		love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-		love.graphics.print("ID: "..self.id.." x: "..self.x..", y: "..self.y.." w: "..self.w.." h: "..self.h.." TCW: "..self.totalChildWidth.." TCH: "..self.totalChildHeight, 10, 0 + (12 * self.id))
+		love.graphics.print("ID: "..self.id.." x: "..self.x..", y: "..self.y.." w: "..self.w.." h: "..self.h.." TCW: "..self.totalChildWidth.." TCH: "..self.totalChildHeight.." TRCW: "..self.totalUnstretchedWidth.." TRCH: "..self.totalUnstretchedHeight, 10, 0 + (12 * self.id))
 		love.graphics.setColor(1,1,1)
 	end
 end

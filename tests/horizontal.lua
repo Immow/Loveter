@@ -536,12 +536,12 @@ function Horizontal:ThreeContainersStretch()
 				stretch = {x = 50},
 				children = {
 					self.boxes.b2,
-					-- c.new({
-					-- 	-- stretch = {x = 100},
-					-- 	children = {
-					-- 		self.boxes.b1,
-					-- 	}
-					-- }),
+					c.new({
+						stretch = {x = 100},
+						children = {
+							self.boxes.b1,
+						}
+					}),
 				}
 			}),
 		}

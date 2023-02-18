@@ -31,8 +31,6 @@ function Container.new(settings)
 	instance.backgroundColor = settings.backgroundColor or {0,0,0,0}
 	instance.totalChildWidth = 0
 	instance.totalChildHeight = 0
-	instance.parentWidth = 0
-	instance.parentHeight = 0
 	instance.totalUnstretchedWidth = 0
 	instance.totalUnstretchedHeight = 0
 	Container.createID = Container.createID + 1
@@ -44,36 +42,35 @@ end
 function Container:positionChildren()
 	if self.mainAlign.vertical then
 		local y = 0
+		local x = 0
 		if self.align.bottom then
 			y = self.y + (self.h - self.totalChildHeight - self.padding.bottom)
 		elseif self.align.top then
 			y = self.y + self.padding.top
 		end
 
-		if self.spacing.evenly then
-			y = self.y + self.padding.top
-		elseif self.spacing.between then
-			y = self.y + self.padding.top
-		elseif self.spacing.fixed then
-			y = self.y + (self.h - self.totalChildHeight) / 2
-		end
-
 		for i, child in ipairs(self.children) do
+			if self.align.left then
+				x = self.x + self.padding.left
+			elseif self.align.right then
+				x = self.x + self.w - (child:getWidth() + self.padding.right)
+			end
+
 			if self.spacing.evenly then
 				local spacing  = (self.h - self.padding.top - self.padding.bottom - self.totalChildHeight) / (#self.children + 1)
 				y = y + spacing
-				child:setPosition(self.x + self.padding.left, y)
-				y = y + child.h
+				child:setPosition(x, y)
+				y = y + child:getHeight()
 			elseif self.spacing.between then
 				local spacing = (self.h - (self.totalChildHeight + self.padding.top + self.padding.bottom)) / (#self.children -1)
-				child:setPosition(self.x + self.padding.left, y)
-				y = y + child.h + spacing
+				child:setPosition(x, y)
+				y = y + child:getHeight() + spacing
 			elseif self.spacing.fixed then
-				child:setPosition(self.x + self.padding.left, y)
-				y = y + child.h + self.spacing.fixed
+				child:setPosition(x, y)
+				y = y + child:getHeight() + self.spacing.fixed
 			else
-				child:setPosition(self.x + self.padding.left, y)
-				y = y + child.h
+				child:setPosition(x, y)
+				y = y + child:getHeight()
 			end
 
 			if child.children then
@@ -82,36 +79,35 @@ function Container:positionChildren()
 		end
 	elseif self.mainAlign.horizontal then
 		local x = 0
+		local y = 0
 		if self.align.right then
-			x = self.x + (self.w - self.totalChildWidth - self.padding.right)
+			x = self.x + (self.w - self.totalChildWidth) - self.padding.right
 		elseif self.align.left then
 			x = self.x + self.padding.left
 		end
 
-		if self.spacing.evenly then
-			x = self.x + self.padding.left
-		elseif self.spacing.between then
-			x = self.x + self.padding.left
-		elseif self.spacing.fixed then
-			x = self.x + (self.w - self.totalChildWidth) / 2
-		end
-
 		for i, child in ipairs(self.children) do
+			if self.align.top then
+				y = self.y + self.padding.top
+			elseif self.align.bottom then
+				y = self.y + self.h - (child:getHeight() + self.padding.bottom)
+			end
+
 			if self.spacing.evenly then
 				local spacing  = (self.w - self.padding.left - self.padding.right - self.totalChildWidth) / (#self.children + 1)
 				x = x + spacing
-				child:setPosition(x, self.y + self.padding.top)
-				x = x + child.w
+				child:setPosition(x, y)
+				x = x + child:getWidth()
 			elseif self.spacing.between then
 				local spacing = (self.w - (self.totalChildWidth + self.padding.left + self.padding.right)) / (#self.children -1)
-				child:setPosition(x, self.y + self.padding.top)
-				x = x + child.w + spacing
+				child:setPosition(x, y)
+				x = x + child:getWidth() + spacing
 			elseif self.spacing.fixed then
-				child:setPosition(x, self.y + self.padding.top)
-				x = x + child.w + self.spacing.fixed
+				child:setPosition(x, y)
+				x = x + child:getWidth() + self.spacing.fixed
 			else
-				child:setPosition(x, self.y + self.padding.top)
-				x = x + child.w
+				child:setPosition(x, y)
+				x = x + child:getWidth()
 			end
 
 			if child.children then
@@ -130,16 +126,17 @@ function Container:getChildrenTotalWidth()
 
 		if self.mainAlign.horizontal then
 			w = w + child:getWidth()
-			if not child.children or child.stretch.x == 0 then
-				self.totalUnstretchedWidth = self.totalUnstretchedWidth + child.w
+			if child.children and child.stretch.x == 0 or not child.children then
+				self.totalUnstretchedWidth = self.totalUnstretchedWidth + child:getWidth()
 			end
 		elseif self.mainAlign.vertical then
-			if child.w > w then
+			if child:getWidth() > w then
 				w = child:getWidth()
 			end
 		end
-
+		
 	end
+
 	return w
 end
 
@@ -170,10 +167,14 @@ function Container:giveChildrenParentDimensions(w, h)
 		if child.children then
 			if child.stretch then
 				if child.stretch.x > 0 and child.w < w then
-					child.w = (w - self.totalUnstretchedWidth) / 100 * child.stretch.x
+					if self.id == 1 then
+						-- print("self.w: "..self.w.." w: "..w)
+						print(self.totalUnstretchedWidth)
+					end
+					child.w = ((w - (self.padding.left + self.padding.right)) - self.totalUnstretchedWidth) / 100 * child.stretch.x
 				end
 				if child.stretch.y > 0 and child.h < h then
-					child.h = (h - self.totalUnstretchedHeight) / 100 * child.stretch.y
+					child.h = ((h - (self.padding.top + self.padding.bottom)) - self.totalUnstretchedHeight) / 100 * child.stretch.y
 				end
 			end
 			child:giveChildrenParentDimensions(child.w, child.h)
@@ -221,18 +222,18 @@ function Container:load()
 	love.keyboard.setKeyRepeat(true)
 	self.start_x = self.x
 	self.start_y = self.y
-	self.parentHeight = self.h
-	self.parentWidth = self.w
-
-	for _, child in pairs(self.children) do
-		child:load()
-	end
-
+	
 	self:setWidth()
 	self:setHeight()
 	self:setQuad()
 	self:giveChildrenParentDimensions(self.w, self.h)
 	self:positionChildren()
+
+	for _, child in pairs(self.children) do
+		if not child.children then
+			child:load()
+		end
+	end
 end
 
 function Container:mousepressed(x, y, button, istouch, presses)

@@ -1,13 +1,14 @@
 local utf8 = require("utf8")
 local Meta = require("loveter.classes.meta")
 local Background = require("loveter.classes.background")
+local Text = require("loveter.classes.text")
 local Class = require("loveter.classes.class")
 
 -- LuaFormatter off
 
 local Form = {}
 Form.__index = Form
-Form.parents = Class.registerParents({Meta, Background})
+Form.parents = Class.registerParents({Meta, Background, Text})
 setmetatable(Form, Form.parents)
 
 ---@class Form
@@ -15,11 +16,10 @@ setmetatable(Form, Form.parents)
 function Form.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
-	local instance = setmetatable(Class.inject({b, m}), Form)
-	instance.font                 = settings.font or love.graphics.getFont()
-	instance.fontColor            = settings.fontColor or {1,1,1}
+	local t = Text.new(settings)
+	local instance = setmetatable(Class.inject({b, m, t}), Form)
+
 	instance.fontPreviewColor     = settings.fontPreviewColor or {1,1,1}
-	instance.text                 = ""
 	instance.previewText          = settings.previewText or ""
 	instance.clickedInForm        = false
 	instance.byteoffset           = utf8.offset(instance.text, 0)
