@@ -1,5 +1,6 @@
 local c = require("loveter.classes.container")
 local b = require("loveter.classes.box")
+local newSlider = require("loveter.classes.slider")
 local newButton = require("loveter.classes.button")
 local newForm = require("loveter.classes.form")
 local newText = require("loveter.classes.text")
@@ -19,6 +20,7 @@ Mixed.container = {}
 Mixed.buttons = {}
 Mixed.forms = {}
 Mixed.texts = {}
+Mixed.sliders = {}
 
 local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 50)
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
@@ -87,6 +89,7 @@ function Mixed:login()
 								backgroundColor = {0.2,0.2,0.2}
 							})
 	self.texts.t1 = newText.new({text = "SIGN IN", font = textFont})
+	self.sliders.s1 = newSlider.new({})
 
 	self.container = c.new({
 		x = 10,
@@ -109,6 +112,7 @@ function Mixed:login()
 			self.forms.f1,
 			self.forms.f2,
 			self.buttons.b1,
+			self.sliders.s1,
 			c.new({
 				spacing = {fixed = 10},
 				children = {
@@ -172,6 +176,10 @@ end
 
 function Mixed:mousereleased(x, y, b, istouch, presses)
 	self.container:mousereleased(x, y, b, istouch, presses)
+end
+
+function Mixed:mousemoved(x, y, dx, dy, istouch)
+	self.container:mousemoved(x, y, dx, dy, istouch)
 end
 
 function Mixed:update(dt)

@@ -58,6 +58,12 @@ function Test:mousereleased(x, y, button, istouch, presses)
 	end
 end
 
+function Test:mousemoved(x, y, dx, dy, istouch)
+	if selectedGroup[selectedGroupIndex].mousemoved then
+		selectedGroup[selectedGroupIndex]:mousemoved(x, y, dx, dy, istouch)
+	end
+end
+
 function Test:update(dt)
 	selectedGroup[selectedGroupIndex]:update(dt)
 end

@@ -1,33 +1,33 @@
+local Meta = require("loveter.classes.meta")
+local Background = require("loveter.classes.background")
+local Class = require("loveter.classes.class")
+
 -- LuaFormatter off
 
 local Slider = {}
-local Slider_meta = {}
 Slider.__index = Slider
-Slider_meta.__index = Slider_meta
-setmetatable(Slider, Slider_meta)
-setmetatable(Slider_meta, PositionElements)
+Slider.parents = Class.registerParents({Meta, Background})
+setmetatable(Slider, Slider.parents)
 
 ---@class Slider
----@param settings {x: integer, y: integer, w: integer, h: integer, groove_h: integer, knob_w: integer, knob_h: integer, sliderRangeMax: integer, sliderRangeMin: integer, startValue: integer, offset: {top: integer, bottom: integer, left: integer, right: integer}}
+---@param settings {x: integer, y: integer, w: integer, h: integer, groove_h: integer, knob_w: integer, knob_h: integer, sliderRangeMax: integer, sliderRangeMin: integer, startValue: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: {default: boolean, fill: boolean, texture: boolean}, borderColor: table, fillet: integer}
 function Slider.new(settings)
-	local instance = setmetatable({}, Slider)
+	local b = Background.new(settings)
+	local m = Meta.new(settings)
+	local instance = setmetatable(Class.inject({b, m}), Slider)
+	instance.w = settings.w or 100
+	instance.h = settings.h or 80
 	instance.startValue     = settings.startValue or 0
-	instance.x              = settings.x or 0
-	instance.y              = settings.y or 0
-	instance.w              = settings.w or 100
-	instance.h              = settings.h or 50
 	instance.groove_h       = settings.groove_h or 8
 	instance.knob_w         = settings.knob_w or 20
 	instance.knob_h         = settings.knob_h or 20
-	instance.knob_x         = instance.x + (settings.w - instance.knob_w) * instance.startValue
+	instance.knob_x         = instance.x + (instance.w - instance.knob_w) * instance.startValue
 	instance.start_x        = settings.x or 0
 	instance.start_y        = settings.y or 0
 	instance.sliderRangeMax = settings.sliderRangeMax or 1
 	instance.sliderRangeMin = settings.sliderRangeMin or 0
-	instance.offset         = Slider.getOffset(settings)
 	instance.active         = false
 	instance.parentDimensions = {}
-
 	return instance
 end
 

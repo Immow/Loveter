@@ -18,6 +18,10 @@ function love.mousereleased(x, y, button, istouch, presses)
 	Test:mousereleased(x, y, button, istouch, presses)
 end
 
+function love.mousemoved(x, y, dx, dy, istouch)
+	Test:mousemoved(x, y, dx, dy, istouch)
+end
+
 function love.textinput(t)
 	Test:textinput(t)
 end

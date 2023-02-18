@@ -248,6 +248,12 @@ function Container:mousereleased(x, y, button, istouch, presses)
 	end
 end
 
+function Container:mousemoved(x, y, dx, dy, istouch)
+	for _, child in pairs(self.children) do
+		child:mousemoved(x, y, dx, dy, istouch)
+	end
+end
+
 function Container:keypressed(key, scancode, isrepeat)
 	for _, child in pairs(self.children) do
 		child:keypressed(key, scancode, isrepeat)

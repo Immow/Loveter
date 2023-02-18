@@ -37,6 +37,9 @@ end
 function Meta:mousereleased()
 end
 
+function Meta:mousemoved()
+end
+
 function Meta:keypressed()
 end
 
