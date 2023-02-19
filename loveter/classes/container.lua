@@ -1,6 +1,8 @@
-local Meta = require("loveter.classes.meta")
-local Background = require("loveter.classes.background")
-local Class = require("loveter.classes.class")
+local folder_path = (...):match("(.-)[^%.]+$")
+
+local Meta = require(folder_path.."meta")
+local Background = require(folder_path.."background")
+local Class = require(folder_path.."class")
 
 local Container = {}
 
@@ -47,6 +49,9 @@ function Container:positionChildren()
 			y = self.y + (self.h - self.totalChildHeight - self.padding.bottom)
 		elseif self.align.top then
 			y = self.y + self.padding.top
+		elseif self.align.center then
+			x = self.x + self.w / 2 - self.totalChildWidth / 2
+			y = self.y + self.h / 2 - self.totalChildHeight / 2
 		end
 
 		for i, child in ipairs(self.children) do
@@ -84,6 +89,9 @@ function Container:positionChildren()
 			x = self.x + (self.w - self.totalChildWidth) - self.padding.right
 		elseif self.align.left then
 			x = self.x + self.padding.left
+		elseif self.align.center then
+			x = self.x + self.w / 2 - self.totalChildWidth / 2
+			y = self.y + self.h / 2 - self.totalChildHeight / 2
 		end
 
 		for i, child in ipairs(self.children) do
@@ -167,10 +175,6 @@ function Container:giveChildrenParentDimensions(w, h)
 		if child.children then
 			if child.stretch then
 				if child.stretch.x > 0 and child.w < w then
-					if self.id == 1 then
-						-- print("self.w: "..self.w.." w: "..w)
-						print(self.totalUnstretchedWidth)
-					end
 					child.w = ((w - (self.padding.left + self.padding.right)) - self.totalUnstretchedWidth) / 100 * child.stretch.x
 				end
 				if child.stretch.y > 0 and child.h < h then
@@ -188,8 +192,6 @@ function Container:setWidth()
 	if self.mainAlign.horizontal then
 		if self.spacing.fixed then
 			w = w + self.spacing.fixed * (#self.children -1)
-		elseif self.spacing.between or self.spacing.evenly then
-			if self.w < w then error("container <= to childs width in combination with spacing") end
 		end
 	end
 	
@@ -206,8 +208,6 @@ function Container:setHeight()
 	if self.mainAlign.vertical then
 		if self.spacing.fixed then
 			h = h + self.spacing.fixed * (#self.children -1)
-		elseif self.spacing.between or self.spacing.evenly then
-			if self.h < h then error("container <= to childs width in combination with spacing") end
 		end
 	end
 	

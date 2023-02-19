@@ -1,9 +1,8 @@
 local Background = {}
 Background.__index = Background
 
-
 ---@class Background
----@param settings {backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: {default: boolean, fill: boolean, texture: boolean}, borderColor: table, fillet: integer}
+---@param settings {backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: {default: boolean, fill: boolean, texture: boolean}, borderColor: table, fillet: integer} | ...
 function Background.new(settings)
 	local instance = setmetatable({}, Background)
 	instance.backgroundColor      = settings.backgroundColor or {1,1,1,1}

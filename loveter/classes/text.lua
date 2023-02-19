@@ -1,5 +1,7 @@
-local Meta = require("loveter.classes.meta")
-local Class = require("loveter.classes.class")
+local folder_path = (...):match("(.-)[^%.]+$")
+
+local Meta = require(folder_path.."meta")
+local Class = require(folder_path.."class")
 
 -- LuaFormatter off
 
@@ -9,13 +11,13 @@ Text.parents = Class.registerParents({Meta})
 setmetatable(Text, Text.parents)
 
 ---@class Text
----@param settings {x: integer, y: integer, textAlign: table, textOffset: integer, font: love.Font, text: string, id: string, position: string, fontColor: table} | ...
+---@param settings {x: integer, y: integer, textAlign: table, textOffset: integer, font: love.Font, text: string, id: string, position: string, textColor: table} | ...
 function Text.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
 
 	instance.font              = settings.font or love.graphics.getFont()
-	instance.fontColor         = settings.fontColor or {1,1,1}
+	instance.textColor         = settings.textColor or {1,1,1}
 	instance.text              = settings.text or ""
 	instance.textAlign         = settings.textAlign or {left = true}
 	instance.textOffset        = settings.textOffset or 0
@@ -48,7 +50,7 @@ function Text:update(dt)
 end
 
 function Text:drawText()
-	love.graphics.setColor(self.fontColor)
+	love.graphics.setColor(self.textColor)
 	love.graphics.setFont(self.font)
 	love.graphics.print(self.text, self.x, self.y)
 end

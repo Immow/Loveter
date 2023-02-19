@@ -1,6 +1,8 @@
-local Meta = require("loveter.classes.meta")
-local Background = require("loveter.classes.background")
-local Class = require("loveter.classes.class")
+local folder_path = (...):match("(.-)[^%.]+$")
+
+local Meta = require(folder_path.."meta")
+local Background = require(folder_path.."background")
+local Class = require(folder_path.."class")
 
 -- LuaFormatter off
 
@@ -10,13 +12,13 @@ Slider.parents = Class.registerParents({Meta, Background})
 setmetatable(Slider, Slider.parents)
 
 ---@class Slider
----@param settings {x: integer, y: integer, w: integer, h: integer, groove_h: integer, knob_w: integer, knob_h: integer, sliderRangeMax: integer, sliderRangeMin: integer, startValue: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: {default: boolean, fill: boolean, texture: boolean}, borderColor: table, fillet: integer}
+---@param settings {x: integer, y: integer, w: integer, h: integer, groove_h: integer, knob_w: integer, knob_h: integer, sliderRangeMax: integer, sliderRangeMin: integer, startValue: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: {default: boolean, fill: boolean, texture: boolean}, knobBorderColor: table, fillet: integer, grooveColor: table, knobColor: table}
 function Slider.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({b, m}), Slider)
 	instance.w = settings.w or 100
-	instance.h = settings.h or 80
+	instance.h = settings.h or 40
 	instance.startValue     = settings.startValue or 0
 	instance.groove_h       = settings.groove_h or 8
 	instance.knob_w         = settings.knob_w or 20
@@ -28,6 +30,9 @@ function Slider.new(settings)
 	instance.sliderRangeMin = settings.sliderRangeMin or 0
 	instance.active         = false
 	instance.parentDimensions = {}
+    instance.grooveColor = settings.grooveColor or {0.3, 0.3, 0.3}
+    instance.knobColor = settings.knobColor or {1, 1, 1}
+    instance.knobBorderColor = settings.knobBorderColor or {0, 0, 0}
 	return instance
 end
 
@@ -102,16 +107,16 @@ function Slider:update(dt)
 end
 
 function Slider:drawGroove()
-	love.graphics.setColor(0.5,0.5,0.5) -- change
+	love.graphics.setColor(self.grooveColor)
 	local y = self.y + self.h / 2 - self.groove_h / 2
 	love.graphics.rectangle("fill", self.x, y, self.w, self.groove_h)
 end
 
 function Slider:drawKnob()
 	local y = self.y + self.h / 2 - self.knob_h / 2
-	love.graphics.setColor(1,1,1)  -- change
+	love.graphics.setColor(self.knobColor)
 	love.graphics.rectangle("fill", self.knob_x, y, self.knob_w, self.knob_h)
-	love.graphics.setColor(0,0,0)  -- change
+	love.graphics.setColor(self.knobBorderColor)
 	love.graphics.rectangle("line", self.knob_x, y, self.knob_w, self.knob_h)
 	love.graphics.setColor(1, 1, 1)
 end

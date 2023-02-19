@@ -1,6 +1,8 @@
-local Meta = require("loveter.classes.meta")
-local Background = require("loveter.classes.background")
-local Class = require("loveter.classes.class")
+local folder_path = (...):match("(.-)[^%.]+$")
+
+local Meta = require(folder_path.."meta")
+local Background = require(folder_path.."background")
+local Class = require(folder_path.."class")
 
 -- LuaFormatter off
 

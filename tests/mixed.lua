@@ -10,7 +10,7 @@ local selectedTest = 1
 local Mixed = {
 	tests = {
 		"default",
-		-- "test",
+		"stretch",
 		"login",
 	}
 }
@@ -25,6 +25,79 @@ Mixed.sliders = {}
 local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 50)
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
 
+function Mixed:stretch()
+	self.buttons.b1 = newButton.new({
+		w = 300,
+		h = 50,
+		text = "SIGN IN",
+		func = function() return print("test") end,
+		font = buttonFont,
+		textColor = {0,0,0},
+		clickEffect = true
+	})
+
+	self.buttons.b2 = newButton.new({
+		w = 300,
+		h = 50,
+		text = "SIGN IN",
+		func = function() return print("test") end,
+		font = buttonFont,
+		textColor = {0,0,0},
+		clickEffect = true
+	})
+
+	self.buttons.b3 = newButton.new({
+		w = 300,
+		h = 50,
+		text = "SIGN IN",
+		func = function() return print("test") end,
+		font = buttonFont,
+		textColor = {0,0,0},
+		clickEffect = true
+	})
+
+	self.buttons.b4 = newButton.new({
+		w = 300,
+		h = 50,
+		text = "SIGN IN",
+		func = function() return print("test") end,
+		font = buttonFont,
+		textColor = {0,0,0},
+		clickEffect = true
+	})
+
+	self.container = c.new({
+		w = love.graphics.getWidth(),
+		h = love.graphics.getHeight(),
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				h = 100,
+				stretch = {x = 100},
+				children = {},
+			}),
+			c.new({
+				align = {center = true},
+				stretch = {x = 100, y = 100},
+				mainAlign = {vertical = true},
+				spacing = {fixed = 10},
+				children = {
+					self.buttons.b1,
+					self.buttons.b2,
+					self.buttons.b3,
+				}
+			}),
+			c.new({
+				h = 100,
+				align = {bottom = true, right = true},
+				stretch = {x = 100},
+				children = {self.buttons.b4,},
+			}),
+		}
+	})
+
+	self.container:load()
+end
 function Mixed:default()
 	local background = love.graphics.newImage("loveter/assets/image/b3.png")
 	self.buttons.b1 = newButton.new({
@@ -36,7 +109,7 @@ function Mixed:default()
 		-- backgroundImage = background,
 		-- backgroundImageStyle = {texture = true},
 		font = buttonFont,
-		fontColor = {0,0,0},
+		textColor = {0,0,0},
 		clickEffect = true
 	})
 
@@ -52,8 +125,6 @@ function Mixed:default()
 
 	self.container:load()
 end
-
-
 
 function Mixed:login()
 	local user = love.graphics.newImage("loveter/assets/icon/user.png")
@@ -124,7 +195,7 @@ function Mixed:login()
 					newButton.new({
 						text = "Create an account",
 						func = function() return print("Create an account") end,
-						fontColor = {0.6, 0.1, 0.1},
+						textColor = {0.6, 0.1, 0.1},
 						backgroundColor = {0,0,0,0},
 					})
 				}

@@ -1,8 +1,10 @@
+local folder_path = (...):match("(.-)[^%.]+$")
+
 local utf8 = require("utf8")
-local Meta = require("loveter.classes.meta")
-local Background = require("loveter.classes.background")
-local Text = require("loveter.classes.text")
-local Class = require("loveter.classes.class")
+local Meta = require(folder_path.."meta")
+local Background = require(folder_path.."background")
+local Class = require(folder_path.."class")
+local Text = require(folder_path.."text")
 
 -- LuaFormatter off
 
@@ -12,7 +14,7 @@ Form.parents = Class.registerParents({Meta, Background, Text})
 setmetatable(Form, Form.parents)
 
 ---@class Form
----@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, borderColor: table, fontColor: table}
+---@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, borderColor: table, textColor: table}
 function Form.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
@@ -101,7 +103,7 @@ function Form:drawPreviewText()
 end
 
 function Form:drawText()
-	love.graphics.setColor(self.fontColor)
+	love.graphics.setColor(self.textColor)
 	love.graphics.print(self.text, self.x + self.offset, self.y + self:centerTextY())
 end
 

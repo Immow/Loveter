@@ -73,19 +73,18 @@ end
 
 function Meta.setAlign(settings)
 	if not settings.align then
-		return {top = true, bottom = false, left = true, right = false}
+		return {top = true, bottom = false, left = true, right = false, center = false}
 	else
 		local top = settings.align.top or false
 		local bottom = settings.align.bottom or false
 		local left = settings.align.left or false
 		local right = settings.align.right or false
-		-- local center_x = settings.align.center.x or false
-		-- local center_y = settings.align.center.y or false
+		local center = settings.align.center or false
 
-		if not top and not bottom then top = true end
-		if not left and not right then left = true end
+		if not top and not bottom and not center then top = true end
+		if not left and not right and not center then left = true end
 
-		return {top = top, bottom = bottom, left = left, right = right}
+		return {top = top, bottom = bottom, left = left, right = right, center = center}
 	end
 end
 
