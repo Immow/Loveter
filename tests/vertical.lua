@@ -43,10 +43,6 @@ Vertical.container = {}
 
 
 function Vertical:default()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -63,10 +59,6 @@ function Vertical:default()
 end
 
 function Vertical:wrap()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -82,10 +74,6 @@ function Vertical:wrap()
 end
 
 function Vertical:paddingTop()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -103,10 +91,6 @@ function Vertical:paddingTop()
 end
 
 function Vertical:alignBottom()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -124,10 +108,6 @@ function Vertical:alignBottom()
 end
 
 function Vertical:alignBottomPaddingBottom()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -146,10 +126,6 @@ function Vertical:alignBottomPaddingBottom()
 end
 
 function Vertical:fixedHeighthSpaceEvenely()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -167,10 +143,6 @@ function Vertical:fixedHeighthSpaceEvenely()
 end
 
 function Vertical:fixedHeighthSpaceEvenelyPaddingTop()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -190,10 +162,7 @@ end
 
 
 function Vertical:fixedHeighthSpaceEvenelyPaddingTopBottom()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-	
+
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -212,10 +181,6 @@ function Vertical:fixedHeighthSpaceEvenelyPaddingTopBottom()
 end
 
 function Vertical:fixedHeighthSpaceBetween()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -233,10 +198,6 @@ function Vertical:fixedHeighthSpaceBetween()
 end
 
 function Vertical:fixedHeighthSpaceBetweenPaddingTopBottom()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -255,10 +216,6 @@ function Vertical:fixedHeighthSpaceBetweenPaddingTopBottom()
 end
 
 function Vertical:fixedHeighthSpaceFixed()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -276,10 +233,6 @@ function Vertical:fixedHeighthSpaceFixed()
 end
 
 function Vertical:wrapSpaceFixed()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -296,10 +249,6 @@ function Vertical:wrapSpaceFixed()
 end
 
 function Vertical:wrapPaddingTop()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -316,10 +265,6 @@ function Vertical:wrapPaddingTop()
 end
 
 function Vertical:wrapPaddingTopBottom()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -336,10 +281,6 @@ function Vertical:wrapPaddingTopBottom()
 end
 
 function Vertical:TwoContainersFixedHeight()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -361,10 +302,6 @@ function Vertical:TwoContainersFixedHeight()
 end
 
 function Vertical:TwoContainersFixedHeightPaddingTop()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -387,10 +324,6 @@ function Vertical:TwoContainersFixedHeightPaddingTop()
 end
 
 function Vertical:TwoContainersFixedHeightPaddingBottomAlignBottom()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -414,10 +347,6 @@ function Vertical:TwoContainersFixedHeightPaddingBottomAlignBottom()
 end
 
 function Vertical:TwoContainersWrap()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -438,10 +367,6 @@ function Vertical:TwoContainersWrap()
 end
 
 function Vertical:TwoContainersWrapDoublePadding()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -463,10 +388,6 @@ function Vertical:TwoContainersWrapDoublePadding()
 end
 
 function Vertical:TwoContainersSpaceEvenly()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -489,10 +410,6 @@ function Vertical:TwoContainersSpaceEvenly()
 end
 
 function Vertical:TwoContainersSpaceEvenlyPadding()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		x = 10,
 		y = 200,
@@ -516,10 +433,6 @@ function Vertical:TwoContainersSpaceEvenlyPadding()
 end
 
 function Vertical:TripleContainerStretch()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -643,10 +556,7 @@ function Vertical:fixedHeightpaddingTopBottomLeftRight()
 end
 
 function Vertical:wrapPaddingTopBottomLeftRight()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-	self.container = c.new({
+self.container = c.new({
 		x = 10,
 		y = 200,
 		mainAlign = {vertical = true},
@@ -662,10 +572,6 @@ function Vertical:wrapPaddingTopBottomLeftRight()
 end
 
 function Vertical:fixedHeightSpaceEvenelyPaddingTopBottomLeftRight()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -684,10 +590,6 @@ function Vertical:fixedHeightSpaceEvenelyPaddingTopBottomLeftRight()
 end
 
 function Vertical:fixedHeightSpaceEvenelyPaddingTopBottomRight()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -706,11 +608,6 @@ function Vertical:fixedHeightSpaceEvenelyPaddingTopBottomRight()
 end
 
 function Vertical:fixedHeightSpaceEvenelyPaddingTopBottomTwoContainers()
-	self.boxes.b1 = b.new({w = 50, h = 50})
-	self.boxes.b2 = b.new({w = 100, h = 50})
-	self.boxes.b3 = b.new({w = 50, h = 50})
-	self.boxes.b4 = b.new({w = 50, h = 50})
-
 	self.container = c.new({
 		h = 400,
 		x = 10,
@@ -735,6 +632,10 @@ function Vertical:fixedHeightSpaceEvenelyPaddingTopBottomTwoContainers()
 end
 
 function Vertical:load()
+	self.boxes.b1 = b.new({w = 50, h = 50})
+	self.boxes.b2 = b.new({w = 100, h = 50})
+	self.boxes.b3 = b.new({w = 50, h = 50})
+	self.boxes.b4 = b.new({w = 50, h = 50})
 	self:default()
 end
 
