@@ -25,45 +25,91 @@ Mixed.sliders = {}
 local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 50)
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
 
-function Mixed:stretch()
+function Mixed:default()
+	local background = love.graphics.newImage("loveter/assets/image/b3.png")
 	self.buttons.b1 = newButton.new({
 		w = 300,
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
+		-- backgroundColor = {0.6, 0.1, 0.1},
+		-- backgroundImage = background,
+		-- backgroundImageStyle = {texture = true},
+		-- hoverStyle = {grow = {x = 5, y = 5}},
+		hoverStyle = {nudge = {x = 30}},
+		-- hoverColor = {1,0,0},
+		font = buttonFont,
+		-- textColor = {0,0,0},
+		-- clickEffect = true
+	})
+
+	self.buttons.b = newButton.new({
+		w = 300,
+		h = 50,
+		text = "SIGN IN",
+		func = function() return print("test") end,
+		-- backgroundColor = {0.6, 0.1, 0.1},
+		-- backgroundImage = background,
+		-- backgroundImageStyle = {texture = true},
+		-- hoverStyle = {grow = {x = 5, y = 5}},
+		hoverStyle = {nudge = {x = 30}},
+		-- hoverColor = {1,0,0},
+		font = buttonFont,
+		-- textColor = {0,0,0},
+		-- clickEffect = true
+	})
+
+	self.container = c.new({
+		x = 200,
+		y = 200,
+		-- backgroundImage = background,
+		-- backgroundImageStyle = {texture = true},
+		children = {
+			self.buttons.b1,
+		}
+	})
+
+	self.container:load()
+end
+
+function Mixed:stretch()
+	self.buttons.b1 = newButton.new({
+		w = 300,
+		h = 50,
+		text = "FOX",
+		func = function() return print("test") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		clickEffect = true
+		hoverStyle = {nudge = {x = 30}},
 	})
 
 	self.buttons.b2 = newButton.new({
 		w = 300,
 		h = 50,
-		text = "SIGN IN",
+		text = "COW",
 		func = function() return print("test") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		clickEffect = true
+		hoverStyle = {nudge = {x = 30}},
 	})
 
 	self.buttons.b3 = newButton.new({
 		w = 300,
 		h = 50,
-		text = "SIGN IN",
+		text = "DOG",
 		func = function() return print("test") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		clickEffect = true
+		hoverStyle = {nudge = {x = 30}},
 	})
 
 	self.buttons.b4 = newButton.new({
 		w = 300,
 		h = 50,
-		text = "SIGN IN",
+		text = "HORSE",
 		func = function() return print("test") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		clickEffect = true
 	})
 
 	self.container = c.new({
@@ -98,33 +144,6 @@ function Mixed:stretch()
 
 	self.container:load()
 end
-function Mixed:default()
-	local background = love.graphics.newImage("loveter/assets/image/b3.png")
-	self.buttons.b1 = newButton.new({
-		w = 300,
-		h = 50,
-		text = "SIGN IN",
-		func = function() return print("test") end,
-		-- backgroundColor = {0.6, 0.1, 0.1},
-		-- backgroundImage = background,
-		-- backgroundImageStyle = {texture = true},
-		font = buttonFont,
-		textColor = {0,0,0},
-		clickEffect = true
-	})
-
-	self.container = c.new({
-		x = 10,
-		y = 200,
-		-- backgroundImage = background,
-		-- backgroundImageStyle = {texture = true},
-		children = {
-			self.buttons.b1,
-		}
-	})
-
-	self.container:load()
-end
 
 function Mixed:login()
 	local user = love.graphics.newImage("loveter/assets/icon/user.png")
@@ -136,10 +155,12 @@ function Mixed:login()
 									text = "SIGN IN",
 									func = function() return print("test") end,
 									backgroundColor = {0.6, 0.1, 0.1},
+									hoverStyle = {nudge = {x = 30}},
 									-- backgroundImage = background,
 									-- backgroundImageStyle = {texture = true},
 									font = buttonFont,
-									clickEffect = true
+									-- clickEffect = true,
+									-- hoverStyle = {nudge = {x = 30}}
 								})
 	self.forms.f1 = newForm.new({
 								w = 300,

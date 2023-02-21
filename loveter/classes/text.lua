@@ -17,9 +17,9 @@ function Text.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
 
 	instance.font              = settings.font or love.graphics.getFont()
-	instance.textColor         = settings.textColor or {1,1,1}
+	instance.textColor         = settings.textColor or {0,0,0}
 	instance.text              = settings.text or ""
-	instance.textAlign         = settings.textAlign or {left = true}
+	-- instance.textAlign         = settings.textAlign or nil
 	instance.textOffset        = settings.textOffset or 0
 	return instance
 end
@@ -48,6 +48,14 @@ end
 function Text:update(dt)
 
 end
+
+-- function Text:setAlign()
+-- 	if self.textAlign then
+
+-- 	else
+
+-- 	end
+-- end
 
 function Text:drawText()
 	love.graphics.setColor(self.textColor)

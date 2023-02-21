@@ -171,6 +171,7 @@ function Container:getChildrenTotalHeight()
 end
 
 function Container:giveChildrenParentDimensions(w, h)
+	print("giveChildrenParentDimensions")
 	for i, child in ipairs(self.children) do
 		if child.children then
 			if child.stretch then
@@ -230,9 +231,13 @@ function Container:load()
 	self:positionChildren()
 
 	for _, child in pairs(self.children) do
+		-- if self.setShapePosition then
+		-- 	self:setShapePosition()
+		-- end
 		if not child.children then
 			child:load()
 		end
+		child:loadPreset()
 	end
 end
 

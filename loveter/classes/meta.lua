@@ -98,6 +98,17 @@ function Meta.setStretch(settings)
 	end
 end
 
+function Meta:loadPreset()
+	if self.children then
+		for _, child in pairs(self.children) do
+			if child.setShapePosition then
+				child:setShapePosition()
+			end
+			child:loadPreset()
+		end
+	end
+end
+
 function Meta:debug()
 	if DEBUG then
 		love.graphics.setFont(FONT)
