@@ -171,7 +171,6 @@ function Container:getChildrenTotalHeight()
 end
 
 function Container:giveChildrenParentDimensions(w, h)
-	print("giveChildrenParentDimensions")
 	for i, child in ipairs(self.children) do
 		if child.children then
 			if child.stretch then
