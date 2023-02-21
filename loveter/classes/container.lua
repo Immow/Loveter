@@ -164,7 +164,6 @@ function Container:getChildrenTotalHeight()
 				self.totalUnstretchedHeight = self.totalUnstretchedHeight + child.h
 			end
 		end
-
 	end
 
 	return h
@@ -230,12 +229,6 @@ function Container:load()
 	self:positionChildren()
 
 	for _, child in pairs(self.children) do
-		-- if self.setShapePosition then
-		-- 	self:setShapePosition()
-		-- end
-		if not child.children then
-			child:load()
-		end
 		child:loadPreset()
 	end
 end

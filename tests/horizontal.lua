@@ -6,36 +6,35 @@ local selectedTest = 1
 local Horizontal = {
 	tests = {
 		"default",
-		-- "wrap",
-		-- "alignRight",
-		-- "paddingLeft",
-		-- "alignRightPaddingRight",
-		-- "fixedWidthSpaceEvenely",
-		-- "fixedWidthSpaceEvenelyPaddingLeft",
-		-- "fixedWidthSpaceEvenelyPaddingLeftRight",
-		-- "fixedWidthSpaceFixed",
-		-- "wrapSpaceFixed",
-		-- "fixedWidthSpaceBetween",
-		-- "fixedWidthSpaceBetweenPaddingLeftAndRight",
-		-- "wrapPaddingLeft",
-		-- "wrapPaddingLeftRight",
-		-- "TwoContainersFixedWidth",
-		-- "TwoContainersFixedWidthPaddingLeft",
-		-- "TwoContainersFixedWidthPaddingRightAlignRight",
-		-- "TwoContainersWrap",
-		-- "TwoContainersWrapDoublePadding",
-		-- "TwoContainersSpaceEvenly",
-		-- "TwoContainersSpaceEvenlyPadding",
+		"wrap",
+		"alignRight",
+		"paddingLeft",
+		"alignRightPaddingRight",
+		"fixedWidthSpaceEvenely",
+		"fixedWidthSpaceEvenelyPaddingLeft",
+		"fixedWidthSpaceEvenelyPaddingLeftRight",
+		"fixedWidthSpaceFixed",
+		"wrapSpaceFixed",
+		"fixedWidthSpaceBetween",
+		"fixedWidthSpaceBetweenPaddingLeftAndRight",
+		"wrapPaddingLeft",
+		"wrapPaddingLeftRight",
+		"TwoContainersFixedWidth",
+		"TwoContainersFixedWidthPaddingLeft",
+		"TwoContainersFixedWidthPaddingRightAlignRight",
+		"TwoContainersWrap",
+		"TwoContainersWrapDoublePadding",
+		"TwoContainersSpaceEvenly",
+		"TwoContainersSpaceEvenlyPadding",
 		"TripleContainerStretch",
 		"ThreeContainersStretch",
 		"ThreeContainersStretchOnlyContainers",
-		"FourContainersStretch",
-		-- "fixedWidthpaddingTopBottom",
-		-- "fixedWidthpaddingTopBottomLeftRight",
-		-- "wrapPaddingTopBottomLeftRight",
-		-- "fixedWidthSpaceEvenelyPaddingTopBottomLeftRight",
-		-- "fixedWidthSpaceEvenelyPaddingTopBottomRight",
-		-- "fixedWidthSpaceEvenelyPaddingTopBottomTwoContainers",
+		"fixedWidthpaddingTopBottom",
+		"fixedWidthpaddingTopBottomLeftRight",
+		"wrapPaddingTopBottomLeftRight",
+		"fixedWidthSpaceEvenelyPaddingTopBottomLeftRight",
+		"fixedWidthSpaceEvenelyPaddingTopBottomRight",
+		"fixedWidthSpaceEvenelyPaddingTopBottomTwoContainers",
 	}
 }
 
@@ -451,36 +450,6 @@ function Horizontal:ThreeContainersStretch()
 						stretch = {x = 100},
 						children = {
 							self.boxes.b1,
-						}
-					}),
-				}
-			}),
-		}
-	})
-
-	self.container:load()
-end
-
-function Horizontal:FourContainersStretch()
-
-	self.container = c.new({
-		w = 400,
-		x = 10,
-		y = 200,
-		children = {
-			c.new({
-				stretch = {x = 50},
-				children = {
-					-- self.boxes.b2,
-					c.new({
-						stretch = {x = 50},
-						children = {
-							c.new({
-								stretch = {x = 100},
-								children = {
-									self.boxes.b1,
-								}
-							}),
 						}
 					}),
 				}

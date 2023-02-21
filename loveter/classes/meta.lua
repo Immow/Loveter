@@ -106,6 +106,10 @@ function Meta:loadPreset()
 			end
 			child:loadPreset()
 		end
+	else
+		if self.setShapePosition then
+			self:setShapePosition()
+		end
 	end
 end
 

@@ -73,7 +73,7 @@ end
 function Button:load()
 	self.start_x = self.x
 	self.start_y = self.y
-	self:setShapePosition()
+	-- self:setShapePosition()
 	self:setQuad()
 	self:cleanUp()
 end
