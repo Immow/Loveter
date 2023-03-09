@@ -27,13 +27,17 @@ local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf
 
 function Mixed:default()
 	local background = love.graphics.newImage("loveter/assets/image/b4.png")
+	local button_idle = love.graphics.newImage("loveter/assets/image/idle.png")
+	local button_hover = love.graphics.newImage("loveter/assets/image/hover.png")
+	local button_holding = love.graphics.newImage("loveter/assets/image/holding.png")
 	self.buttons.b1 = newButton.new({
 		w = 300,
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
-		-- backgroundColor = {0.6, 0.1, 0.1},
-		backgroundImage = background,
+		-- backgroundColors = { idle = {0.6, 0.1, 0.1} },
+		-- backgroundImage = background,
+		backgroundImages = {idle = button_idle, hover = button_hover, holding = button_holding},
 		-- backgroundImageStyle = {texture = true},
 		-- hoverStyle = {grow = {x = 5, y = 5}},
 		-- hoverStyle = {nudge = {x = 30}},
