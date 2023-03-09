@@ -30,7 +30,7 @@ function Button.new(settings)
 	instance.pressedColor           = settings.hoverColor or {0, 1, 0}
 	instance.growOffset             = settings.growOffset or 5 -- decide on a better name
 	instance.backgroundColors       = settings.backgroundColors or nil
-	instance.defaultBackgroundColor = {1,1,1,1}
+	instance.defaultBackgroundColors = {idle = {1,1,1,1}, hover = {0.5,0.5,0.5,1}, holding = {0.2,0.2,0.2,1}}
 	instance.backgroundImages       = settings.backgroundImages or nil
 	instance.backgroundImageStyle   = settings.backgroundImageStyle or {default          = true}
 	instance.borderColor            = settings.borderColor or {0,0,0}
@@ -127,8 +127,10 @@ end
 function Button:drawBackgroundColor()
 	if self.backgroundColors and self.backgroundColors[self.state] then
 		love.graphics.setColor(self.backgroundColors[self.state])
+	elseif self.backgroundImages ~= nil then
+		love.graphics.setColor(1,1,1,1)
 	else
-		love.graphics.setColor(self.defaultBackgroundColor)
+		love.graphics.setColor(self.defaultBackgroundColors[self.state])
 	end
 end
 
@@ -139,21 +141,19 @@ function Button:setQuad()
 end
 
 function Button:drawBackgroundImages()
-	if next(self.backgroundImages) ~= nil then
 	-- local imgW = self.backgroundImage:getWidth()
 	-- local imgH = self.backgroundImage:getHeight()
-		if self.backgroundImageStyle.default then
-			if self.backgroundImages[self.state] then
-				love.graphics.draw(self.backgroundImages[self.state], self.x + self.offsetX, self.y + self.offsetY)
-			else
-				love.graphics.draw(self.backgroundImage["idle"], self.x + self.offsetX, self.y + self.offsetY)
-			end
-		elseif self.backgroundImageStyle.fill then
-			-- love.graphics.draw(self.backgroundImage, self.x + self.offsetX, self.y + self.offsetY, 0, self.w / imgW, self.h / imgH)
-		elseif self.backgroundImageStyle.texture then
-			-- self.backgroundImage:setWrap("repeat")
-			-- love.graphics.draw(self.backgroundImage, self.quad, self.x + self.offsetX, self.y + self.offsetY)
+	if self.backgroundImageStyle.default then
+		if self.backgroundImages[self.state] then
+			love.graphics.draw(self.backgroundImages[self.state], self.x + self.offsetX, self.y + self.offsetY)
+		else
+			love.graphics.draw(self.backgroundImage["idle"], self.x + self.offsetX, self.y + self.offsetY)
 		end
+	elseif self.backgroundImageStyle.fill then
+		-- love.graphics.draw(self.backgroundImage, self.x + self.offsetX, self.y + self.offsetY, 0, self.w / imgW, self.h / imgH)
+	elseif self.backgroundImageStyle.texture then
+		-- self.backgroundImage:setWrap("repeat")
+		-- love.graphics.draw(self.backgroundImage, self.quad, self.x + self.offsetX, self.y + self.offsetY)
 	end
 end
 
@@ -182,7 +182,7 @@ function Button:drawText()
 end
 
 function Button:drawState()
-	if next(self.backgroundImages) == nil then
+	if self.backgroundImages == nil then
 		love.graphics.rectangle("fill", self.x + self.offsetX, self.y + self.offsetY, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
 	else
 		-- local imgW = self.backgroundImage:getWidth()
