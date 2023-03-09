@@ -1,35 +1,37 @@
 require("globals")
-
-local Test = require("test")
+State_Manager = require("libs.state_manager.state_manager")
+Tprint = require("libs.tprint")
 
 function love.load()
-	Test:load()
-end
-
-function love.keypressed(key, scancode, isrepeat)
-	Test:keypressed(key, scancode, isrepeat)
-end
-
-function love.mousepressed(x, y, button, istouch, presses)
-	Test:mousepressed(x, y, button, istouch, presses)
-end
-
-function love.mousereleased(x, y, button, istouch, presses)
-	Test:mousereleased(x, y, button, istouch, presses)
-end
-
-function love.mousemoved(x, y, dx, dy, istouch)
-	Test:mousemoved(x, y, dx, dy, istouch)
-end
-
-function love.textinput(t)
-	Test:textinput(t)
+	State_Manager.requireState("test")
+	State_Manager.setState("testing")
+	State_Manager:load()
 end
 
 function love.update(dt)
-	Test:update(dt)
+	State_Manager:update(dt)
 end
 
 function love.draw()
-	Test:draw()
+	State_Manager:draw()
+end
+
+function love.mousepressed(mx, my, mouseButton)
+	State_Manager:mousepressed(mx, my, mouseButton)
+end
+
+function love.mousereleased(mx, my, mouseButton)
+	State_Manager:mousereleased(mx, my, mouseButton)
+end
+
+function love.mousemoved(x, y, dx, dy, istouch)
+	State_Manager:mousemoved(x, y, dx, dy, istouch)
+end
+
+function love.keypressed(key,scancode,isrepeat)
+	State_Manager:keypressed(key,scancode,isrepeat)
+end
+
+function love.textinput(t)
+	State_Manager:textinput(t)
 end

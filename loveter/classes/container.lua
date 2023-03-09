@@ -94,7 +94,7 @@ function Container:positionChildren()
 			y = self.y + self.h / 2 - self.totalChildHeight / 2
 		end
 
-		for i, child in ipairs(self.children) do
+		for _, child in ipairs(self.children) do
 			if self.align.top then
 				y = self.y + self.padding.top
 			elseif self.align.bottom then
@@ -172,14 +172,12 @@ end
 function Container:giveChildrenParentDimensions(w, h)
 	for i, child in ipairs(self.children) do
 		if child.children then
-			if child.stretch then
 				if child.stretch.x > 0 and child.w < w then
 					child.w = ((w - (self.padding.left + self.padding.right)) - self.totalUnstretchedWidth) / 100 * child.stretch.x
 				end
 				if child.stretch.y > 0 and child.h < h then
 					child.h = ((h - (self.padding.top + self.padding.bottom)) - self.totalUnstretchedHeight) / 100 * child.stretch.y
 				end
-			end
 			child:giveChildrenParentDimensions(child.w, child.h)
 		end
 	end
@@ -228,9 +226,9 @@ function Container:load()
 	self:giveChildrenParentDimensions(self.w, self.h)
 	self:positionChildren()
 
-	for _, child in pairs(self.children) do
-		child:loadPreset()
-	end
+	-- for _, child in pairs(self.children) do
+	-- 	child:loadPreset()
+	-- end
 end
 
 function Container:mousepressed(x, y, button, istouch, presses)

@@ -4,6 +4,8 @@ local horizontal = require("tests.horizontal")
 local vertical = require("tests.vertical")
 local mixed = require("tests.mixed")
 
+State_Manager.addState("testing", "test")
+
 local Test = {}
 
 local selectedGroup = {vertical, horizontal, mixed}

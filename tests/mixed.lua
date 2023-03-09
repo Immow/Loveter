@@ -26,18 +26,20 @@ local textFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf",
 local buttonFont = love.graphics.newFont("loveter/assets/font/Roboto-Regular.ttf", 20)
 
 function Mixed:default()
-	local background = love.graphics.newImage("loveter/assets/image/b3.png")
+	local background = love.graphics.newImage("loveter/assets/image/b4.png")
 	self.buttons.b1 = newButton.new({
 		w = 300,
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
 		-- backgroundColor = {0.6, 0.1, 0.1},
-		-- backgroundImage = background,
+		backgroundImage = background,
 		-- backgroundImageStyle = {texture = true},
 		-- hoverStyle = {grow = {x = 5, y = 5}},
-		hoverStyle = {nudge = {x = 30}},
+		-- hoverStyle = {nudge = {x = 30}},
 		-- hoverColor = {1,0,0},
+		-- textAlign = {center = true},
+		-- textAlign = {right = true},
 		font = buttonFont,
 		-- textColor = {0,0,0},
 		-- clickEffect = true
@@ -77,7 +79,7 @@ function Mixed:stretch()
 		w = 300,
 		h = 50,
 		text = "FOX",
-		func = function() return print("test") end,
+		func = function() return print("FOX") end,
 		font = buttonFont,
 		textColor = {0,0,0},
 		hoverStyle = {nudge = {x = 30}},
@@ -87,7 +89,7 @@ function Mixed:stretch()
 		w = 300,
 		h = 50,
 		text = "COW",
-		func = function() return print("test") end,
+		func = function() return print("COW") end,
 		font = buttonFont,
 		textColor = {0,0,0},
 		hoverStyle = {nudge = {x = 30}},
@@ -97,7 +99,7 @@ function Mixed:stretch()
 		w = 300,
 		h = 50,
 		text = "DOG",
-		func = function() return print("test") end,
+		func = function() return print("DOG") end,
 		font = buttonFont,
 		textColor = {0,0,0},
 		hoverStyle = {nudge = {x = 30}},

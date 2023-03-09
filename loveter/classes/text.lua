@@ -19,7 +19,7 @@ function Text.new(settings)
 	instance.font              = settings.font or love.graphics.getFont()
 	instance.textColor         = settings.textColor or {0,0,0}
 	instance.text              = settings.text or ""
-	-- instance.textAlign         = settings.textAlign or nil
+	instance.textAlign         = settings.textAlign or {left = true}
 	instance.textOffset        = settings.textOffset or 0
 	return instance
 end

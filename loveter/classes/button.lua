@@ -13,16 +13,7 @@ Button.__index = Button
 Button.parents = Class.registerParents({Meta, Text, HoverStyle})
 setmetatable(Button, Button.parents)
 
-local function setHoverStyle(settings)
-	if not settings.hoverStyle then return
-		nil
-	elseif settings.hoverStyle.grow then
-		local x = settings.hoverStyle.grow.x or 0
-		local y = settings.hoverStyle.grow.y or 0
-		return {hoverStyle = {grow = {x = x, y = y}}}
-	end
-end
-
+local clickedButton = {}
 function Button.new(settings)
 	-- local b = Background.new(settings)
 	local m = Meta.new(settings)
@@ -33,30 +24,24 @@ function Button.new(settings)
 	instance.w                    = settings.w or instance.font:getWidth(settings.text)
 	instance.h                    = settings.h or instance.font:getHeight()
 	instance.func                 = settings.func
-	instance.argument             = settings.argument
-	instance.circleX              = 0
-	instance.circleY              = 0
-	instance.circleRadius         = 0
-	instance.run                  = false
-	instance.speed                = 1000
-	instance.offsetCircle         = 10
-	-- instance.hover                = false
 	instance.fillet               = settings.fillet or 0
-	instance.clickEffect          = settings.clickEffect or false
-	instance.animationColor       = settings.animationColor or {0.5, 0.5, 0.5}
 	instance.hoverStyle           = settings.hoverStyle or nil
-	instance.hoverColor           = settings.hoverColor or nil
-	instance.growOffset           = settings.growOffset or 5
+	instance.hoverColor           = settings.hoverColor or {1, 0, 0}
+	instance.pressedColor         = settings.hoverColor or {0, 1, 0}
+	instance.growOffset           = settings.growOffset or 5 -- decide on a better name
 	instance.backgroundColor      = settings.backgroundColor or {0.5,0.5,0.5,1}
 	instance.backgroundImage      = settings.backgroundImage or nil
 	instance.backgroundImageStyle = settings.backgroundImageStyle or {default = true}
 	instance.borderColor          = settings.borderColor or {0,0,0}
 	instance.quad                 = nil
-	instance.fillet               = settings.fillet or 0
 	instance.offsetX              = settings.offsetX or 0
 	instance.offsetY              = settings.offsetY or 0
 	instance.growX                = settings.growX or 0
 	instance.growY                = settings.growY or 0
+	instance.textOffset           = settings.textOffset or 5
+	instance.state                = "idle"
+	instance.toggle               = false
+
 	return instance
 end
 
@@ -66,58 +51,46 @@ end
 
 function Button:runFunction()
 	if self.func then
-		self.func(self.argument)
+		self:func()
 	end
+	self.toggle = not self.toggle
 end
 
 function Button:load()
 	self.start_x = self.x
 	self.start_y = self.y
-	-- self:setShapePosition()
 	self:setQuad()
-	self:cleanUp()
 end
 
-function Button:cleanUp()
-	self.run = false
-	self.circleRadius = 0
-end
 
 function Button:mousepressed(x,y,button,istouch,presses)
 	if button == 1 then
 		if self:containsPoint(x, y) then
-			self.circleX = x
-			self.circleY = y
-			-- self.run = true
-			-- Sound:play("click", "click", Settings.sfxVolume, 1)
+			self.state = "pressed"
+			clickedButton = self
 		end
 	end
 end
 
 function Button:mousereleased(x,y,button,istouch,presses)
 	if self:containsPoint(x, y) then
-		-- self:cleanUp()
-		self.run = true
-		self:runFunction()
+		if clickedButton == self then
+			self:runFunction()
+			clickedButton = {}
+		end
 	end
 end
 
-function Button:updateClickEffect(dt)
-	if self.clickEffect and self.run and self.circleRadius < self.w + self.offsetCircle then
-		self.circleRadius = self.circleRadius + self.speed * dt
-	end
-
-	if self.clickEffect and self.run and self.circleRadius >= self.w + self.offsetCircle then
-		self:cleanUp()
-	end
-end
-
-function Button:hover()
+function Button:setState()
 	local mx, my = love.mouse.getPosition()
 	if self:containsPoint(mx, my) then
-		return true
+		if love.mouse.isDown(1) then
+			self.state = "holding"
+		else
+			self.state = "hover"
+		end
 	else
-		return false
+		self.state = "idle"
 	end
 end
 
@@ -132,19 +105,22 @@ function HoverStyle:getHoverStyle()
 	end
 end
 
-function Button:update(dt)
-	self:updateClickEffect(dt)
+function Button:resize()
+	if self.state ~= "idle" then
+		if self.hoverStyle then
+			if self.hoverStyle.nudge then
+				self.offsetX = self.hoverStyle.nudge.x
+			end
+		end
+	else
+		self.offsetX = 0
+		self.offsetY = 0
+	end
 end
 
-function Button:drawClickAnimation()
-	if self.run then
-		local rec = function() love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.fillet, self.fillet) end
-		love.graphics.stencil(rec, "replace", 1)
-		love.graphics.setStencilTest("greater", 0)
-		love.graphics.setColor(self.animationColor)
-		love.graphics.circle("fill", self.circleX, self.circleY, self.circleRadius)
-		love.graphics.setStencilTest()
-	end
+function Button:update(dt)
+	self:resize()
+	self:setState()
 end
 
 function Button:drawBackgroundColor()
@@ -179,63 +155,44 @@ function Button:drawBackgroundImage()
 	end
 end
 
-function Button:setShapePosition()
-	if self.hoverStyle then
-		if self.hoverStyle.grow then
-			self.offsetX = - (self.hoverStyle.grow.x or 0)
-			self.offsetY = - (self.hoverStyle.grow.y or 0)
-			self.growX   = self.offsetX * -2
-			self.growY   = self.offsetY * -2
-		elseif self.hoverStyle.nudge then
-			self.offsetX = (self.hoverStyle.nudge.x or 0)
-			self.offsetY = (self.hoverStyle.nudge.y or 0)
-		end
-	end
-end
-
--- function Button:drawText()
--- 	love.graphics.setColor(self.textColor)
--- 	love.graphics.setFont(self.font)
--- 	love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
--- end
-
 function Button:drawText()
 	love.graphics.setColor(self.textColor)
 	love.graphics.setFont(self.font)
-	if self:hover() then
-		if self.textAlign then
-			if self.textAlign.left then
-				love.graphics.print(self.text, self.x, self.y + self:centerTextY())
-			elseif self.textAlign.right then
-				love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text), self.y + self:centerTextY())
-			end
+	if self.state == "idle" then
+		if self.textAlign.left then
+			love.graphics.print(self.text, self.x + self.textOffset, self.y + self:centerTextY())
+		elseif self.textAlign.right then
+			love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text) - self.textOffset, self.y + self:centerTextY())
+		elseif self.textAlign.center then
+			love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
 		end
-		love.graphics.print(self.text, self.x + self:centerTextX() + self.offsetX, self.y + self:centerTextY() + self.offsetY)
-	else
-		love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
+	end
+
+	if self.state == "hover" or self.state == "holding" then
+		if self.textAlign.left then
+			love.graphics.print(self.text, self.x + self.offsetX + self.textOffset, self.y + self:centerTextY() + self.offsetY)
+		elseif self.textAlign.right then
+			love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text) + self.offsetX, self.y + self:centerTextY() + self.offsetY)
+		elseif self.textAlign.center then
+			love.graphics.print(self.text, self.x + self:centerTextX() + self.offsetX, self.y + self:centerTextY() + self.offsetY)
+		end
 	end
 end
 
-function Button:drawHover()
-	if self:hover() then
-		if self.hoverColor then
-			love.graphics.setColor(self.hoverColor)
-		else
-			love.graphics.setColor(self.backgroundColor)
-		end
-		love.graphics.rectangle("fill", self.x + self.offsetX, self.y + self.offsetY, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
+function Button:drawState()
+	if self.state == "hover" then
+		love.graphics.setColor(self.hoverColor)
+	elseif self.state == "holding" then
+		love.graphics.setColor(self.pressedColor)
 	else
 		love.graphics.setColor(self.backgroundColor)
-		love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, self.fillet, self.fillet)
 	end
+	love.graphics.rectangle("fill", self.x + self.offsetX, self.y + self.offsetY, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
 end
 
 function Button:draw()
 	-- self:drawBackgroundColor()
-	-- self:drawBackgroundImage()
-	-- self:drawHover()
-	-- self:drawClickAnimation()
-	self:drawHover()
+	self:drawState()
 	self:drawText()
 end
 
