@@ -1,10 +1,11 @@
-local folder_path = (...):match("(.-)[^%.]+$")
+local class_path = (...):match("(.-)[^%.]+$")
+local module_path = (...):gsub("[^.]+$", ""):gsub("[^.]+%.$", "")
 
-local Meta = require(folder_path.."meta")
--- local Background = require(folder_path.."background")
-local Class = require(folder_path.."class")
-local Text = require(folder_path.."text")
-local HoverStyle = require(folder_path.."hoverstyle")
+local Meta = require(class_path.."meta")
+local Class = require(class_path.."class")
+local Text = require(class_path.."text")
+local HoverStyle = require(class_path.."hoverstyle")
+local Offset = require(module_path.."modules.offset")
 
 -- LuaFormatter off
 
@@ -15,7 +16,6 @@ setmetatable(Button, Button.parents)
 
 local clickedButton = {}
 function Button.new(settings)
-	-- local b = Background.new(settings)
 	local m = Meta.new(settings)
 	local t = Text.new(settings)
 	local h = HoverStyle.new(settings)
@@ -32,7 +32,7 @@ function Button.new(settings)
 	instance.backgroundColors       = settings.backgroundColors or nil
 	instance.defaultBackgroundColors = {idle = {1,1,1,1}, hover = {0.5,0.5,0.5,1}, holding = {0.2,0.2,0.2,1}}
 	instance.backgroundImages       = settings.backgroundImages or nil
-	instance.backgroundImageStyle   = settings.backgroundImageStyle or {default          = true}
+	instance.backgroundImageStyle   = settings.backgroundImageStyle or {default = true}
 	instance.borderColor            = settings.borderColor or {0,0,0}
 	instance.quad                   = nil
 	instance.offsetX                = settings.offsetX or 0
@@ -40,6 +40,7 @@ function Button.new(settings)
 	instance.growX                  = settings.growX or 0
 	instance.growY                  = settings.growY or 0
 	instance.textOffset             = settings.textOffset or 5
+	instance.offset                 = Offset.set(settings)
 	instance.state                  = "idle"
 	instance.toggle                 = false
 
@@ -95,32 +96,7 @@ function Button:setState()
 	end
 end
 
-function HoverStyle:getHoverStyle()
-	if self.hoverStyle then
-		if self.hoverStyle.highlight then
-			love.graphics.setColor(self.hoverColor)
-			love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-		elseif self.hoverStyle.grow then
-			love.graphics.rectangle("fill", self.x - self.growOffset, self.y - self.growOffset, self.w + self.growOffset * 2, self.h + self.growOffset * 2)
-		end
-	end
-end
-
-function Button:resize()
-	if self.state ~= "idle" then
-		if self.hoverStyle then
-			if self.hoverStyle.nudge then
-				self.offsetX = self.hoverStyle.nudge.x
-			end
-		end
-	else
-		self.offsetX = 0
-		self.offsetY = 0
-	end
-end
-
 function Button:update(dt)
-	self:resize()
 	self:setState()
 end
 
@@ -140,23 +116,6 @@ function Button:setQuad()
 	end
 end
 
-function Button:drawBackgroundImages()
-	-- local imgW = self.backgroundImage:getWidth()
-	-- local imgH = self.backgroundImage:getHeight()
-	if self.backgroundImageStyle.default then
-		if self.backgroundImages[self.state] then
-			love.graphics.draw(self.backgroundImages[self.state], self.x + self.offsetX, self.y + self.offsetY)
-		else
-			love.graphics.draw(self.backgroundImage["idle"], self.x + self.offsetX, self.y + self.offsetY)
-		end
-	elseif self.backgroundImageStyle.fill then
-		-- love.graphics.draw(self.backgroundImage, self.x + self.offsetX, self.y + self.offsetY, 0, self.w / imgW, self.h / imgH)
-	elseif self.backgroundImageStyle.texture then
-		-- self.backgroundImage:setWrap("repeat")
-		-- love.graphics.draw(self.backgroundImage, self.quad, self.x + self.offsetX, self.y + self.offsetY)
-	end
-end
-
 function Button:drawText()
 	love.graphics.setColor(self.textColor)
 	love.graphics.setFont(self.font)
@@ -172,32 +131,35 @@ function Button:drawText()
 
 	if self.state == "hover" or self.state == "holding" then
 		if self.textAlign.left then
-			love.graphics.print(self.text, self.x + self.offsetX + self.textOffset, self.y + self:centerTextY() + self.offsetY)
+			love.graphics.print(self.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self:centerTextY() + self.offset[self.state].y)
 		elseif self.textAlign.right then
-			love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text) + self.offsetX, self.y + self:centerTextY() + self.offsetY)
+			love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text) + self.offset[self.state].x, self.y + self:centerTextY() + self.offset[self.state].y)
 		elseif self.textAlign.center then
-			love.graphics.print(self.text, self.x + self:centerTextX() + self.offsetX, self.y + self:centerTextY() + self.offsetY)
+			love.graphics.print(self.text, self.x + self:centerTextX() + self.offset[self.state].x, self.y + self:centerTextY() + self.offset[self.state].y)
 		end
 	end
 end
 
 function Button:drawState()
 	if self.backgroundImages == nil then
-		love.graphics.rectangle("fill", self.x + self.offsetX, self.y + self.offsetY, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
+		love.graphics.rectangle("fill", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
 	else
-		-- local imgW = self.backgroundImage:getWidth()
-		-- local imgH = self.backgroundImage:getHeight()
+		local imgW = self.backgroundImages["idle"]:getWidth() --TODO bug, does not work
+		local imgH = self.backgroundImages["idle"]:getHeight() --TODO bug, does not work
 		if self.backgroundImageStyle.default then
 			if self.backgroundImages[self.state] then
-				love.graphics.draw(self.backgroundImages[self.state], self.x + self.offsetX, self.y + self.offsetY)
+				love.graphics.draw(self.backgroundImages[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
 			else
-				love.graphics.draw(self.backgroundImages["idle"], self.x + self.offsetX, self.y + self.offsetY)
+				love.graphics.draw(self.backgroundImages["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
 			end
-		-- elseif self.backgroundImageStyle.fill then
-				-- love.graphics.draw(self.backgroundImage, self.x + self.offsetX, self.y + self.offsetY, 0, self.w / imgW, self.h / imgH)
-		-- elseif self.backgroundImageStyle.texture then
-				-- self.backgroundImage:setWrap("repeat")
-				-- love.graphics.draw(self.backgroundImage, self.quad, self.x + self.offsetX, self.y + self.offsetY)
+		elseif self.backgroundImageStyle.fill then
+				if self.backgroundImages[self.state] then
+					love.graphics.draw(self.backgroundImages[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w / imgW, self.h / imgH)
+				else
+					love.graphics.draw(self.backgroundImages["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w / imgW, self.h / imgH)
+				end
+		elseif self.backgroundImageStyle.texture then
+			--
 		end
 	end
 end
