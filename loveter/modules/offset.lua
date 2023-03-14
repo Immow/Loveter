@@ -1,38 +1,30 @@
 local Offset = {}
 
-function Offset.set(settings)
-	if not settings.offset then
-		return {idle = {x = 0, y = 0}, hover = {x = 0, y = 0}, pressed = {x = 0, y = 0}, holding = {x = 0, y = 0}}
+Offset.__index = Offset
+
+---@class Offset
+function Offset.new(settings)
+	local instance = setmetatable({}, Offset)
+
+	if not settings then
+		instance = {idle = {x = 0, y = 0}, hover = {x = 0, y = 0}, pressed = {x = 0, y = 0}, holding = {x = 0, y = 0}}
+		return instance
 	else
-		local idle
-		local hover
-		local pressed
-		local holding
-		if not settings.offset.idle then
-			idle = {x = 0, y = 0}
-		else
-			idle = {x = settings.offset.idle.x, y = settings.offset.idle.y}
+		local states = {"idle", "hover", "pressed", "holding"}
+
+		for _, value in pairs(states) do
+			if not settings[value] then
+				instance[value] = {}
+				instance[value].x = 0
+				instance[value].y = 0
+			else
+				instance[value] = {}
+				instance[value].x = settings[value].x or 0
+				instance[value].y = settings[value].y or 0
+			end
 		end
 
-		if not settings.offset.hover then
-			hover = {x = 0, y = 0}
-		else
-			hover = {x = settings.offset.hover.x, y = settings.offset.hover.y}
-		end
-
-		if not settings.offset.pressed then
-			pressed = {x = 0, y = 0}
-		else
-			pressed = {x = settings.offset.pressed.x, y = settings.offset.pressed.y}
-		end
-
-		if not settings.offset.holding then
-			holding = {x = 0, y = 0}
-		else
-			holding = {x = settings.offset.holding.x, y = settings.offset.holding.y}
-		end
-
-		return {idle = idle, hover = hover, pressed = pressed, holding = holding}
+		return instance
 	end
 end
 

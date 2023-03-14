@@ -32,20 +32,21 @@ function Mixed:default()
 	local button_holding = love.graphics.newImage("loveter/assets/image/holding.png")
 	-- local button_hover_big = love.graphics.newImage("loveter/assets/image/hover_big.png")
 	self.buttons.b1 = newButton.new({
-		w = 250,
+		w = 300,
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
 		-- backgroundColors = { idle = {0.1, 0.1, 0.1}, hover = {1,0,0} },
 		-- backgroundImage = background,
-		-- backgroundImages = {idle = button_idle, hover = button_hover},
+		image = {idle = button_idle, hover = button_hover},
+		-- color = {idle = {1,0,0,1}},
 		-- backgroundImageStyle = {fill = true},
 		-- hoverStyle = {grow = {x = 5, y = 5}},
 		-- hoverStyle = {nudge = {x = 30}},
 		-- hoverColor = {1,0,0},
 		textAlign = {center = true},
 		-- textAlign = {right = true},
-		offset = {hover = {x = 50, y = 0}, holding = {x = -50, y = 5}},
+		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
 		font = buttonFont,
 		-- textColor = {0,0,0},
 		-- clickEffect = true
@@ -88,7 +89,7 @@ function Mixed:stretch()
 		func = function() return print("FOX") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		hoverStyle = {nudge = {x = 30}},
+		offset = {hover = {x = 30}},
 	})
 
 	self.buttons.b2 = newButton.new({
@@ -98,7 +99,7 @@ function Mixed:stretch()
 		func = function() return print("COW") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		hoverStyle = {nudge = {x = 30}},
+		offset = {hover = {x = 30}},
 	})
 
 	self.buttons.b3 = newButton.new({
@@ -108,7 +109,7 @@ function Mixed:stretch()
 		func = function() return print("DOG") end,
 		font = buttonFont,
 		textColor = {0,0,0},
-		hoverStyle = {nudge = {x = 30}},
+		offset = {hover = {x = 30}},
 	})
 
 	self.buttons.b4 = newButton.new({

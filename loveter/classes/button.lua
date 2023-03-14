@@ -6,6 +6,7 @@ local Class = require(class_path.."class")
 local Text = require(class_path.."text")
 local HoverStyle = require(class_path.."hoverstyle")
 local Offset = require(module_path.."modules.offset")
+local Color = require(module_path.."modules.color")
 
 -- LuaFormatter off
 
@@ -31,18 +32,17 @@ function Button.new(settings)
 	instance.growOffset             = settings.growOffset or 5 -- decide on a better name
 	instance.backgroundColors       = settings.backgroundColors or nil
 	instance.defaultBackgroundColors = {idle = {1,1,1,1}, hover = {0.5,0.5,0.5,1}, holding = {0.2,0.2,0.2,1}}
-	instance.backgroundImages       = settings.backgroundImages or nil
+	instance.image                   = settings.image or nil
 	instance.backgroundImageStyle   = settings.backgroundImageStyle or {default = true}
 	instance.borderColor            = settings.borderColor or {0,0,0}
 	instance.quad                   = nil
-	instance.offsetX                = settings.offsetX or 0
-	instance.offsetY                = settings.offsetY or 0
 	instance.growX                  = settings.growX or 0
 	instance.growY                  = settings.growY or 0
 	instance.textOffset             = settings.textOffset or 5
-	instance.offset                 = Offset.set(settings)
+	instance.offset                 = Offset.new(settings.offset)
 	instance.state                  = "idle"
 	instance.toggle                 = false
+	instance.color                  = Color.new({color = settings.color, image = settings.image})
 
 	return instance
 end
@@ -103,7 +103,7 @@ end
 function Button:drawBackgroundColor()
 	if self.backgroundColors and self.backgroundColors[self.state] then
 		love.graphics.setColor(self.backgroundColors[self.state])
-	elseif self.backgroundImages ~= nil then
+	elseif self.image ~= nil then
 		love.graphics.setColor(1,1,1,1)
 	else
 		love.graphics.setColor(self.defaultBackgroundColors[self.state])
@@ -141,31 +141,33 @@ function Button:drawText()
 end
 
 function Button:drawState()
-	if self.backgroundImages == nil then
+	if self.image == nil then
 		love.graphics.rectangle("fill", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
 	else
-		local imgW = self.backgroundImages["idle"]:getWidth() --TODO bug, does not work
-		local imgH = self.backgroundImages["idle"]:getHeight() --TODO bug, does not work
-		if self.backgroundImageStyle.default then
-			if self.backgroundImages[self.state] then
-				love.graphics.draw(self.backgroundImages[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
-			else
-				love.graphics.draw(self.backgroundImages["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
-			end
-		elseif self.backgroundImageStyle.fill then
-				if self.backgroundImages[self.state] then
-					love.graphics.draw(self.backgroundImages[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w / imgW, self.h / imgH)
+		local imgW = self.image["idle"]:getWidth() --TODO bug, does not work
+		local imgH = self.image["idle"]:getHeight() --TODO bug, does not work
+
+		if self.backgroundImageStyle.fill then
+				if self.image[self.state] then
+					love.graphics.draw(self.image[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w / imgW, self.h / imgH)
 				else
-					love.graphics.draw(self.backgroundImages["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w / imgW, self.h / imgH)
+					love.graphics.draw(self.image["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w / imgW, self.h / imgH)
 				end
 		elseif self.backgroundImageStyle.texture then
 			--
+		else
+			if self.image[self.state] then
+				love.graphics.draw(self.image[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
+			else
+				love.graphics.draw(self.image["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
+			end
 		end
 	end
 end
 
 function Button:draw()
-	self:drawBackgroundColor()
+	-- self:drawBackgroundColor()
+	self.color:draw(self.state)
 	self:drawState()
 	self:drawText()
 end
