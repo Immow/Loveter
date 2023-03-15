@@ -41,6 +41,58 @@ end
 
 -- LuaFormatter on
 
+function Container.setOffset(settings)
+	if not settings.offset then
+		return {top = 0, bottom = 0, left = 0, right = 0}
+	else
+		local top = settings.offset.top or 0
+		local bottom = settings.offset.bottom or 0
+		local left = settings.offset.left or 0
+		local right = settings.offset.right or 0
+		return {top = top, bottom = bottom, left = left, right = right}
+	end
+end
+
+function Container.setPadding(settings)
+	if not settings.padding then
+		return {top = 0, bottom = 0, left = 0, right = 0}
+	else
+		local top = settings.padding.top or 0
+		local bottom = settings.padding.bottom or 0
+		local left = settings.padding.left or 0
+		local right = settings.padding.right or 0
+
+		return {top = top, bottom = bottom, left = left, right = right}
+	end
+end
+
+function Container.setAlign(settings)
+	if not settings.align then
+		return {top = true, bottom = false, left = true, right = false, center = false}
+	else
+		local top = settings.align.top or false
+		local bottom = settings.align.bottom or false
+		local left = settings.align.left or false
+		local right = settings.align.right or false
+		local center = settings.align.center or false
+
+		if not top and not bottom and not center then top = true end
+		if not left and not right and not center then left = true end
+
+		return {top = top, bottom = bottom, left = left, right = right, center = center}
+	end
+end
+
+function Container.setStretch(settings)
+	if not settings.stretch then
+		return {x = 0, y = 0}
+	else
+		local x = settings.stretch.x or 0
+		local y = settings.stretch.y or 0
+		return {x = x, y = y}
+	end
+end
+
 function Container:positionChildren()
 	if self.mainAlign.vertical then
 		local y = 0

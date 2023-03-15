@@ -1,12 +1,11 @@
 local class_path = (...):match("(.-)[^%.]+$")
-local module_path = (...):gsub("[^.]+$", ""):gsub("[^.]+%.$", "")
 
 local Meta = require(class_path.."meta")
 local Class = require(class_path.."class")
 local Text = require(class_path.."text")
 local HoverStyle = require(class_path.."hoverstyle")
-local Offset = require(module_path.."modules.offset")
-local Color = require(module_path.."modules.color")
+local Offset = require(class_path.."offset")
+local Color = require(class_path.."color")
 
 -- LuaFormatter off
 
@@ -18,31 +17,26 @@ setmetatable(Button, Button.parents)
 local clickedButton = {}
 function Button.new(settings)
 	local m = Meta.new(settings)
-	local t = Text.new(settings)
-	local h = HoverStyle.new(settings)
-	local instance = setmetatable(Class.inject({m, t, h}), Button)
+	-- local t = Text.new(settings)
+	local instance = setmetatable(Class.inject({m}), Button)
 	
-	instance.w                      = settings.w or instance.font:getWidth(settings.text)
-	instance.h                      = settings.h or instance.font:getHeight()
-	instance.func                   = settings.func
-	instance.fillet                 = settings.fillet or 0
-	instance.hoverStyle             = settings.hoverStyle or nil
-	instance.hoverColor             = settings.hoverColor or {1, 0, 0}
-	instance.pressedColor           = settings.hoverColor or {0, 1, 0}
-	instance.growOffset             = settings.growOffset or 5 -- decide on a better name
-	instance.backgroundColors       = settings.backgroundColors or nil
-	instance.defaultBackgroundColors = {idle = {1,1,1,1}, hover = {0.5,0.5,0.5,1}, holding = {0.2,0.2,0.2,1}}
+	instance.text                    = Text.new(settings)
+	instance.w                       = settings.w or instance.text.font:getWidth(settings.text) -- TODO Rethink this, perhaps a text object that has FN / containsPoint feature. We can use that in button as well
+	instance.h                       = settings.h or instance.text.font:getHeight() -- TODO Same as above
+	instance.func                    = settings.func
+	instance.fillet                  = settings.fillet or 0
 	instance.image                   = settings.image or nil
-	instance.backgroundImageStyle   = settings.backgroundImageStyle or {default = true}
-	instance.borderColor            = settings.borderColor or {0,0,0}
-	instance.quad                   = nil
-	instance.growX                  = settings.growX or 0
-	instance.growY                  = settings.growY or 0
-	instance.textOffset             = settings.textOffset or 5
-	instance.offset                 = Offset.new(settings.offset)
-	instance.state                  = "idle"
-	instance.toggle                 = false
-	instance.color                  = Color.new({color = settings.color, image = settings.image})
+	instance.backgroundImageStyle    = settings.backgroundImageStyle or {default = true}
+	instance.quad                    = nil
+	instance.textOffset              = settings.textOffset or 5
+	instance.offset                  = Offset.new(settings.offset)
+	instance.state                   = "idle"
+	instance.toggle                  = false
+	instance.color                   = Color.new({color = settings.color})
+	instance.borderColor             = Color.new({borderColor = settings.borderColor})
+	-- instance.textColor               = Color.new({textColor = settings.textColor})
+	instance.imageColor              = Color.new({imageColor = settings.imageColor})
+	instance.border                  = settings.border or false
 
 	return instance
 end
@@ -65,17 +59,17 @@ function Button:load()
 end
 
 
-function Button:mousepressed(x,y,button,istouch,presses)
+function Button:mousepressed(mx,my,button,istouch,presses)
 	if button == 1 then
-		if self:containsPoint(x, y) then
+		if self:containsPoint(mx, my) then
 			self.state = "pressed"
 			clickedButton = self
 		end
 	end
 end
 
-function Button:mousereleased(x,y,button,istouch,presses)
-	if self:containsPoint(x, y) then
+function Button:mousereleased(mx,my,button,istouch,presses)
+	if self:containsPoint(mx, my) then
 		if clickedButton == self then
 			self:runFunction()
 			clickedButton = {}
@@ -100,16 +94,6 @@ function Button:update(dt)
 	self:setState()
 end
 
-function Button:drawBackgroundColor()
-	if self.backgroundColors and self.backgroundColors[self.state] then
-		love.graphics.setColor(self.backgroundColors[self.state])
-	elseif self.image ~= nil then
-		love.graphics.setColor(1,1,1,1)
-	else
-		love.graphics.setColor(self.defaultBackgroundColors[self.state])
-	end
-end
-
 function Button:setQuad()
 	if self.backgroundImage then
 		self.quad = love.graphics.newQuad(0, 0, self.w, self.h, self.backgroundImage)
@@ -117,35 +101,37 @@ function Button:setQuad()
 end
 
 function Button:drawText()
-	love.graphics.setColor(self.textColor)
-	love.graphics.setFont(self.font)
+	self.text.textColor:draw(self.state)
+	love.graphics.setFont(self.text.font)
 	if self.state == "idle" then
-		if self.textAlign.left then
-			love.graphics.print(self.text, self.x + self.textOffset, self.y + self:centerTextY())
-		elseif self.textAlign.right then
-			love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text) - self.textOffset, self.y + self:centerTextY())
-		elseif self.textAlign.center then
-			love.graphics.print(self.text, self.x + self:centerTextX(), self.y + self:centerTextY())
+		if self.text.textAlign.left then
+			love.graphics.print(self.text.text, self.x + self.text.textOffset, self.y + self.text:centerTextY())
+		elseif self.text.textAlign.right then
+			love.graphics.print(self.text.text, self.x + self.w - self.text.font:getWidth(self.text.text) - self.text.textOffset, self.y + self.text:centerTextY())
+		elseif self.text.textAlign.center then
+			love.graphics.print(self.text.text, self.x + self.text:centerTextX(), self.y + self.text:centerTextY())
 		end
 	end
 
 	if self.state == "hover" or self.state == "holding" then
-		if self.textAlign.left then
-			love.graphics.print(self.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self:centerTextY() + self.offset[self.state].y)
-		elseif self.textAlign.right then
-			love.graphics.print(self.text, self.x + self.w - self.font:getWidth(self.text) + self.offset[self.state].x, self.y + self:centerTextY() + self.offset[self.state].y)
-		elseif self.textAlign.center then
-			love.graphics.print(self.text, self.x + self:centerTextX() + self.offset[self.state].x, self.y + self:centerTextY() + self.offset[self.state].y)
+		if self.text.textAlign.left then
+			love.graphics.print(self.text.text, self.x + self.offset[self.state].x + self.text.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y)
+		elseif self.text.textAlign.right then
+			love.graphics.print(self.text.text, self.x + self.w - self.text.font:getWidth(self.text.text) + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
+		elseif self.text.textAlign.center then
+			love.graphics.print(self.text.text, self.x + self.text:centerTextX() + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
 		end
 	end
 end
 
 function Button:drawState()
 	if self.image == nil then
-		love.graphics.rectangle("fill", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w + self.growX, self.h + self.growY, self.fillet, self.fillet)
+		self.color:draw(self.state)
+		love.graphics.rectangle("fill", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w, self.h, self.fillet, self.fillet)
 	else
-		local imgW = self.image["idle"]:getWidth() --TODO bug, does not work
-		local imgH = self.image["idle"]:getHeight() --TODO bug, does not work
+		self.imageColor:draw(self.state)
+		local imgW = self.image["idle"]:getWidth()
+		local imgH = self.image["idle"]:getHeight()
 
 		if self.backgroundImageStyle.fill then
 				if self.image[self.state] then
@@ -165,10 +151,19 @@ function Button:drawState()
 	end
 end
 
+function Button:drawBorder()
+	self.borderColor:draw(self.state)
+	if self.border then
+		love.graphics.rectangle("line", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w , self.h, self.fillet, self.fillet)
+	end
+end
+
+
+
 function Button:draw()
-	-- self:drawBackgroundColor()
-	self.color:draw(self.state)
+
 	self:drawState()
+	self:drawBorder()
 	self:drawText()
 end
 

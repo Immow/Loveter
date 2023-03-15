@@ -38,13 +38,16 @@ function Mixed:default()
 		func = function() return print("test") end,
 		-- backgroundColors = { idle = {0.1, 0.1, 0.1}, hover = {1,0,0} },
 		-- backgroundImage = background,
-		image = {idle = button_idle, hover = button_hover},
+		-- image = {idle = button_idle, hover = button_hover},
 		-- color = {idle = {1,0,0,1}},
 		-- backgroundImageStyle = {fill = true},
 		-- hoverStyle = {grow = {x = 5, y = 5}},
 		-- hoverStyle = {nudge = {x = 30}},
 		-- hoverColor = {1,0,0},
+		border = true,
+		-- borderColor = {idle = {1,0,0,1}},
 		textAlign = {center = true},
+		textColor = {idle = {1,0,0,1}},
 		-- textAlign = {right = true},
 		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
 		font = buttonFont,
@@ -217,17 +220,17 @@ function Mixed:login()
 			c.new({
 				spacing = {fixed = 10},
 				children = {
-					newButton.new({
-						text = "Forgot password?",
-						func = function() return print("Forgot password?") end,
-						backgroundColor = {0,0,0,0}
-					}),
-					newButton.new({
-						text = "Create an account",
-						func = function() return print("Create an account") end,
-						textColor = {0.6, 0.1, 0.1},
-						backgroundColor = {0,0,0,0},
-					})
+					-- newButton.new({ --TODO A better system for making text links
+					-- 	text = "Forgot password?",
+					-- 	func = function() return print("Forgot password?") end,
+					-- 	backgroundColor = {0,0,0,0}
+					-- }),
+					-- newButton.new({
+					-- 	text = "Create an account",
+					-- 	func = function() return print("Create an account") end,
+					-- 	textColor = {0.6, 0.1, 0.1},
+					-- 	backgroundColor = {0,0,0,0},
+					-- })
 				}
 			})
 		}

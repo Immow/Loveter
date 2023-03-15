@@ -1,6 +1,6 @@
 require("globals")
 State_Manager = require("libs.state_manager.state_manager")
-Tprint = require("libs.tprint")
+require("libs.tprint")
 
 function love.load()
 	State_Manager.requireState("test")
