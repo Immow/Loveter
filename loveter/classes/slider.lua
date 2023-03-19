@@ -11,28 +11,31 @@ Slider.__index = Slider
 Slider.parents = Class.registerParents({Meta, Background})
 setmetatable(Slider, Slider.parents)
 
+Slider.createID = 0
+
 ---@class Slider
 ---@param settings {x: integer, y: integer, w: integer, h: integer, groove_h: integer, knob_w: integer, knob_h: integer, sliderRangeMax: integer, sliderRangeMin: integer, startValue: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: {default: boolean, fill: boolean, texture: boolean}, knobBorderColor: table, fillet: integer, grooveColor: table, knobColor: table}
 function Slider.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({b, m}), Slider)
-	instance.w = settings.w or 100
-	instance.h = settings.h or 40
-	instance.startValue     = settings.startValue or 0
-	instance.groove_h       = settings.groove_h or 8
-	instance.knob_w         = settings.knob_w or 20
-	instance.knob_h         = settings.knob_h or 20
-	instance.knob_x         = instance.x + (instance.w - instance.knob_w) * instance.startValue
-	instance.start_x        = settings.x or 0
-	instance.start_y        = settings.y or 0
-	instance.sliderRangeMax = settings.sliderRangeMax or 1
-	instance.sliderRangeMin = settings.sliderRangeMin or 0
-	instance.active         = false
+	instance.w                = settings.w or 100
+	instance.h                = settings.h or 40
+	instance.startValue       = settings.startValue or 0
+	instance.groove_h         = settings.groove_h or 8
+	instance.knob_w           = settings.knob_w or 20
+	instance.knob_h           = settings.knob_h or 20
+	instance.knob_x           = instance.x + (instance.w - instance.knob_w) * instance.startValue
+	instance.start_x          = settings.x or 0
+	instance.start_y          = settings.y or 0
+	instance.sliderRangeMax   = settings.sliderRangeMax or 1
+	instance.sliderRangeMin   = settings.sliderRangeMin or 0
+	instance.active           = false
 	instance.parentDimensions = {}
-    instance.grooveColor = settings.grooveColor or {0.3, 0.3, 0.3}
-    instance.knobColor = settings.knobColor or {1, 1, 1}
-    instance.knobBorderColor = settings.knobBorderColor or {0, 0, 0}
+    instance.grooveColor      = settings.grooveColor or {0.3, 0.3, 0.3}
+    instance.knobColor        = settings.knobColor or {1, 1, 1}
+    instance.knobBorderColor  = settings.knobBorderColor or {0, 0, 0}
+	instance.id               = "slider"..Slider.createID
 	return instance
 end
 

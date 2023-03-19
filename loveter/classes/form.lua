@@ -1,37 +1,41 @@
-local folder_path = (...):match("(.-)[^%.]+$")
+local class_path = (...):match("(.-)[^%.]+$")
 
 local utf8 = require("utf8")
-local Meta = require(folder_path.."meta")
-local Background = require(folder_path.."background")
-local Class = require(folder_path.."class")
-local Text = require(folder_path.."text")
+local Meta = require(class_path.."meta")
+local Background = require(class_path.."background")
+local Class = require(class_path.."class")
+local Text = require(class_path.."text")
 
 -- LuaFormatter off
 
 local Form = {}
 Form.__index = Form
-Form.parents = Class.registerParents({Meta, Background, Text})
+Form.parents = Class.registerParents({Meta, Background})
 setmetatable(Form, Form.parents)
 
+Form.createID = 0
+
 ---@class Form
----@param settings {x: integer, y: integer, w: integer, h: integer, fillet: integer, backgroundColor: table, backgroundImage: love.Image, backgroundImageStyle: table, offset: integer, icon: love.Image, iconColor: table, iconScale: integer, previewText: string, fontPreviewColor: table, font: userdata, id: string, position: string, borderColor: table, textColor: table}
 function Form.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
-	local t = Text.new(settings)
-	local instance = setmetatable(Class.inject({b, m, t}), Form)
+	-- local t = Text.new(settings)
+	local instance = setmetatable(Class.inject({b, m}), Form)
 
+	instance.text                 = Text.new(settings)
 	instance.fontPreviewColor     = settings.fontPreviewColor or {1,1,1}
 	instance.previewText          = settings.previewText or ""
 	instance.clickedInForm        = false
-	instance.byteoffset           = utf8.offset(instance.text, 0)
-	instance.cursorbyteoffset     = utf8.offset(instance.text, 1)
+	instance.byteoffset           = utf8.offset(instance.text.text, 0)
+	instance.cursorbyteoffset     = utf8.offset(instance.text.text, 1)
 	instance.cursorTimer          = 0
 	instance.cursorBlinkSpeed     = 1.5
 	instance.iconColor            = settings.iconColor or {1,1,1,1}
 	instance.iconScale            = settings.iconScale or 1
 	instance.offset               = settings.offset or 10
 	instance.icon                 = settings.icon or nil
+	instance.state                = "idle"
+	instance.id                   = "form"..Form.createID
 	return instance
 end
 
@@ -59,9 +63,9 @@ end
 function Form:keypressed(key, scancode, isrepeat)
 	if self.clickedInForm then
 		if key == "backspace" then
-			if string.len(self.text) >= 1 then
-				self.byteoffset = utf8.offset(self.text, -1)
-				self.text = string.sub(self.text, 1, self.byteoffset - 1)
+			if string.len(self.text.text) >= 1 then
+				self.byteoffset = utf8.offset(self.text.text, -1)
+				self.text.text = string.sub(self.text.text, 1, self.byteoffset - 1)
 			end
 		end
 	end
@@ -69,8 +73,8 @@ end
 
 function Form:textinput(t)
 	if self.clickedInForm then
-		if self.font:getWidth(self.text) + self.offset + self.offset < self.w then
-			self.text = self.text .. t
+		if self.text.font:getWidth(self.text.text) + self.offset + self.offset < self.w then
+			self.text.text = self.text.text .. t
 		end
 	end
 end
@@ -89,8 +93,8 @@ end
 
 function Form:drawCursor()
 	if dir == 1 and self.clickedInForm then
-		local x = self.x + self.offset + self.font:getWidth(self.text)
-		local y = self.y + self:centerTextY()
+		local x = self.x + self.offset + self.text.font:getWidth(self.text.text)
+		local y = self.y + self.text:centerTextY()
 		love.graphics.print("|", x, y)
 	end
 end
@@ -98,13 +102,13 @@ end
 function Form:drawPreviewText()
 	if not self.clickedInForm then
 		love.graphics.setColor(self.fontPreviewColor)
-		love.graphics.print(self.previewText, self.x + self.offset, self.y + self:centerTextY())
+		love.graphics.print(self.previewText, self.x + self.offset, self.y + self.text:centerTextY())
 	end
 end
 
 function Form:drawText()
-	love.graphics.setColor(self.textColor)
-	love.graphics.print(self.text, self.x + self.offset, self.y + self:centerTextY())
+	self.text.textColor:draw(self.state)
+	love.graphics.print(self.text.text, self.x + self.offset, self.y + self.text:centerTextY())
 end
 
 function Form:drawIcon()
@@ -120,7 +124,7 @@ function Form:drawIcon()
 end
 
 function Form:draw()
-	love.graphics.setFont(self.font)
+	love.graphics.setFont(self.text.font)
 	self:drawBackgroundColor()
 	self:drawBackgroundImage()
 	self:drawIcon()

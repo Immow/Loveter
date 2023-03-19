@@ -30,6 +30,10 @@ end
 
 function love.keypressed(key,scancode,isrepeat)
 	State_Manager:keypressed(key,scancode,isrepeat)
+
+	if key == "d" then
+		DEBUG = not DEBUG
+	end
 end
 
 function love.textinput(t)

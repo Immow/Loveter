@@ -51,7 +51,7 @@ function Meta:debug()
 		love.graphics.setFont(FONT)
 		love.graphics.setColor(1,0,0)
 		love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-		love.graphics.print("ID: "..self.id.." x: "..self.x..", y: "..self.y.." w: "..self.w.." h: "..self.h.." TCW: "..self.totalChildWidth.." TCH: "..self.totalChildHeight.." TRCW: "..self.totalUnstretchedWidth.." TRCH: "..self.totalUnstretchedHeight, 10, 0 + (12 * self.id))
+		love.graphics.print("ID: "..self.id.." x: "..self.x..", y: "..self.y.." w: "..self.w.." h: "..self.h.." TCW: "..self.totalChildWidth.." TCH: "..self.totalChildHeight.." TRCW: "..self.totalUnstretchedWidth.." TRCH: "..self.totalUnstretchedHeight, 10, 0 + (12 * tonumber(self.id:match("%d+"))))
 		love.graphics.setColor(1,1,1)
 	end
 end

@@ -11,16 +11,21 @@ Text.__index = Text
 Text.parents = Class.registerParents({Meta})
 setmetatable(Text, Text.parents)
 
+Text.createID = 0
+
 ---@class Text
 function Text.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
+	if not settings.textColor then settings.textColor = {} end
 
 	instance.font              = settings.font or love.graphics.getFont()
 	instance.textColor         = Color.new({textColor = settings.textColor or {}})
 	instance.text              = settings.text or ""
 	instance.textAlign         = settings.textAlign or {left = true}
 	instance.textOffset        = settings.textOffset or 0
+	instance.state             = "idle"
+	instance.id                = "text"..Text.createID
 	return instance
 end
 
@@ -49,15 +54,8 @@ function Text:update(dt)
 
 end
 
--- function Text:setAlign()
--- 	if self.textAlign then
-
--- 	else
-
--- 	end
--- end
-
 function Text:drawText()
+	self.textColor:draw(self.state)
 	love.graphics.setFont(self.font)
 	love.graphics.print(self.text, self.x, self.y)
 end

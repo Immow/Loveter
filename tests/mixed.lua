@@ -10,6 +10,7 @@ local selectedTest = 1
 local Mixed = {
 	tests = {
 		"default",
+		"test",
 		"stretch",
 		"login",
 	}
@@ -157,6 +158,26 @@ function Mixed:stretch()
 	self.container:load()
 end
 
+function Mixed:test()
+	self.texts.t1 = newText.new({
+		text = "THIS IS A TEST",
+		font = textFont,
+		textColor = {1,1,1,1}
+	})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		w = 500,
+		-- h = 300,
+		children = {
+			self.texts.t1,
+		}
+	})
+
+	self.container:load()
+end
+
 function Mixed:login()
 	local user = love.graphics.newImage("loveter/assets/icon/user.png")
 	local password = love.graphics.newImage("loveter/assets/icon/password.png")
@@ -166,8 +187,7 @@ function Mixed:login()
 									h = 50,
 									text = "SIGN IN",
 									func = function() return print("test") end,
-									backgroundColor = {0.6, 0.1, 0.1},
-									hoverStyle = {nudge = {x = 30}},
+									color = {idle = {0.6, 0.1, 0.1}, hover = {0.6, 0.1, 0.1}, holding = {0.6, 0.1, 0.1}},
 									-- backgroundImage = background,
 									-- backgroundImageStyle = {texture = true},
 									font = buttonFont,
@@ -181,7 +201,8 @@ function Mixed:login()
 								icon = user,
 								iconColor = {0.5, 0.5, 0.5},
 								iconScale = 0.75,
-								backgroundColor = {0.2,0.2,0.2}
+								backgroundColor = {0.2,0.2,0.2},
+								-- textColor = {idle = {1,1,1,1}}
 							})
 	self.forms.f2 = newForm.new({
 								w = 300,
@@ -190,7 +211,8 @@ function Mixed:login()
 								icon = password,
 								iconColor = {0.5, 0.5, 0.5},
 								iconScale = 0.75,
-								backgroundColor = {0.2,0.2,0.2}
+								backgroundColor = {0.2,0.2,0.2},
+								-- textColor = {idle = {1,1,1,1}}
 							})
 	self.texts.t1 = newText.new({text = "SIGN IN", font = textFont})
 	self.sliders.s1 = newSlider.new({})

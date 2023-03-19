@@ -3,7 +3,6 @@ local class_path = (...):match("(.-)[^%.]+$")
 local Meta = require(class_path.."meta")
 local Class = require(class_path.."class")
 local Text = require(class_path.."text")
-local HoverStyle = require(class_path.."hoverstyle")
 local Offset = require(class_path.."offset")
 local Color = require(class_path.."color")
 
@@ -11,8 +10,10 @@ local Color = require(class_path.."color")
 
 local Button = {}
 Button.__index = Button
-Button.parents = Class.registerParents({Meta, Text, HoverStyle})
+Button.parents = Class.registerParents({Meta})
 setmetatable(Button, Button.parents)
+
+Button.createID = 0
 
 local clickedButton = {}
 function Button.new(settings)
@@ -34,9 +35,9 @@ function Button.new(settings)
 	instance.toggle                  = false
 	instance.color                   = Color.new({color = settings.color})
 	instance.borderColor             = Color.new({borderColor = settings.borderColor})
-	-- instance.textColor               = Color.new({textColor = settings.textColor})
 	instance.imageColor              = Color.new({imageColor = settings.imageColor})
 	instance.border                  = settings.border or false
+	instance.id                      = "button"..Button.createID
 
 	return instance
 end
@@ -103,24 +104,12 @@ end
 function Button:drawText()
 	self.text.textColor:draw(self.state)
 	love.graphics.setFont(self.text.font)
-	if self.state == "idle" then
-		if self.text.textAlign.left then
-			love.graphics.print(self.text.text, self.x + self.text.textOffset, self.y + self.text:centerTextY())
-		elseif self.text.textAlign.right then
-			love.graphics.print(self.text.text, self.x + self.w - self.text.font:getWidth(self.text.text) - self.text.textOffset, self.y + self.text:centerTextY())
-		elseif self.text.textAlign.center then
-			love.graphics.print(self.text.text, self.x + self.text:centerTextX(), self.y + self.text:centerTextY())
-		end
-	end
-
-	if self.state == "hover" or self.state == "holding" then
-		if self.text.textAlign.left then
-			love.graphics.print(self.text.text, self.x + self.offset[self.state].x + self.text.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y)
-		elseif self.text.textAlign.right then
-			love.graphics.print(self.text.text, self.x + self.w - self.text.font:getWidth(self.text.text) + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
-		elseif self.text.textAlign.center then
-			love.graphics.print(self.text.text, self.x + self.text:centerTextX() + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
-		end
+	if self.text.textAlign.left then
+		love.graphics.print(self.text.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y)
+	elseif self.text.textAlign.right then
+		love.graphics.print(self.text.text, self.x + self.w - self.text.font:getWidth(self.text.text) + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
+	elseif self.text.textAlign.center then
+		love.graphics.print(self.text.text, self.x + self.text:centerTextX() + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
 	end
 end
 

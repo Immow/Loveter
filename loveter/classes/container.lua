@@ -22,7 +22,7 @@ function Container.new(settings)
 
 	instance.w         = settings.w or 0
 	instance.h         = settings.h or 0
-	instance.id        = Container.createID
+	instance.id        = "container"..Container.createID
 	instance.children  = settings.children
 	instance.padding   = Container.setPadding(settings)
 	instance.offset    = Container.setOffset(settings)
