@@ -38,9 +38,10 @@ function Mixed:default()
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
-		border = true,
+		-- border = true,
+		borderColor = {1,0,0,1},
 		textAlign = {center = true},
-		textColor = {idle = {1,0,0,1}},
+		-- textColor = {idle = {1,0,0,1}},
 		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
 		font = buttonFont,
 	})

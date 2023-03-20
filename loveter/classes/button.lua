@@ -18,7 +18,6 @@ Button.createID = 0
 local clickedButton = {}
 function Button.new(settings)
 	local m = Meta.new(settings)
-	-- local t = Text.new(settings)
 	local instance = setmetatable(Class.inject({m}), Button)
 
 	instance.w                       = settings.w
@@ -43,9 +42,9 @@ function Button.new(settings)
 	instance.state                   = "idle"
 	instance.toggle                  = false
 	instance.color                   = Color.new({color = settings.color})
-	instance.borderColor             = Color.new({borderColor = settings.borderColor})
+	instance.borderColor             = Color.new({borderColor = settings.borderColor, border = settings.border})
 	instance.imageColor              = Color.new({imageColor = settings.imageColor})
-	instance.border                  = settings.border or false
+	-- instance.border                  = settings.border or false
 	instance.id                      = "button"..Button.createID
 
 	return instance
@@ -159,9 +158,7 @@ end
 
 function Button:drawBorder()
 	self.borderColor:draw(self.state)
-	if self.border then
-		love.graphics.rectangle("line", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w , self.h, self.fillet, self.fillet)
-	end
+	love.graphics.rectangle("line", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w , self.h, self.fillet, self.fillet)
 end
 
 

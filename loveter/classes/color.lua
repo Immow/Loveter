@@ -26,10 +26,10 @@ function Color.new(settings)
 		instance.idle    = settings.imageColor.idle    or {1,1,1,1}
 		instance.holding = settings.imageColor.holding or {1,1,1,1}
 	elseif settings.borderColor then
-		instance.pressed = settings.borderColor.pressed or {1,0,1,1}
-		instance.hover   = settings.borderColor.hover   or {1,0,1,1}
-		instance.idle    = settings.borderColor.idle    or {1,0,1,1}
-		instance.holding = settings.borderColor.holding or {1,0,1,1}
+		instance.pressed = settings.borderColor.pressed or {0,0,0,0}
+		instance.hover   = settings.borderColor.hover   or {0,0,0,0}
+		instance.idle    = settings.borderColor.idle    or {0,0,0,0}
+		instance.holding = settings.borderColor.holding or {0,0,0,0}
 	elseif settings.textColor then
 		instance.pressed = settings.textColor.pressed or {0,0,0,1}
 		instance.hover   = settings.textColor.hover   or {0,0,0,1}
