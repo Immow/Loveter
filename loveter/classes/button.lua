@@ -29,7 +29,6 @@ function Button.new(settings)
 												textColor    = settings.textColor,
 												text         = settings.text,
 												textAlign    = settings.textAlign,
-												textOffset   = settings.textOffset,
 												limit        = settings.limit
 											})
 	instance.func                    = settings.func
@@ -121,11 +120,11 @@ function Button:drawText()
 	self.text.textColor:draw(self.state)
 	love.graphics.setFont(self.text.font)
 	if self.text.textAlign.left then
-		love.graphics.print(self.text.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y)
+		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y, self.text.limit)
 	elseif self.text.textAlign.right then
-		love.graphics.print(self.text.text, self.x + self.w - self.text.font:getWidth(self.text.text) + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
+		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x - self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y, self.w, "right")
 	elseif self.text.textAlign.center then
-		love.graphics.print(self.text.text, self.x + self.text:centerTextX() + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y)
+		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y, self.w, "center")
 	end
 end
 

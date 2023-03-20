@@ -25,7 +25,6 @@ function Text.new(settings)
 	instance.textColor         = Color.new({textColor = settings.textColor or {}})
 	instance.text              = settings.text or ""
 	instance.textAlign         = settings.textAlign or {left = true}
-	instance.textOffset        = settings.textOffset or 0
 	instance.state             = "idle"
 	instance.id                = "text"..Text.createID
 	instance.limit             = settings.limit or instance.font:getWidth(instance.text)
