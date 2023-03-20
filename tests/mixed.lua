@@ -11,6 +11,7 @@ local Mixed = {
 	tests = {
 		"default",
 		"textInContainer",
+		"textInMultiContainer",
 		"stretch",
 		"login",
 	}
@@ -145,6 +146,55 @@ function Mixed:textInContainer()
 		-- padding = {left = 50},
 		children = {
 			self.texts.t1,
+		}
+	})
+
+	self.container:load()
+end
+
+function Mixed:textInMultiContainer()
+	self.texts.t1 = newText.new({
+		text = "THIS IS A TEST",
+		font = textFont,
+		textColor = {1,1,1,1},
+		limit = 200
+	})
+	self.texts.t2 = newText.new({
+		text = "The Fox jumped over the fence",
+		font = textFont,
+		textColor = {1,1,1,1},
+		limit = 200
+	})
+	self.texts.t3 = newText.new({
+		text = "Cow and Chicken do stuff :)",
+		font = textFont,
+		textColor = {1,1,1,1},
+		limit = 200
+	})
+	self.texts.t4 = newText.new({
+		text = "Hello Twitch chat are you there?",
+		font = textFont,
+		textColor = {1,1,1,1},
+		limit = 200
+	})
+
+	self.container = c.new({
+		x = 10,
+		y = 200,
+		mainAlign = {vertical = true},
+		children = {
+			c.new({
+				children = {
+					self.texts.t1,
+					self.texts.t2,
+				}
+			}),
+			c.new({
+				children = {
+					self.texts.t3,
+					self.texts.t4,
+				}
+			}),
 		}
 	})
 

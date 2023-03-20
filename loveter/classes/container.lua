@@ -207,13 +207,13 @@ function Container:getChildrenTotalHeight()
 			child:setHeight()
 		end
 		if self.mainAlign.horizontal then
-			if child.h > h then
+			if child:getHeight() > h then
 				h = child:getHeight()
 			end
 		elseif self.mainAlign.vertical then
 			h = h + child:getHeight()
 			if not child.children or child.stretch.y == 0 then
-				self.totalUnstretchedHeight = self.totalUnstretchedHeight + child.h
+				self.totalUnstretchedHeight = self.totalUnstretchedHeight + child:getHeight()
 			end
 		end
 	end

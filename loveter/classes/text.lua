@@ -55,8 +55,7 @@ end
 
 function Text:getHeight()
 	local _, wrappedtext = self.font:getWrap(self.text, self.limit)
-	local textHeight = #wrappedtext * self.font:getHeight()
-	return textHeight
+	return #wrappedtext * self.font:getHeight()
 end
 
 function Text:update(dt)
