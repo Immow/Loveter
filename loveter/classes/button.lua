@@ -20,10 +20,19 @@ function Button.new(settings)
 	local m = Meta.new(settings)
 	-- local t = Text.new(settings)
 	local instance = setmetatable(Class.inject({m}), Button)
-	
-	instance.text                    = Text.new(settings)
-	instance.w                       = settings.w or instance.text.font:getWidth(settings.text) -- TODO Rethink this, perhaps a text object that has FN / containsPoint feature. We can use that in button as well
-	instance.h                       = settings.h or instance.text.font:getHeight() -- TODO Same as above
+
+	instance.w                       = settings.w
+	instance.h                       = settings.h
+	instance.text                    = Text.new({
+												parentWidth  = settings.w,
+												parentHeight = settings.h,
+												font         = settings.font,
+												textColor    = settings.textColor,
+												text         = settings.text,
+												textAlign    = settings.textAlign,
+												textOffset   = settings.textOffset,
+												limit        = settings.limit
+											})
 	instance.func                    = settings.func
 	instance.fillet                  = settings.fillet or 0
 	instance.image                   = settings.image or nil
@@ -53,10 +62,18 @@ function Button:runFunction()
 	self.toggle = not self.toggle
 end
 
+function Button:init()
+	self.text:init()
+end
+
 function Button:load()
 	self.start_x = self.x
 	self.start_y = self.y
-	self:setQuad()
+	-- self:setQuad()
+	-- print(self.parentWidth, self.parentHeight)
+	-- self.text.parentWidth = self.w
+	-- self.text.parentHeight = self.h
+	-- self.text:load()
 end
 
 

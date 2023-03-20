@@ -10,7 +10,7 @@ local selectedTest = 1
 local Mixed = {
 	tests = {
 		"default",
-		"test",
+		"textInContainer",
 		"stretch",
 		"login",
 	}
@@ -37,46 +37,17 @@ function Mixed:default()
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
-		-- backgroundColors = { idle = {0.1, 0.1, 0.1}, hover = {1,0,0} },
-		-- backgroundImage = background,
-		-- image = {idle = button_idle, hover = button_hover},
-		-- color = {idle = {1,0,0,1}},
-		-- backgroundImageStyle = {fill = true},
-		-- hoverStyle = {grow = {x = 5, y = 5}},
-		-- hoverStyle = {nudge = {x = 30}},
-		-- hoverColor = {1,0,0},
 		border = true,
-		-- borderColor = {idle = {1,0,0,1}},
 		textAlign = {center = true},
 		textColor = {idle = {1,0,0,1}},
-		-- textAlign = {right = true},
 		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
 		font = buttonFont,
-		-- textColor = {0,0,0},
-		-- clickEffect = true
-	})
-
-	self.buttons.b = newButton.new({
-		w = 300,
-		h = 50,
-		text = "SIGN IN",
-		func = function() return print("test") end,
-		-- backgroundColor = {0.6, 0.1, 0.1},
-		-- backgroundImage = background,
-		-- backgroundImageStyle = {texture = true},
-		-- hoverStyle = {grow = {x = 5, y = 5}},
-		hoverStyle = {nudge = {x = 30}},
-		-- hoverColor = {1,0,0},
-		font = buttonFont,
-		-- textColor = {0,0,0},
-		-- clickEffect = true
 	})
 
 	self.container = c.new({
+		h = 400,
 		x = 200,
 		y = 200,
-		-- backgroundImage = background,
-		-- backgroundImageStyle = {texture = true},
 		children = {
 			self.buttons.b1,
 		}
@@ -158,18 +129,20 @@ function Mixed:stretch()
 	self.container:load()
 end
 
-function Mixed:test()
+function Mixed:textInContainer()
 	self.texts.t1 = newText.new({
 		text = "THIS IS A TEST",
 		font = textFont,
-		textColor = {1,1,1,1}
+		textColor = {1,1,1,1},
+		limit = 200
 	})
 
 	self.container = c.new({
 		x = 10,
 		y = 200,
-		w = 500,
+		-- w = 500,
 		-- h = 300,
+		-- padding = {left = 50},
 		children = {
 			self.texts.t1,
 		}

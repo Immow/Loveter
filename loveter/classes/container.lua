@@ -267,6 +267,14 @@ function Container:setHeight()
 	self.totalChildHeight = h
 end
 
+function Container:init()
+	-- for _, child in pairs(self.children) do
+	-- 	child.parentWidth = self.w - (self.padding.left + self.padding.right)
+	-- 	child.parentHeight = self.h - (self.padding.top + self.padding.bottom)
+	-- 	child:init()
+	-- end
+end
+
 function Container:load()
 	love.keyboard.setKeyRepeat(true)
 	self.start_x = self.x
@@ -276,8 +284,8 @@ function Container:load()
 	self:setHeight()
 	self:setQuad()
 	self:giveChildrenParentDimensions(self.w, self.h)
+	self:init()
 	self:positionChildren()
-
 	-- for _, child in pairs(self.children) do
 	-- 	child:loadPreset()
 	-- end

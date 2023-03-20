@@ -19,6 +19,8 @@ function Text.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
 	if not settings.textColor then settings.textColor = {} end
 
+	-- instance.parentWidth       = settings.parentWidth
+	-- instance.parentHeight      = settings.parentHeight
 	instance.font              = settings.font or love.graphics.getFont()
 	instance.textColor         = Color.new({textColor = settings.textColor or {}})
 	instance.text              = settings.text or ""
@@ -26,6 +28,7 @@ function Text.new(settings)
 	instance.textOffset        = settings.textOffset or 0
 	instance.state             = "idle"
 	instance.id                = "text"..Text.createID
+	instance.limit             = settings.limit or instance.font:getWidth(instance.text)
 	return instance
 end
 
@@ -34,20 +37,26 @@ function Text:load()
 	self.start_y = self.y
 end
 
+function Text:init()
+	print(self.parentWidth, self.parentHeight)
+end
+
 function Text:centerTextX()
-	return self.w / 2 - self.font:getWidth(self.text) / 2
+	return self.parentWidth / 2 - self.font:getWidth(self.text) / 2
 end
 
 function Text:centerTextY()
-	return self.h / 2 - self.font:getHeight() / 2
+	return self.parentHeight / 2 - self.font:getHeight() / 2
 end
 
 function Text:getWidth()
-	return self.font:getWidth(self.text)
+	return self.limit
 end
 
 function Text:getHeight()
-	return self.font:getHeight()
+	local _, wrappedtext = self.font:getWrap(self.text, self.limit)
+	local textHeight = #wrappedtext * self.font:getHeight()
+	return textHeight
 end
 
 function Text:update(dt)
@@ -57,7 +66,7 @@ end
 function Text:drawText()
 	self.textColor:draw(self.state)
 	love.graphics.setFont(self.font)
-	love.graphics.print(self.text, self.x, self.y)
+	love.graphics.printf(self.text, self.x, self.y, self.limit)
 end
 
 function Text:draw()

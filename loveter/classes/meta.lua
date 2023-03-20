@@ -11,6 +11,8 @@ function Meta.new(settings)
 	instance.start_y              = 0
 	instance.position             = settings.position
 	instance.id                   = settings.id
+	instance.parentWidth          = settings.parentWidth
+	instance.parentHeight         = settings.parentHeight
 	return instance
 end
 
@@ -29,6 +31,12 @@ end
 
 function Meta:getHeight()
 	return self.h
+end
+
+function Meta:load()
+end
+
+function Meta:init()
 end
 
 function Meta:mousepressed()
