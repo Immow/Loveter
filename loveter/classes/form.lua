@@ -19,23 +19,31 @@ Form.createID = 0
 function Form.new(settings)
 	local b = Background.new(settings)
 	local m = Meta.new(settings)
-	-- local t = Text.new(settings)
 	local instance = setmetatable(Class.inject({b, m}), Form)
 
-	instance.text                 = Text.new(settings)
-	instance.fontPreviewColor     = settings.fontPreviewColor or {1,1,1}
-	instance.previewText          = settings.previewText or ""
-	instance.clickedInForm        = false
-	instance.byteoffset           = utf8.offset(instance.text.text, 0)
-	instance.cursorbyteoffset     = utf8.offset(instance.text.text, 1)
-	instance.cursorTimer          = 0
-	instance.cursorBlinkSpeed     = 1.5
-	instance.iconColor            = settings.iconColor or {1,1,1,1}
-	instance.iconScale            = settings.iconScale or 1
-	instance.offset               = settings.offset or 10
-	instance.icon                 = settings.icon or nil
-	instance.state                = "idle"
-	instance.id                   = "form"..Form.createID
+	instance.text                    = Text.new({
+						parentWidth  = settings.w,
+						parentHeight = settings.h,
+						font         = settings.font,
+						textColor    = settings.textColor,
+						text         = settings.text,
+						textAlign    = settings.textAlign,
+						textOffset   = settings.textOffset,
+						limit        = settings.limit
+					})
+	instance.fontPreviewColor        = settings.fontPreviewColor or {1,1,1}
+	instance.previewText             = settings.previewText or ""
+	instance.clickedInForm           = false
+	instance.byteoffset              = utf8.offset(instance.text.text, 0)
+	instance.cursorbyteoffset        = utf8.offset(instance.text.text, 1)
+	instance.cursorTimer             = 0
+	instance.cursorBlinkSpeed        = 1.5
+	instance.iconColor               = settings.iconColor or {1,1,1,1}
+	instance.iconScale               = settings.iconScale or 1
+	instance.offset                  = settings.offset or 10
+	instance.icon                    = settings.icon or nil
+	instance.state                   = "idle"
+	instance.id                      = "form"..Form.createID
 	return instance
 end
 
