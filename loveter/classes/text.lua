@@ -19,12 +19,10 @@ function Text.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
 	if not settings.textColor then settings.textColor = {} end
 
-	-- instance.parentWidth       = settings.parentWidth
-	-- instance.parentHeight      = settings.parentHeight
 	instance.font              = settings.font or love.graphics.getFont()
 	instance.textColor         = Color.new({textColor = settings.textColor or {}})
 	instance.text              = settings.text or ""
-	instance.textAlign         = settings.textAlign or {left = true}
+	instance.textAlign         = settings.textAlign or "left"
 	instance.state             = "idle"
 	instance.id                = "text"..Text.createID
 	instance.limit             = settings.limit or instance.font:getWidth(instance.text)
@@ -37,7 +35,7 @@ function Text:load()
 end
 
 function Text:init()
-	print(self.parentWidth, self.parentHeight)
+
 end
 
 function Text:centerTextX()
@@ -64,7 +62,7 @@ end
 function Text:drawText()
 	self.textColor:draw(self.state)
 	love.graphics.setFont(self.font)
-	love.graphics.printf(self.text, self.x, self.y, self.limit)
+	love.graphics.printf(self.text, self.x, self.y, self.limit, self.textAlign)
 end
 
 function Text:draw()

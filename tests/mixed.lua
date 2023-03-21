@@ -40,7 +40,7 @@ function Mixed:default()
 		func = function() return print("test") end,
 		-- border = true,
 		borderColor = {1,0,0,1},
-		textAlign = {center = true},
+		textPosition = {center = true},
 		-- textColor = {idle = {1,0,0,1}},
 		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
 		font = buttonFont,
@@ -155,28 +155,24 @@ end
 
 function Mixed:textInMultiContainer()
 	self.texts.t1 = newText.new({
-		text = "THIS IS A TEST",
-		font = textFont,
+		text = "THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST",
 		textColor = {1,1,1,1},
-		limit = 200
+		limit = 150,
 	})
 	self.texts.t2 = newText.new({
-		text = "The Fox jumped over the fence",
-		font = textFont,
+		text = "The Fox jumped over the fence The Fox jumped over the fence The Fox jumped over the fence",
 		textColor = {1,1,1,1},
-		limit = 200
+		limit = 150,
 	})
 	self.texts.t3 = newText.new({
-		text = "Cow and Chicken do stuff :)",
-		font = textFont,
+		text = "Cow and Chicken do stuff :) Cow and Chicken do stuff :) Cow and Chicken do stuff :)",
 		textColor = {1,1,1,1},
-		limit = 200
+		limit = 150,
 	})
 	self.texts.t4 = newText.new({
-		text = "Hello Twitch chat are you there?",
-		font = textFont,
+		text = "Hello Twitch chat are you there? Hello Twitch chat are you there? Hello Twitch chat are you there?",
 		textColor = {1,1,1,1},
-		limit = 200
+		limit = 150,
 	})
 
 	self.container = c.new({
@@ -185,12 +181,14 @@ function Mixed:textInMultiContainer()
 		mainAlign = {vertical = true},
 		children = {
 			c.new({
+				padding = {all = 50},
 				children = {
 					self.texts.t1,
 					self.texts.t2,
 				}
 			}),
 			c.new({
+				padding = {all = 50},
 				children = {
 					self.texts.t3,
 					self.texts.t4,

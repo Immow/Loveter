@@ -1,4 +1,3 @@
 - Image / texture for buttons
 - Image class
 - Texture class
-- Text alignment

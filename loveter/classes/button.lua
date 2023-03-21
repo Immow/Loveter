@@ -43,6 +43,7 @@ function Button.new(settings)
 	instance.color                   = Color.new({color = settings.color})
 	instance.borderColor             = Color.new({borderColor = settings.borderColor, border = settings.border})
 	instance.imageColor              = Color.new({imageColor = settings.imageColor})
+	instance.textPosition           = settings.textPosition or {left = true}
 	-- instance.border                  = settings.border or false
 	instance.id                      = "button"..Button.createID
 
@@ -119,11 +120,11 @@ end
 function Button:drawText()
 	self.text.textColor:draw(self.state)
 	love.graphics.setFont(self.text.font)
-	if self.text.textAlign.left then
+	if self.textPosition.left then
 		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y, self.text.limit)
-	elseif self.text.textAlign.right then
+	elseif self.textPosition.right then
 		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x - self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y, self.w, "right")
-	elseif self.text.textAlign.center then
+	elseif self.textPosition.center then
 		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y, self.w, "center")
 	end
 end

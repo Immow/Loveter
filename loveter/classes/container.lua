@@ -57,6 +57,10 @@ function Container.setPadding(settings)
 	if not settings.padding then
 		return {top = 0, bottom = 0, left = 0, right = 0}
 	else
+		if settings.padding.all then
+			local all = settings.padding.all
+			return {top = all, bottom = all, left = all, right = all}
+		end
 		local top = settings.padding.top or 0
 		local bottom = settings.padding.bottom or 0
 		local left = settings.padding.left or 0
