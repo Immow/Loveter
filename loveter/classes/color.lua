@@ -6,7 +6,7 @@ Color.__index = Color
 ---@class Color
 function Color.new(settings)
 	local instance = setmetatable({}, Color)
-	settings.color = settings.color or {}
+	-- settings.color = settings.color or {}
 
 	local states = {"pressed", "hover", "idle", "holding"}
 
@@ -35,11 +35,11 @@ function Color.new(settings)
 		instance.hover   = settings.textColor.hover   or {0,0,0,1}
 		instance.idle    = settings.textColor.idle    or {0,0,0,1}
 		instance.holding = settings.textColor.holding or {0,0,0,1}
-	else
-		instance.pressed = settings.color.pressed or {1,0,0,1}
-		instance.hover   = settings.color.hover   or {0,1,0,1}
-		instance.idle    = settings.color.idle    or {1,1,1,1}
-		instance.holding = settings.color.holding or {0,0,1,1}
+	elseif settings.shapeColor then
+		instance.pressed = settings.shapeColor.pressed or {1,1,1,1}
+		instance.hover   = settings.shapeColor.hover   or {1,1,1,1}
+		instance.idle    = settings.shapeColor.idle    or {1,1,1,1}
+		instance.holding = settings.shapeColor.holding or {1,1,1,1}
 	end
 	return instance
 end

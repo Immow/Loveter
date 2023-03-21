@@ -40,9 +40,9 @@ function Button.new(settings)
 	instance.offset                  = Offset.new(settings.offset)
 	instance.state                   = "idle"
 	instance.toggle                  = false
-	instance.color                   = Color.new({color = settings.color})
-	instance.borderColor             = Color.new({borderColor = settings.borderColor, border = settings.border})
-	instance.imageColor              = Color.new({imageColor = settings.imageColor})
+	instance.shapeColor              = Color.new({shapeColor = settings.shapeColor or {}})
+	instance.borderColor             = Color.new({borderColor = settings.borderColor or {}})
+	instance.imageColor              = Color.new({imageColor = settings.imageColor or {}})
 	instance.textPosition           = settings.textPosition or {left = true}
 	-- instance.border                  = settings.border or false
 	instance.id                      = "button"..Button.createID
@@ -131,7 +131,7 @@ end
 
 function Button:drawState()
 	if self.image == nil then
-		self.color:draw(self.state)
+		self.shapeColor:draw(self.state)
 		love.graphics.rectangle("fill", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w, self.h, self.fillet, self.fillet)
 	else
 		self.imageColor:draw(self.state)

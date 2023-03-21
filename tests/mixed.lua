@@ -38,10 +38,9 @@ function Mixed:default()
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
-		-- border = true,
-		borderColor = {1,0,0,1},
 		textPosition = {center = true},
-		-- textColor = {idle = {1,0,0,1}},
+		-- image = {idle = button_idle, hover = button_hover},
+		borderColor = {1,0,0,1},
 		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
 		font = buttonFont,
 	})
@@ -65,8 +64,8 @@ function Mixed:stretch()
 		text = "FOX",
 		func = function() return print("FOX") end,
 		font = buttonFont,
-		textColor = {0,0,0},
 		offset = {hover = {x = 30}},
+		shapeColor = {idle = {1,0,0,1}},
 	})
 
 	self.buttons.b2 = newButton.new({
@@ -75,7 +74,6 @@ function Mixed:stretch()
 		text = "COW",
 		func = function() return print("COW") end,
 		font = buttonFont,
-		textColor = {0,0,0},
 		offset = {hover = {x = 30}},
 	})
 
@@ -85,7 +83,6 @@ function Mixed:stretch()
 		text = "DOG",
 		func = function() return print("DOG") end,
 		font = buttonFont,
-		textColor = {0,0,0},
 		offset = {hover = {x = 30}},
 	})
 
@@ -95,7 +92,6 @@ function Mixed:stretch()
 		text = "HORSE",
 		func = function() return print("test") end,
 		font = buttonFont,
-		textColor = {0,0,0},
 	})
 
 	self.container = c.new({
