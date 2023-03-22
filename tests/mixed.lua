@@ -41,7 +41,8 @@ function Mixed:default()
 		textPosition = {center = true},
 		-- image = {idle = button_idle, hover = button_hover},
 		borderColor = {1,0,0,1},
-		offset = {hover = {x = 50}, holding = {x = 50}, pressed = {x = 50}},
+		scale = {hover = 1.5},
+		offset = {hover = {x = -(300 * 1.5 - 300) / 2, y = -(50 * 1.5 - 50) / 2}},
 		font = buttonFont,
 	})
 

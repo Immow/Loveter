@@ -54,6 +54,12 @@ end
 function Meta:textinput()
 end
 
+function Meta:draw()
+end
+
+function Meta:update(dt)
+end
+
 function Meta:debug()
 	if DEBUG then
 		love.graphics.setFont(FONT)

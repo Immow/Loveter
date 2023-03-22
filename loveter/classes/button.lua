@@ -5,6 +5,7 @@ local Class = require(class_path.."class")
 local Text = require(class_path.."text")
 local Offset = require(class_path.."offset")
 local Color = require(class_path.."color")
+local Scale = require(class_path.."scale")
 
 -- LuaFormatter off
 
@@ -37,15 +38,15 @@ function Button.new(settings)
 	instance.backgroundImageStyle    = settings.backgroundImageStyle or {default = true}
 	instance.quad                    = nil
 	instance.textOffset              = settings.textOffset or 5
-	instance.offset                  = Offset.new(settings.offset)
+	instance.offset                  = Offset.new({offset = settings.offset})
 	instance.state                   = "idle"
 	instance.toggle                  = false
 	instance.shapeColor              = Color.new({shapeColor = settings.shapeColor or {}})
 	instance.borderColor             = Color.new({borderColor = settings.borderColor or {}})
 	instance.imageColor              = Color.new({imageColor = settings.imageColor or {}})
-	instance.textPosition           = settings.textPosition or {left = true}
-	-- instance.border                  = settings.border or false
+	instance.textPosition            = settings.textPosition or {left = true}
 	instance.id                      = "button"..Button.createID
+	instance.scale                   = Scale.new({scale = settings.scale})
 
 	return instance
 end
@@ -68,11 +69,6 @@ end
 function Button:load()
 	self.start_x = self.x
 	self.start_y = self.y
-	-- self:setQuad()
-	-- print(self.parentWidth, self.parentHeight)
-	-- self.text.parentWidth = self.w
-	-- self.text.parentHeight = self.h
-	-- self.text:load()
 end
 
 
@@ -120,19 +116,28 @@ end
 function Button:drawText()
 	self.text.textColor:draw(self.state)
 	love.graphics.setFont(self.text.font)
+	local limit = self.w * self.scale[self.state]
+	local y = self.y + self.text:centerTextY(self.scale[self.state]) + self.offset[self.state].y
 	if self.textPosition.left then
-		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x + self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y, self.text.limit)
+		local x = self.x + self.offset[self.state].x * self.scale[self.state] + self.textOffset
+		love.graphics.printf(self.text.text, x , y, limit, "left")
 	elseif self.textPosition.right then
-		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x - self.textOffset, self.y + self.text:centerTextY() + self.offset[self.state].y, self.w, "right")
+		local x = self.x + self.offset[self.state].x * self.scale[self.state] - self.textOffset
+		love.graphics.printf(self.text.text, x, y, limit, "right")
 	elseif self.textPosition.center then
-		love.graphics.printf(self.text.text, self.x + self.offset[self.state].x, self.y + self.text:centerTextY() + self.offset[self.state].y, self.w, "center")
+		local x = self.x + self.offset[self.state].x
+		love.graphics.printf(self.text.text, x, y, limit, "center")
 	end
 end
 
 function Button:drawState()
 	if self.image == nil then
 		self.shapeColor:draw(self.state)
-		love.graphics.rectangle("fill", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w, self.h, self.fillet, self.fillet)
+		local x = self.x + self.offset[self.state].x
+		local y = self.y + self.offset[self.state].y
+		local w = self.w * self.scale[self.state]
+		local h = self.h * self.scale[self.state]
+		love.graphics.rectangle("fill", x , y, w, h, self.fillet, self.fillet)
 	else
 		self.imageColor:draw(self.state)
 		local imgW = self.image["idle"]:getWidth()
@@ -158,7 +163,11 @@ end
 
 function Button:drawBorder()
 	self.borderColor:draw(self.state)
-	love.graphics.rectangle("line", self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, self.w , self.h, self.fillet, self.fillet)
+	local x = self.x + self.offset[self.state].x
+	local y = self.y + self.offset[self.state].y
+	local w = self.w * self.scale[self.state]
+	local h = self.h * self.scale[self.state]
+	love.graphics.rectangle("line", x, y, w, h, self.fillet, self.fillet)
 end
 
 

@@ -6,12 +6,10 @@ Color.__index = Color
 ---@class Color
 function Color.new(settings)
 	local instance = setmetatable({}, Color)
-	-- settings.color = settings.color or {}
-
 	local states = {"pressed", "hover", "idle", "holding"}
 
 	for _, value in pairs(settings) do
-		if type(value[1]) == "number" then
+		if type(value[1]) == "number" and type(value[2]) == "number" and type(value[3]) == "number" then
 			for _, state in pairs(states) do
 				instance[state] = value
 			end

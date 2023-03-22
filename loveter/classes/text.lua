@@ -19,13 +19,16 @@ function Text.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
 	if not settings.textColor then settings.textColor = {} end
 
-	instance.font              = settings.font or love.graphics.getFont()
-	instance.textColor         = Color.new({textColor = settings.textColor or {}})
-	instance.text              = settings.text or ""
-	instance.textAlign         = settings.textAlign or "left"
-	instance.state             = "idle"
-	instance.id                = "text"..Text.createID
-	instance.limit             = settings.limit or instance.font:getWidth(instance.text)
+	instance.font                    = settings.font or love.graphics.getFont()
+	instance.textColor               = Color.new({textColor = settings.textColor or {}})
+	instance.text                    = settings.text or ""
+	instance.textAlign               = settings.textAlign or "left"
+	instance.state                   = "idle"
+	instance.id                      = "text"..Text.createID
+	instance.limit                   = settings.limit or instance.font:getWidth(instance.text)
+	instance.w, instance.wrappedtext = instance.font:getWrap(instance.text, instance.limit)
+	instance.h                       = #instance.wrappedtext * instance.font:getHeight()
+
 	return instance
 end
 
@@ -38,25 +41,20 @@ function Text:init()
 
 end
 
-function Text:centerTextX()
+function Text:centerTextX() --TODO remove this and change other stuff to use printf
 	return self.parentWidth / 2 - self.font:getWidth(self.text) / 2
 end
 
-function Text:centerTextY()
-	return self.parentHeight / 2 - self.font:getHeight() / 2
+function Text:centerTextY(scale)
+	return self.parentHeight / 2 * scale - self.font:getHeight() / 2
 end
 
 function Text:getWidth()
-	return self.limit
+	return self.w
 end
 
 function Text:getHeight()
-	local _, wrappedtext = self.font:getWrap(self.text, self.limit)
-	return #wrappedtext * self.font:getHeight()
-end
-
-function Text:update(dt)
-
+	return self.h
 end
 
 function Text:drawText()
