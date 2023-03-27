@@ -32,17 +32,17 @@ function Mixed:default()
 	local button_idle = love.graphics.newImage("loveter/assets/image/idle.png")
 	local button_hover = love.graphics.newImage("loveter/assets/image/hover.png")
 	local button_holding = love.graphics.newImage("loveter/assets/image/holding.png")
-	-- local button_hover_big = love.graphics.newImage("loveter/assets/image/hover_big.png")
+	local button_hover_big = love.graphics.newImage("loveter/assets/image/hover_big.png")
 	self.buttons.b1 = newButton.new({
 		w = 300,
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
 		textPosition = {center = true},
-		-- image = {idle = button_idle, hover = button_hover},
-		borderColor = {1,0,0,1},
-		scale = {hover = 1.5},
-		offset = {hover = {x = -(300 * 1.5 - 300) / 2, y = -(50 * 1.5 - 50) / 2}},
+		image = {idle = button_idle, hover = button_hover_big},
+		-- borderColor = {1,0,0,1},
+		-- scale = {hover = 1.5},
+		offset = {hover = {x = -50, y = -8.5}},
 		font = buttonFont,
 	})
 

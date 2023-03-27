@@ -5,6 +5,7 @@ local Meta = require(class_path.."meta")
 local Background = require(class_path.."background")
 local Class = require(class_path.."class")
 local Text = require(class_path.."text")
+local Scale = require(class_path.."scale")
 
 -- LuaFormatter off
 
@@ -22,8 +23,6 @@ function Form.new(settings)
 	local instance = setmetatable(Class.inject({b, m}), Form)
 
 	instance.text                    = Text.new({
-						parentWidth  = settings.w,
-						parentHeight = settings.h,
 						font         = settings.font,
 						textColor    = settings.textColor,
 						text         = settings.text,
@@ -44,6 +43,7 @@ function Form.new(settings)
 	instance.icon                    = settings.icon or nil
 	instance.state                   = "idle"
 	instance.id                      = "form"..Form.createID
+	instance.scale                   = Scale.new({scale = settings.scale})
 	return instance
 end
 
@@ -102,7 +102,7 @@ end
 function Form:drawCursor()
 	if dir == 1 and self.clickedInForm then
 		local x = self.x + self.offset + self.text.font:getWidth(self.text.text)
-		local y = self.y + self.text:centerTextY()
+		local y = self.y + self.text:centerTextY(self.scale[self.state], self.h)
 		love.graphics.print("|", x, y)
 	end
 end
@@ -110,13 +110,13 @@ end
 function Form:drawPreviewText()
 	if not self.clickedInForm then
 		love.graphics.setColor(self.fontPreviewColor)
-		love.graphics.print(self.previewText, self.x + self.offset, self.y + self.text:centerTextY())
+		love.graphics.print(self.previewText, self.x + self.offset, self.y + self.text:centerTextY(self.scale[self.state], self.h))
 	end
 end
 
 function Form:drawText()
 	self.text.textColor:draw(self.state)
-	love.graphics.print(self.text.text, self.x + self.offset, self.y + self.text:centerTextY())
+	love.graphics.print(self.text.text, self.x + self.offset, self.y + self.text:centerTextY(self.scale[self.state], self.h))
 end
 
 function Form:drawIcon()

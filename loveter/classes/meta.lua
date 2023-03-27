@@ -11,8 +11,6 @@ function Meta.new(settings)
 	instance.start_y              = 0
 	instance.position             = settings.position
 	instance.id                   = settings.id
-	instance.parentWidth          = settings.parentWidth
-	instance.parentHeight         = settings.parentHeight
 	return instance
 end
 

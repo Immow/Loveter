@@ -14,6 +14,7 @@ setmetatable(Text, Text.parents)
 Text.createID = 0
 
 ---@class Text
+---@return table instance
 function Text.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
@@ -45,8 +46,10 @@ function Text:centerTextX() --TODO remove this and change other stuff to use pri
 	return self.parentWidth / 2 - self.font:getWidth(self.text) / 2
 end
 
-function Text:centerTextY(scale)
-	return self.parentHeight / 2 * scale - self.font:getHeight() / 2
+---@param scale integer
+---@return integer
+function Text:centerTextY(scale, height)
+	return height / 2 * scale - self.font:getHeight() / 2
 end
 
 function Text:getWidth()
