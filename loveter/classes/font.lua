@@ -1,11 +1,11 @@
 -- LuaFormatter off
 
-local Color = {}
-Color.__index = Color
+local Font = {}
+Font.__index = Font
 
----@class Color
-function Color.new(settings)
-	local instance = setmetatable({}, Color)
+---@class Font
+function Font.new(settings)
+	local instance = setmetatable({}, Font)
 	local states = {"pressed", "hover", "idle", "holding"}
 
 	for _, value in pairs(settings) do
@@ -34,19 +34,19 @@ function Color.new(settings)
 		instance.idle    = settings.textColor.idle    or {0,0,0,1}
 		instance.holding = settings.textColor.holding or {0,0,0,1}
 	elseif settings.shapeColor then
-		instance.pressed = settings.shapeColor.pressed or {1,0,0,1}
-		instance.hover   = settings.shapeColor.hover   or {0,1,0,1}
+		instance.pressed = settings.shapeColor.pressed or {1,1,1,1}
+		instance.hover   = settings.shapeColor.hover   or {1,1,1,1}
 		instance.idle    = settings.shapeColor.idle    or {1,1,1,1}
-		instance.holding = settings.shapeColor.holding or {0,0,1,1}
+		instance.holding = settings.shapeColor.holding or {1,1,1,1}
 	end
 	return instance
 end
 
 -- LuaFormatter on
 
-function Color:draw(state)
+function Font:draw(state)
 	if not state then state = "idle" end
 	love.graphics.setColor(self[state])
 end
 
-return Color
+return Font

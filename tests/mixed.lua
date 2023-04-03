@@ -10,6 +10,7 @@ local selectedTest = 1
 local Mixed = {
 	tests = {
 		"default",
+		"image_scale",
 		"textInContainer",
 		"textInMultiContainer",
 		"stretch",
@@ -38,16 +39,39 @@ function Mixed:default()
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
-		textPosition = {center = true},
-		image = {idle = button_idle, hover = button_hover_big},
+		textPosition = "right",
+		-- image = {idle = button_idle, hover = button_hover_big},
 		-- borderColor = {1,0,0,1},
 		-- scale = {hover = 1.5},
-		offset = {hover = {x = -50, y = -8.5}},
-		font = buttonFont,
+		-- offset = {hover = {x = -75, y = -8.5}},
+		-- font = buttonFont,
 	})
 
 	self.container = c.new({
 		h = 400,
+		x = 200,
+		y = 200,
+		children = {
+			self.buttons.b1,
+		}
+	})
+
+	self.container:load()
+end
+
+function Mixed:image_scale()
+	local background = love.graphics.newImage("loveter/assets/image/b4.png")
+	self.buttons.b1 = newButton.new({
+		w = 100,
+		h = 100,
+		text = "image_scale",
+		func = function() return print("test") end,
+		textPosition = {center = true},
+		backgroundImageStyle = {fill = true},
+		image = background,
+	})
+
+	self.container = c.new({
 		x = 200,
 		y = 200,
 		children = {

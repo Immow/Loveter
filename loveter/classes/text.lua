@@ -1,8 +1,9 @@
 local folder_path = (...):match("(.-)[^%.]+$")
 
-local Meta = require(folder_path.."meta")
+local Meta  = require(folder_path.."meta")
 local Class = require(folder_path.."class")
 local Color = require(folder_path.."color")
+local Font  = require(folder_path.."font")
 
 -- LuaFormatter off
 
@@ -21,6 +22,7 @@ function Text.new(settings)
 	if not settings.textColor then settings.textColor = {} end
 
 	instance.font                    = settings.font or love.graphics.getFont()
+	-- instance.font                    = Font.new({font = settings.font or love.graphics.newFont()})
 	instance.textColor               = Color.new({textColor = settings.textColor or {}})
 	instance.text                    = settings.text or ""
 	instance.textAlign               = settings.textAlign or "left"
@@ -39,7 +41,6 @@ function Text:load()
 end
 
 function Text:init()
-
 end
 
 function Text:centerTextX() --TODO remove this and change other stuff to use printf
@@ -58,6 +59,10 @@ end
 
 function Text:getHeight()
 	return self.h
+end
+
+function Text:setState(state)
+	self.state = state or "idle"
 end
 
 function Text:drawText()

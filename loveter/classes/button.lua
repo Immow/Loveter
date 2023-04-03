@@ -7,6 +7,7 @@ local Offset = require(class_path.."offset")
 local Color = require(class_path.."color")
 local Scale = require(class_path.."scale")
 local Image = require(class_path.."image")
+local TextOffset = require(class_path.."textoffset")
 
 -- LuaFormatter off
 
@@ -36,17 +37,16 @@ function Button.new(settings)
 	instance.image                   = Image.new({image = settings.image})
 	instance.backgroundImageStyle    = settings.backgroundImageStyle or {default = true}
 	instance.quad                    = nil
-	instance.textOffset              = settings.textOffset or 5
 	instance.offset                  = Offset.new({offset = settings.offset})
 	instance.state                   = "idle"
 	instance.toggle                  = false
 	instance.shapeColor              = Color.new({shapeColor = settings.shapeColor or {}})
 	instance.borderColor             = Color.new({borderColor = settings.borderColor or {}})
 	instance.imageColor              = Color.new({imageColor = settings.imageColor or {}})
-	instance.textPosition            = settings.textPosition or {left = true}
+	instance.textPosition            = settings.textPosition or "center"
+	instance.textOffset              = TextOffset.new({textOffset = settings.textOffset, textPosition = instance.textPosition})
 	instance.id                      = "button"..Button.createID
 	instance.scale                   = Scale.new({scale = settings.scale})
-
 	return instance
 end
 
@@ -62,7 +62,7 @@ function Button:runFunction()
 end
 
 function Button:init()
-	self.text:init()
+
 end
 
 function Button:load()
@@ -93,21 +93,18 @@ function Button:setState()
 	local mx, my = love.mouse.getPosition()
 	if self:containsPoint(mx, my) then
 		if love.mouse.isDown(1) then
-			self.state = "holding"
+			return "holding"
 		else
-			self.state = "hover"
+			return "hover"
 		end
 	else
-		self.state = "idle"
+		return "idle"
 	end
 end
 
 function Button:update(dt)
-	self:setState()
-	if self.image then
-		self.w = self.image[self.state]:getWidth()
-		self.h = self.image[self.state]:getHeight()
-	end
+	self.state = self:setState()
+	self.text:setState(self.state)
 end
 
 function Button:setQuad()
@@ -119,44 +116,30 @@ end
 function Button:drawText()
 	self.text.textColor:draw(self.state)
 	love.graphics.setFont(self.text.font)
-	local limit = self.w * self.scale[self.state]
-	local y = self.y + self.text:centerTextY(self.scale[self.state], self.h) + self.offset[self.state].y
-	if self.textPosition.left then
-		local x = self.x + self.offset[self.state].x * self.scale[self.state] + self.textOffset
-		love.graphics.printf(self.text.text, x , y, limit, "left")
-	elseif self.textPosition.right then
-		local x = self.x + self.offset[self.state].x * self.scale[self.state] - self.textOffset
-		love.graphics.printf(self.text.text, x, y, limit, "right")
-	elseif self.textPosition.center then
-		local x = self.x + self.offset[self.state].x
-		love.graphics.printf(self.text.text, x, y, limit, "center")
-	end
+	local w = self.image and self.image[self.state]:getWidth() or self.w
+	local h = self.image and self.image[self.state]:getHeight() or self.h
+	local limit = w * self.scale[self.state]
+	local x = self.x + self.offset[self.state].x + self.textOffset --* self.scale[self.state]
+	local y = self.y + self.text:centerTextY(self.scale[self.state], h) + self.offset[self.state].y * self.scale[self.state]
+	love.graphics.printf(self.text.text, x, y, limit, self.textPosition)
 end
 
 function Button:drawState()
+	local x = self.x + self.offset[self.state].x
+	local y = self.y + self.offset[self.state].y
+	local w = self.w * self.scale[self.state]
+	local h = self.h * self.scale[self.state]
 	if self.image == nil then
 		self.shapeColor:draw(self.state)
-		local x = self.x + self.offset[self.state].x
-		local y = self.y + self.offset[self.state].y
-		local w = self.w * self.scale[self.state]
-		local h = self.h * self.scale[self.state]
 		love.graphics.rectangle("fill", x , y, w, h, self.fillet, self.fillet)
 	else
 		self.imageColor:draw(self.state)
 		if self.backgroundImageStyle.fill then
-				if self.image[self.state] then
-					love.graphics.draw(self.image[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w, self.h)
-				else
-					love.graphics.draw(self.image["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y, 0, self.w, self.h)
-				end
+			love.graphics.draw(self.image[self.state], x, y, 0, self.w / self.image[self.state]:getWidth(), self.h / self.image[self.state]:getHeight())
 		elseif self.backgroundImageStyle.texture then
 			--
 		else
-			love.graphics.draw(self.image[self.state], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
-			-- if self.image[self.state] then
-			-- else
-			-- 	love.graphics.draw(self.image["idle"], self.x + self.offset[self.state].x, self.y + self.offset[self.state].y)
-			-- end
+			love.graphics.draw(self.image[self.state], x, y)
 		end
 	end
 end
