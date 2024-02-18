@@ -4,6 +4,7 @@ local Meta  = require(folder_path.."meta")
 local Class = require(folder_path.."class")
 local Color = require(folder_path.."color")
 local Font  = require(folder_path.."font")
+local Container  = require(folder_path.."container")
 
 -- LuaFormatter off
 
@@ -20,9 +21,10 @@ function Text.new(settings)
 	local m = Meta.new(settings)
 	local instance = setmetatable(Class.inject({m}), Text)
 	if not settings.textColor then settings.textColor = {} end
+	local padding = Container.setPadding(settings)
 
 	instance.font                    = settings.font or love.graphics.getFont()
-	-- instance.font                    = Font.new({font = settings.font or love.graphics.newFont()})
+	-- instance.font                    = Font.new({font = settings.font or love.graphics.getFont()})
 	instance.textColor               = Color.new({textColor = settings.textColor or {}})
 	instance.text                    = settings.text or ""
 	instance.textAlign               = settings.textAlign or "left"
@@ -30,7 +32,9 @@ function Text.new(settings)
 	instance.id                      = "text"..Text.createID
 	instance.limit                   = settings.limit or instance.font:getWidth(instance.text)
 	instance.w, instance.wrappedtext = instance.font:getWrap(instance.text, instance.limit)
-	instance.h                       = #instance.wrappedtext * instance.font:getHeight()
+	instance.w                       = instance.w + padding.left + padding.right
+	instance.h                       = #instance.wrappedtext * instance.font:getHeight() + padding.top + padding.bottom
+	instance.padding                 = Container.setPadding(settings)
 
 	return instance
 end
@@ -68,7 +72,7 @@ end
 function Text:drawText()
 	self.textColor:draw(self.state)
 	love.graphics.setFont(self.font)
-	love.graphics.printf(self.text, self.x, self.y, self.limit, self.textAlign)
+	love.graphics.printf(self.text, self.x + self.padding.left, self.y + self.padding.top, self.limit, self.textAlign)
 end
 
 function Text:draw()

@@ -9,12 +9,12 @@ local selectedTest = 1
 
 local Mixed = {
 	tests = {
-		"default",
-		"image_scale",
-		"textInContainer",
+		-- "default",
+		-- "image_scale",
+		-- "textInContainer",
 		"textInMultiContainer",
-		"stretch",
-		"login",
+		-- "stretch",
+		-- "login",
 	}
 }
 
@@ -39,7 +39,7 @@ function Mixed:default()
 		h = 50,
 		text = "SIGN IN",
 		func = function() return print("test") end,
-		textPosition = "right",
+		textPosition = "center",
 		-- image = {idle = button_idle, hover = button_hover_big},
 		-- borderColor = {1,0,0,1},
 		-- scale = {hover = 1.5},
@@ -66,7 +66,7 @@ function Mixed:image_scale()
 		h = 100,
 		text = "image_scale",
 		func = function() return print("test") end,
-		textPosition = {center = true},
+		textPosition = "center",
 		backgroundImageStyle = {fill = true},
 		image = background,
 	})
@@ -176,24 +176,28 @@ end
 
 function Mixed:textInMultiContainer()
 	self.texts.t1 = newText.new({
-		text = "THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST",
+		text = "THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST THIS IS A TEST",
 		textColor = {1,1,1,1},
 		limit = 150,
+		padding = {all = 20},
 	})
 	self.texts.t2 = newText.new({
 		text = "The Fox jumped over the fence The Fox jumped over the fence The Fox jumped over the fence",
 		textColor = {1,1,1,1},
 		limit = 150,
+		padding = {all = 20},
 	})
 	self.texts.t3 = newText.new({
 		text = "Cow and Chicken do stuff :) Cow and Chicken do stuff :) Cow and Chicken do stuff :)",
 		textColor = {1,1,1,1},
 		limit = 150,
+		padding = {all = 20},
 	})
 	self.texts.t4 = newText.new({
 		text = "Hello Twitch chat are you there? Hello Twitch chat are you there? Hello Twitch chat are you there?",
 		textColor = {1,1,1,1},
 		limit = 150,
+		padding = {all = 20},
 	})
 
 	self.container = c.new({
@@ -202,14 +206,14 @@ function Mixed:textInMultiContainer()
 		mainAlign = {vertical = true},
 		children = {
 			c.new({
-				padding = {all = 50},
+				-- padding = {all = 50},
 				children = {
 					self.texts.t1,
 					self.texts.t2,
 				}
 			}),
 			c.new({
-				padding = {all = 50},
+				-- padding = {all = 50},
 				children = {
 					self.texts.t3,
 					self.texts.t4,
